@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<title>NARA（デモ）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap">
+<style>
+:root {
+  box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  --bg: #FFFFFF; --ink: #111418; --muted: #8A9099; --soft: #F5F6F8; --line: #ECEEF1; --btn: #111418; --btn-ink: #FFFFFF; --page: #EDEFF2;
+  --shadow: 0 10px 30px rgba(17, 20, 24, .07);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0E1013; --ink: #F2F4F6; --muted: #8B929B; --soft: #171A1E; --line: #23272C; --btn: #F2F4F6; --btn-ink: #111418; --page: #07080A; --shadow: 0 10px 30px rgba(0, 0, 0, .4); } }
+:root[data-theme="dark"] { --bg: #0E1013; --ink: #F2F4F6; --muted: #8B929B; --soft: #171A1E; --line: #23272C; --btn: #F2F4F6; --btn-ink: #111418; --page: #07080A; --shadow: 0 10px 30px rgba(0, 0, 0, .4); }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; height: 100%; background: var(--page); color: var(--ink); font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif; font-size: 15px; line-height: 1.7; font-weight: 500; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; padding: 0; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--accent, #111418); outline-offset: 3px; border-radius: 14px; }
+button:disabled { cursor: default; }
+img { display: block; }
+.phone { --accent: #111418; --on-accent: #fff; position: relative; width: 100%; max-width: 430px; height: 100%; margin: 0 auto; background: var(--bg); overflow: hidden; display: flex; flex-direction: column; }
+@media (min-width: 520px) { body { display: flex; align-items: center; justify-content: center; } .phone { height: min(880px, 100%); border-radius: 36px; box-shadow: 0 30px 80px rgba(17, 20, 24, .18); border: 1px solid var(--line); } }
+
+.top { flex: none; padding: 18px 28px 0; min-height: 44px; }
+.wm { font-weight: 900; font-size: 13px; letter-spacing: .32em; color: var(--muted); }
+.scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 28px 56px; }
+.tabbar { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); padding: 6px 12px 8px; border-top: 1px solid var(--line); background: var(--bg); }
+.tab { position: relative; display: grid; place-items: center; min-height: 56px; color: var(--muted); transition: color .2s, transform .15s; }
+.tab:active { transform: scale(.88); }
+.tab i { position: absolute; bottom: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); transform: scale(0); transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); }
+.tab[aria-current="page"] { color: var(--ink); }
+.tab[aria-current="page"] i { transform: scale(1); }
+
+/* character */
+.nara { display: block; margin: 0 auto; overflow: visible; }
+.nara .cb { fill: var(--c); transition: fill .55s ease; } .nara .cs { fill: var(--s); transition: fill .55s ease; } .nara .cst { stroke: var(--c); transition: stroke .55s ease; }
+.nara.idle { animation: bob 3.4s ease-in-out infinite; }
+.nara .tail { transform-origin: 90px 38px; animation: tailw 2.6s ease-in-out infinite; }
+.nara .eyes { transform-box: fill-box; transform-origin: center; animation: blink 5s infinite; }
+.nara .wv { transform-origin: 108px 62px; animation: wave 1.1s ease-in-out infinite; }
+.nara.hop { animation: hop .7s cubic-bezier(.3, .8, .4, 1); }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes tailw { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(8deg); } }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+@keyframes wave { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-16deg); } }
+@keyframes hop { 0% { transform: translateY(0) scale(1, 1); } 25% { transform: translateY(0) scale(1.1, .88); } 55% { transform: translateY(-16px) scale(.94, 1.08); } 80% { transform: translateY(0) scale(1.06, .94); } 100% { transform: scale(1); } }
+
+/* home */
+.home { padding-top: 6px; }
+.hero { display: flex; justify-content: center; min-height: 40px; margin-top: 8px; }
+.q { font-size: 24px; font-weight: 900; text-align: center; margin: 28px 0 24px; letter-spacing: .02em; }
+.moods { display: flex; justify-content: center; gap: 12px; }
+.md { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 16px; }
+.md i { display: block; width: 36px; height: 36px; border-radius: 12px; background: var(--mc); transition: transform .3s cubic-bezier(.3, 1.6, .5, 1), box-shadow .25s; }
+.md:active i { transform: scale(.85); }
+.md[aria-pressed="true"] i { transform: scale(1.3); box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--mc); }
+.mk-md { display: grid; } .mk-md.sel i { transform: scale(1.3); box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--mc); }
+.moodname { text-align: center; color: var(--muted); font-weight: 700; height: 28px; margin-top: 12px; }
+.cta { width: 100%; min-height: 60px; border-radius: 20px; background: var(--btn); color: var(--btn-ink); font-size: 17px; font-weight: 900; letter-spacing: .04em; display: flex; align-items: center; justify-content: center; margin-top: 20px; transition: transform .15s, opacity .3s; }
+.cta:active:not(:disabled) { transform: scale(.97); }
+.cta:disabled { opacity: .18; }
+.cta.ready { animation: ctaIn .5s cubic-bezier(.3, 1.5, .5, 1) both, ring 2.4s ease-out 1s infinite; }
+@keyframes ctaIn { from { transform: scale(.94); } to { transform: scale(1); } }
+@keyframes ring { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); } 70%, 100% { box-shadow: 0 0 0 16px transparent; } }
+.btn { min-height: 48px; padding: 0 20px; border-radius: 16px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: transform .15s, background .25s, color .25s; white-space: nowrap; }
+.btn:active { transform: scale(.94); }
+.btn.dark { background: var(--btn); color: var(--btn-ink); } .btn.line { border: 1.5px solid var(--line); background: var(--bg); }
+.btn.ghost { color: var(--muted); } .btn.sm { min-height: 40px; padding: 0 16px; font-size: 14px; } .btn.big { min-height: 56px; font-size: 16px; }
+.btn.on { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.btn[aria-pressed="true"].big { background: var(--btn); color: var(--btn-ink); border-color: transparent; }
+.pop { animation: popb .5s cubic-bezier(.3, 1.8, .5, 1); }
+@keyframes popb { 0% { transform: scale(.8); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+.acts { display: flex; gap: 10px; margin-top: 18px; } .acts .btn { flex: 1; }
+.sec { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .12em; margin: 48px 0 14px; }
+.sub { color: var(--muted); font-size: 13px; } .c { text-align: center; } .mut { color: var(--muted); }
+.grow { flex: 1; min-width: 0; }
+.sugs { margin-top: 40px; display: grid; gap: 16px; }
+.sug { background: var(--soft); border-radius: 28px; padding: 28px 24px 24px; }
+.sug.anim { animation: rise .6s cubic-bezier(.2, .8, .2, 1) both; } .sug.dim { opacity: .6; }
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.sug h3, .post h3 { margin: 0; font-size: 20px; font-weight: 900; line-height: 1.5; }
+.hk { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+.mis { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 14px; color: var(--muted); font-size: 13px; font-weight: 700; } .mis.c { justify-content: center; }
+.mi { display: inline-flex; align-items: center; gap: 5px; }
+.done-tag { margin-top: 16px; font-weight: 900; }
+.again { text-align: center; margin-top: 4px; }
+.doing { background: var(--soft); border-radius: 24px; padding: 20px 22px; margin-top: 8px; }
+.rows { display: grid; } .row2 { display: flex; align-items: center; gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--line); text-align: left; }
+.btnrow { width: 100%; } .rt { font-weight: 900; line-height: 1.5; } .rs { color: var(--muted); font-size: 13px; }
+.ib { width: 40px; height: 40px; display: grid; place-items: center; color: var(--muted); border-radius: 12px; } .chev { color: var(--muted); font-size: 22px; }
+.dots3 { display: flex; gap: 6px; margin-top: 8px; } .dots3 i { width: 22px; height: 6px; border-radius: 3px; background: var(--line); } .dots3 i.on { background: var(--accent); }
+.week { display: flex; justify-content: space-between; } .week i { width: 30px; height: 30px; border-radius: 10px; background: var(--soft); } .week i.on { background: var(--accent); } .week i.today { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink); }
+.bar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; } .bar b { display: block; height: 100%; background: var(--accent); border-radius: 4px; transition: width .6s; }
+
+/* feed */
+.page { padding-top: 6px; }
+.filters { display: flex; gap: 8px; overflow-x: auto; margin: 6px -28px 8px; padding: 6px 28px; scrollbar-width: none; } .filters::-webkit-scrollbar { display: none; }
+.fl { flex: none; min-height: 40px; padding: 0 16px; border-radius: 20px; font-weight: 700; color: var(--muted); background: var(--soft); }
+.fl[aria-pressed="true"] { background: var(--btn); color: var(--btn-ink); }
+.post { padding: 28px 0 26px; border-bottom: 1px solid var(--line); }
+.who { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; } .who b { font-weight: 900; }
+.tag { margin-left: 8px; font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 8px; background: var(--soft); color: var(--muted); }
+.lvt { font-size: 12px; color: var(--muted); font-weight: 700; }
+.note { margin: 8px 0 0; color: var(--muted); }
+.post > .btn { margin-top: 18px; }
+.nice { flex: 1; min-height: 48px; border-radius: 16px; border: 1.5px solid var(--line); font-weight: 900; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .15s, background .25s, color .25s; }
+.nice:active { transform: scale(.94); }
+.cube { width: 15px; height: 15px; border-radius: 5px; background: var(--muted); transition: background .25s; display: inline-block; }
+.nice[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.nice[aria-pressed="true"] .cube { background: var(--on-accent); }
+.bst { position: absolute; width: 8px; height: 8px; border-radius: 3px; pointer-events: none; z-index: 70; animation: burst .7s ease-out forwards; }
+@keyframes burst { from { transform: translate(-50%, -50%) scale(1); opacity: 1; } to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.2) rotate(120deg); opacity: 0; } }
+
+/* log */
+.count { display: flex; align-items: baseline; gap: 10px; margin: 16px 0 20px; } .count b { font-size: 56px; font-weight: 900; line-height: 1; } .count span { color: var(--muted); font-weight: 700; }
+.tiles { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.tile { display: block; aspect-ratio: 1; border-radius: 28%; } .tile.empty { background: var(--soft); } .tile.pop { animation: tilepop .8s cubic-bezier(.3, 1.8, .5, 1) .2s both; }
+@keyframes tilepop { from { transform: scale(0) rotate(-20deg); } to { transform: none; } }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; } .cal .w { text-align: center; font-size: 11px; color: var(--muted); font-weight: 700; } .cal i { display: block; }
+.cal-d { position: relative; aspect-ratio: 1; border-radius: 28%; background: var(--soft); display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--muted); }
+.cal-d.today { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink); } .cal-d b { position: absolute; right: 5px; top: 5px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.insight { display: flex; align-items: baseline; gap: 12px; margin-top: 32px; } .insight b { font-size: 36px; font-weight: 900; } .insight span { color: var(--muted); font-size: 13px; }
+.tl { list-style: none; margin: 0; padding: 0; } .tl li { display: flex; align-items: center; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.dotc { width: 14px; height: 14px; border-radius: 5px; flex: none; }
+.pubb { font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 12px; background: var(--soft); color: var(--muted); } .pubb[aria-pressed="true"] { background: var(--btn); color: var(--btn-ink); }
+
+/* me */
+.me-prof { width: 100%; display: flex; align-items: center; gap: 18px; padding: 16px 0; text-align: left; } .me-prof b { font-size: 20px; }
+.seg { display: flex; gap: 6px; padding: 5px; background: var(--soft); border-radius: 18px; } .seg button { flex: 1; min-height: 46px; border-radius: 14px; font-weight: 700; font-size: 14px; color: var(--muted); transition: background .25s, color .25s; }
+.seg button[aria-pressed="true"] { background: var(--bg); color: var(--ink); box-shadow: 0 2px 8px rgba(17, 20, 24, .08); }
+
+/* overlays */
+.overlay { position: absolute; inset: 0; background: var(--bg); display: flex; flex-direction: column; z-index: 20; }
+.overlay.enter { animation: oin .38s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes oin { from { transform: translateY(22px); } to { transform: none; } }
+.ohead { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 6px; min-height: 60px; } .back { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; color: var(--ink); } .ottl { font-weight: 900; flex: 1; text-align: center; padding-right: 44px; }
+.ibody { flex: 1; overflow-y: auto; padding: 8px 28px 24px; } .ibody.c { text-align: center; }
+.ifoot { flex: none; padding: 8px 28px calc(24px + env(safe-area-inset-bottom, 0px) * 0); } .ifoot .cta { margin-top: 14px; }
+.it { font-size: 28px; font-weight: 900; line-height: 1.4; margin: 20px 0 26px; } .it.c { text-align: center; } .tt { text-align: center; color: var(--muted); margin: -12px 0 0; }
+.pages { display: flex; justify-content: center; gap: 6px; } .pages i { width: 6px; height: 6px; border-radius: 3px; background: var(--line); transition: width .3s, background .3s; } .pages i.on { width: 20px; background: var(--ink); } .pages.inline { flex: 1; }
+.txt { width: 100%; min-height: 56px; border-radius: 18px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); padding: 0 18px; font: inherit; font-size: 16px; }
+.bigopts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; } .bo { min-height: 104px; border-radius: 24px; background: var(--soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-weight: 700; transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), background .2s, color .2s; color: var(--ink); }
+.bo:active { transform: scale(.94); } .bo[aria-pressed="true"] { background: var(--btn); color: var(--btn-ink); transform: scale(1.03); }
+.bigopts.mini { grid-template-columns: repeat(4, 1fr); gap: 8px; } .bigopts.mini .bo { min-height: 80px; font-size: 12px; border-radius: 18px; } .bigopts.mini .bo svg { width: 22px; height: 22px; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; } .chips.c { justify-content: center; } .chp { min-height: 48px; padding: 0 20px; border-radius: 16px; background: var(--soft); font-weight: 700; transition: background .2s, color .2s, transform .2s cubic-bezier(.3, 1.6, .5, 1); } .chp:active { transform: scale(.94); } .chp[aria-pressed="true"] { background: var(--btn); color: var(--btn-ink); }
+.lab { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .1em; margin: 30px 0 12px; } .lab.c { text-align: center; }
+.stack { display: grid; gap: 12px; } .pace { text-align: left; padding: 22px; border-radius: 24px; background: var(--soft); display: grid; gap: 2px; transition: background .2s, color .2s; } .pace span { font-size: 13px; opacity: .7; } .pace b { font-size: 18px; } .pace[aria-pressed="true"] { background: var(--btn); color: var(--btn-ink); }
+.row3 { display: flex; gap: 10px; align-items: center; } .row3 .cta { margin-top: 0; }
+.mini-nara { height: 76px; display: flex; justify-content: center; margin-bottom: 4px; }
+.tutchar { display: flex; justify-content: center; min-height: 24px; margin-top: 8px; } .tutm { min-height: 240px; display: grid; align-content: center; gap: 22px; margin-top: 12px; }
+.tuthead { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 0 28px; min-height: 56px; } .tuthead button { min-height: 44px; padding: 0 8px; font-weight: 700; color: var(--muted); }
+.tutbody { flex: 1; overflow-y: auto; padding: 0 28px 12px; }
+.mini.sug, .mini.post { padding: 20px; border-radius: 22px; border: 0; } .mini.post { background: var(--soft); }
+.tiles.mini { max-width: 260px; margin: 0 auto; }
+.timer { font-size: 56px; font-weight: 900; font-variant-numeric: tabular-nums; margin: 8px 0 4px; letter-spacing: .02em; }
+.bignum { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 12px; } .bignum .tile { width: 44px; } .bignum b { font-size: 64px; font-weight: 900; line-height: 1; }
+.toast { position: absolute; left: 50%; bottom: 84px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 14px 10px 20px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 80; animation: toastin .35s cubic-bezier(.3, 1.4, .5, 1) both; max-width: 92%; display: flex; gap: 14px; align-items: center; white-space: nowrap; }
+.toast button { font-weight: 900; color: var(--bg); text-decoration: underline; min-height: 32px; }
+@keyframes toastin { from { opacity: 0; transform: translate(-50%, 16px) scale(.96); } to { opacity: 1; transform: translate(-50%, 0); } }
+.confetti { position: absolute; top: -10px; width: 9px; height: 13px; border-radius: 3px; animation: fall 1.8s ease-in forwards; z-index: 90; pointer-events: none; } @keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }
+
+/* splash */
+.splash { background: #111418; color: #fff; z-index: 30; }
+.splash .box { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px 32px 20px; gap: 34px; }
+.splash .ln { opacity: 0; animation: lnIn .95s cubic-bezier(.2, .7, .2, 1) forwards; font-weight: 700; line-height: 1.6; }
+.splash .l1 { font-size: 28px; font-weight: 900; line-height: 1.5; animation-delay: .4s; } .splash .l2 { font-size: 16px; color: #A9B1BA; animation-delay: 1.9s; } .splash .l3 { font-size: 20px; animation-delay: 3.5s; }
+.splash .brand { font-weight: 900; white-space: nowrap; letter-spacing: .04em; background: linear-gradient(90deg, #2F6FD6, #38B28A, #F2C230, #F28A2E); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.splash .ctaw { opacity: 0; animation: lnIn .8s ease forwards; animation-delay: 5s; padding: 0 28px calc(28px + env(safe-area-inset-bottom, 0px) * 0); }
+.splash .cta { background: #fff; color: #111418; margin-top: 0; }
+.splash.skip .ln, .splash.skip .ctaw { animation: none; opacity: 1; transform: none; filter: none; }
+@keyframes lnIn { from { opacity: 0; transform: translateY(14px); filter: blur(5px); } to { opacity: 1; transform: none; filter: none; } }
+
+/* avatar + maker */
+.avs { display: inline-block; border-radius: 50%; overflow: hidden; flex: none; vertical-align: middle; } .avs svg { display: block; width: 100%; height: 100%; }
+.mkprev { display: flex; justify-content: center; margin: 22px 0 18px; }
+.mktabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; } .mktabs button { flex: 1; min-height: 44px; padding: 0 12px; border-radius: 14px; font-weight: 700; font-size: 14px; color: var(--muted); } .mktabs button[aria-selected="true"] { background: var(--soft); color: var(--ink); }
+.mkbody { margin-top: 18px; min-height: 150px; }
+.mkgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; justify-items: center; } .mk { border-radius: 50%; padding: 3px; border: 3px solid transparent; line-height: 0; min-width: 48px; min-height: 48px; } .mk[aria-pressed="true"] { border-color: var(--ink); }
+.swrow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; justify-items: center; } .sw { width: 44px; height: 44px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(17, 20, 24, .12); transition: transform .2s cubic-bezier(.3, 1.6, .5, 1); } .sw[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--ink); transform: scale(1.1); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
+  .splash .ln, .splash .ctaw { animation: none !important; opacity: 1; transform: none; filter: none; }
+}
+
+</style>
+</head>
+<body>
+<div class="phone" id="phone"></div>
+<script>
+/* ============ utils ============ */
+const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const z2 = (n) => String(n).padStart(2, '0');
+function ymd(d) { return d.getFullYear() + '-' + z2(d.getMonth() + 1) + '-' + z2(d.getDate()); }
+function daysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return ymd(d); }
+const parseId = (v) => /^\d+$/.test(v) ? +v : v;
+const GC = { body: ['body', 'walk'], learn: ['learn', 'make'], people: ['touch'], refresh: ['walk', 'eat', 'touch'] };
+const FEEL = { good: 'たのしい', ok: 'ふつう', meh: 'いまいち' };
+const ANIMALS = ['ウサギ', 'タヌキ', 'ペンギン', 'カンガルー', 'コアラ', 'キツネ', 'リス', 'ハリネズミ'];
+function pickAnon() { return '匿名' + ANIMALS[Math.floor(Math.random() * ANIMALS.length)] + String.fromCharCode(65 + Math.floor(Math.random() * 26)) + 'さん'; }
+function onColor(hex) { const n = parseInt(hex.slice(1), 16); const r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 165 ? '#111418' : '#FFFFFF'; }
+
+/* ============ mood = character colour ============ */
+const MOOD = [
+  { k: 0, n: '', c: '#C9CFD6', s: '#AEB5BD' },
+  { k: 1, n: 'しんどい', c: '#2F6FD6', s: '#1F4DA8' },
+  { k: 2, n: 'いまいち', c: '#7D86D4', s: '#5A62AE' },
+  { k: 3, n: 'ふつう', c: '#38B28A', s: '#258561' },
+  { k: 4, n: 'いい', c: '#F2C230', s: '#C99A0F' },
+  { k: 5, n: '絶好調', c: '#F28A2E', s: '#C76612' }
+];
+const moodMap = (m) => m <= 2 ? 1 : m === 3 ? 2 : m === 4 ? 3 : 4;
+function moodFace(m) {
+  const eyeL = '<ellipse cx="45" cy="62" rx="7.5" ry="9" fill="#fff"/>', eyeR = '<ellipse cx="75" cy="62" rx="7.5" ry="9" fill="#fff"/>';
+  const st = 'fill="none" stroke="#fff" stroke-linecap="round"';
+  if (m === 1) return `<g class="eyes">${eyeL}${eyeR}<path class="cb" d="M33 49L55 49L33 64Z"/><path class="cb" d="M87 49L65 49L87 64Z"/></g><path d="M50 91Q60 82 70 91" ${st} stroke-width="4.5"/>`;
+  if (m === 2) return `<g class="eyes">${eyeL}${eyeR}<rect class="cb" x="33" y="49" width="24" height="11"/><rect class="cb" x="63" y="49" width="24" height="11"/></g><path d="M53 88L67 88" ${st} stroke-width="4.5"/>`;
+  if (m === 3) return `<g class="eyes">${eyeL}${eyeR}</g><path d="M52 86Q60 91 68 86" ${st} stroke-width="4.5"/>`;
+  if (m === 4) return `<g class="eyes"><ellipse cx="45" cy="62" rx="8" ry="10" fill="#fff"/><ellipse cx="75" cy="62" rx="8" ry="10" fill="#fff"/></g><path d="M49 83Q60 95 71 83" ${st} stroke-width="4.5"/>`;
+  if (m === 5) return `<g class="eyes"><path d="M37 66Q45 54 53 66" ${st} stroke-width="5"/><path d="M67 66Q75 54 83 66" ${st} stroke-width="5"/></g><path d="M47 82Q60 101 73 82Z" fill="#fff"/>`;
+  return `<g class="eyes">${eyeL}${eyeR}</g><path d="M53 87L67 87" ${st} stroke-width="4"/>`;
+}
+let _uid = 0;
+function naraSVG(o) {
+  o = o || {}; const m = o.mood || 0; const M = MOOD[m]; const id = 'ng' + (++_uid);
+  const pose = o.pose || 'idle';
+  const arms = pose === 'cheer'
+    ? '<ellipse class="cs arm" cx="12" cy="58" rx="9" ry="15" transform="rotate(-32 12 58)"/><ellipse class="cs arm" cx="108" cy="58" rx="9" ry="15" transform="rotate(32 108 58)"/>'
+    : pose === 'wave'
+      ? '<ellipse class="cs arm" cx="17" cy="86" rx="9" ry="15" transform="rotate(10 17 86)"/><ellipse class="cs arm wv" cx="108" cy="62" rx="9" ry="15" transform="rotate(30 108 62)"/>'
+      : '<ellipse class="cs arm" cx="17" cy="86" rx="9" ry="15" transform="rotate(10 17 86)"/><ellipse class="cs arm" cx="103" cy="86" rx="9" ry="15" transform="rotate(-10 103 86)"/>';
+  return `<svg class="nara ${o.cls || ''}" viewBox="0 0 120 150" style="--c:${M.c};--s:${M.s};${o.size ? 'width:' + o.size + 'px;height:' + (o.size * 1.25) + 'px' : ''}" role="img" aria-label="${esc(o.label || '相棒')}">
+    <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient></defs>
+    <ellipse cx="60" cy="141" rx="32" ry="5" fill="#000" opacity=".07"/>
+    <g class="tail"><path class="cst" d="M90 38C102 28 106 14 99 8" fill="none" stroke-width="8" stroke-linecap="round"/><circle class="cb" cx="98" cy="8" r="7.5"/><path d="M96 8a3 3 0 1 1 3 3" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity=".9"/></g>
+    <rect class="cs" x="37" y="100" width="19" height="30" rx="9.5"/><rect class="cs" x="64" y="100" width="19" height="30" rx="9.5"/>
+    <ellipse class="cs" cx="46" cy="131" rx="13" ry="6"/><ellipse class="cs" cx="74" cy="131" rx="13" ry="6"/>
+    ${arms}
+    <rect class="cb" x="22" y="30" width="76" height="82" rx="27"/><rect x="22" y="30" width="76" height="82" rx="27" fill="url(#${id})"/>
+    <g class="face">${moodFace(m)}</g>
+  </svg>`;
+}
+/* live update of an existing character (no re-render) */
+function setNara(el, mood) {
+  if (!el) return; const svg = el.querySelector('svg.nara'); if (!svg) return; const M = MOOD[mood];
+  svg.style.setProperty('--c', M.c); svg.style.setProperty('--s', M.s);
+  const f = svg.querySelector('.face'); if (f) f.innerHTML = moodFace(mood);
+  svg.classList.remove('hop'); void svg.getBoundingClientRect(); svg.classList.add('hop');
+}
+
+/* ============ avatar maker (face / hair / skin / beard / item) ============ */
+const SKIN = ['#F6D5BC', '#EDBF9B', '#D9A07A', '#B97A55', '#8D5A3C', '#6B4430'];
+const HAIRC = ['#1F1B1A', '#4A3326', '#7A5236', '#C9A15B', '#B9BEC4', '#D9543F'];
+const AVBG = ['#EEF1F4', '#DCE8F7', '#E3F1E8', '#FBF0D2', '#F7DDD6', '#E8E0F5', '#FCE3EC', '#D9F0F0', '#E9E6DF', '#2B3540'];
+const FACES = [
+  { n: '丸', head: (s) => `<ellipse cx="50" cy="46" rx="17" ry="19" fill="${s}"/>`, eyes: 'dot' },
+  { n: '面長', head: (s) => `<ellipse cx="50" cy="47" rx="15" ry="21" fill="${s}"/>`, eyes: 'dot' },
+  { n: '角', head: (s) => `<rect x="33" y="28" width="34" height="38" rx="12" fill="${s}"/>`, eyes: 'dot' },
+  { n: 'にっこり', head: (s) => `<ellipse cx="50" cy="46" rx="17" ry="19" fill="${s}"/>`, eyes: 'smile' },
+  { n: '眠そう', head: (s) => `<ellipse cx="50" cy="46" rx="17" ry="19" fill="${s}"/>`, eyes: 'sleepy' }
+];
+const D = '#2B2220';
+const HAIRS = [
+  { n: 'なし', back: () => '', front: () => '' },
+  { n: '短髪', back: () => '', front: (c) => `<path d="M32 45C29 26 41 21 50 21S71 26 68 45C64 36 58 32 50 32S36 36 32 45Z" fill="${c}"/>` },
+  { n: '七三', back: () => '', front: (c) => `<path d="M32 45C29 27 42 22 52 22C64 22 71 30 68 45C66 38 62 33 56 31C52 36 40 36 33 41Z" fill="${c}"/>` },
+  { n: 'ツンツン', back: () => '', front: (c) => `<path d="M32 44L33 29L40 34L43 21L50 30L57 21L60 34L67 29L68 44C64 36 58 32 50 32S36 36 32 44Z" fill="${c}"/>` },
+  { n: 'くせ毛', back: () => '', front: (c) => `<g fill="${c}"><circle cx="35" cy="34" r="8"/><circle cx="45" cy="26" r="8.5"/><circle cx="56" cy="26" r="8.5"/><circle cx="66" cy="34" r="8"/><circle cx="31" cy="44" r="5"/><circle cx="69" cy="44" r="5"/></g>` },
+  { n: 'ロング', back: (c) => `<path d="M29 48C27 20 73 20 71 48L73 86H27Z" fill="${c}"/>`, front: (c) => `<path d="M32 42C35 27 65 27 68 42C62 34 55 32 50 32S38 34 32 42Z" fill="${c}"/>` },
+  { n: 'ボブ', back: (c) => `<path d="M30 48C28 22 72 22 70 48L70 63C66 66 62 61 62 61L38 61C38 61 34 66 30 63Z" fill="${c}"/>`, front: (c) => `<path d="M32 43C35 27 65 27 68 43C62 35 55 33 50 33S38 35 32 43Z" fill="${c}"/>` },
+  { n: 'ポニー', back: (c) => `<ellipse cx="73" cy="52" rx="6" ry="13" transform="rotate(-12 73 52)" fill="${c}"/>`, front: (c) => `<path d="M32 44C30 24 70 24 68 44C62 35 56 32 50 32S38 35 32 44Z" fill="${c}"/>` },
+  { n: 'おだんご', back: (c) => `<circle cx="50" cy="19" r="9" fill="${c}"/>`, front: (c) => `<path d="M32 44C30 24 70 24 68 44C62 35 56 32 50 32S38 35 32 44Z" fill="${c}"/>` },
+  { n: 'マッシュ', back: () => '', front: (c) => `<path d="M31 48C28 21 72 21 69 48C67 41 62 35 50 35S33 41 31 48Z" fill="${c}"/><path d="M33 38C38 31 62 31 67 38L67 33C62 25 38 25 33 33Z" fill="${c}"/>` }
+];
+const BEARDS = [
+  { n: 'なし', f: () => '' },
+  { n: '無精', f: (c) => `<path d="M34 53C34 69 66 69 66 53C62 61 38 61 34 53Z" fill="${c}" opacity=".35"/>` },
+  { n: '口ひげ', f: (c) => `<path d="M42 55Q50 52 58 55Q54 59 50 57Q46 59 42 55Z" fill="${c}"/>` },
+  { n: 'あご', f: (c) => `<path d="M44 62Q50 74 56 62Q50 66 44 62Z" fill="${c}"/><path d="M42 55Q50 52 58 55Q54 59 50 57Q46 59 42 55Z" fill="${c}"/>` },
+  { n: 'フル', f: (c) => `<path d="M33 52C33 72 67 72 67 52C63 62 37 62 33 52Z" fill="${c}"/><path d="M42 56Q50 53 58 56Q54 60 50 58Q46 60 42 56Z" fill="${c}"/>` }
+];
+const ITEMS = [
+  { n: 'なし', f: () => '' },
+  { n: '丸メガネ', f: () => `<g stroke="${D}" stroke-width="1.8" fill="none"><circle cx="42.5" cy="47" r="5.6"/><circle cx="57.5" cy="47" r="5.6"/><path d="M48 47h4"/></g>` },
+  { n: '角メガネ', f: () => `<g stroke="${D}" stroke-width="1.8" fill="none"><rect x="36" y="42.5" width="12" height="9" rx="2"/><rect x="52" y="42.5" width="12" height="9" rx="2"/><path d="M48 47h4"/></g>` },
+  { n: 'サングラス', f: () => `<g fill="${D}"><rect x="35" y="42" width="13" height="9" rx="3"/><rect x="52" y="42" width="13" height="9" rx="3"/></g><path d="M48 46h4" stroke="${D}" stroke-width="1.8"/>` },
+  { n: 'キャップ', f: () => `<path d="M32 43C30 21 70 21 68 43Z" fill="#3A4450"/><path d="M30 43H80C80 48 72 49 66 47H30Z" fill="#2A323B"/>` },
+  { n: 'ニット帽', f: () => `<path d="M31 42C30 20 70 20 69 42Z" fill="#7A8794"/><rect x="30" y="38" width="40" height="9" rx="3.5" fill="#5F6B77"/><circle cx="50" cy="19" r="5" fill="#E8E2D4"/>` },
+  { n: 'ヘッドホン', f: () => `<path d="M30 48C29 20 71 20 70 48" stroke="#2B3540" stroke-width="4" fill="none"/><rect x="26" y="44" width="9" height="14" rx="4" fill="#9AA3AD"/><rect x="65" y="44" width="9" height="14" rx="4" fill="#9AA3AD"/>` }
+];
+const defAv = () => ({ face: 0, hair: 1, hc: 0, skin: 1, beard: 0, item: 0, bg: 0 });
+function avInner(a) {
+  const sk = SKIN[a.skin], hc = HAIRC[a.hc], F = FACES[a.face] || FACES[0], H = HAIRS[a.hair] || HAIRS[0];
+  const eyes = F.eyes === 'smile' ? `<g stroke="${D}" stroke-width="1.9" fill="none" stroke-linecap="round"><path d="M39 49Q43 44 47 49"/><path d="M53 49Q57 44 61 49"/></g>`
+    : F.eyes === 'sleepy' ? `<g stroke="${D}" stroke-width="2" stroke-linecap="round"><path d="M39.5 48H46"/><path d="M54 48H60.5"/></g>`
+      : `<circle cx="42.5" cy="47" r="1.9" fill="${D}"/><circle cx="57.5" cy="47" r="1.9" fill="${D}"/>`;
+  const mouth = (a.beard >= 3) ? `<path d="M46 60Q50 62 54 60" stroke="${sk}" stroke-width="1.6" fill="none" stroke-linecap="round"/>` : `<path d="M45 56Q50 ${F.eyes === 'smile' ? 61 : 59} 55 56" stroke="${D}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+  return `${H.back(hc)}<path d="M12 100C14 76 32 70 50 70S86 76 88 100Z" fill="#2B3540"/><rect x="44" y="58" width="12" height="15" fill="${sk}" style="filter:brightness(.92)"/><circle cx="33" cy="48" r="3.4" fill="${sk}"/><circle cx="67" cy="48" r="3.4" fill="${sk}"/>${F.head(sk)}${eyes}${mouth}${BEARDS[a.beard].f(HAIRC[a.hc === 5 ? 1 : a.hc] || D)}${H.front(hc)}${ITEMS[a.item].f()}`;
+}
+function avHTML(a, size, label) {
+  const px = size || 40;
+  if (a === 'anon' || !a) return `<span class="avs" style="width:${px}px;height:${px}px;background:#E9ECEF" role="img" aria-label="${esc(label || '匿名')}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="42" r="17" fill="#B8BFC7"/><path d="M14 100C16 76 32 70 50 70S84 76 86 100Z" fill="#B8BFC7"/></svg></span>`;
+  return `<span class="avs" style="width:${px}px;height:${px}px;background:${AVBG[a.bg] || AVBG[0]}" role="img" aria-label="${esc(label || 'アイコン')}"><svg viewBox="0 0 100 100" aria-hidden="true">${avInner(a)}</svg></span>`;
+}
+let makerTab = 'face';
+const MAKER_TABS = [['face', '顔'], ['hair', '髪'], ['skin', '肌'], ['beard', 'ひげ'], ['item', '小物'], ['bg', '背景']];
+function makerHTML(a) {
+  const opt = (key, i, label, cur) => `<button class="mk" data-act="mk" data-key="${key}" data-v="${i}" aria-pressed="${cur === i}" aria-label="${esc(label)}">${avHTML(Object.assign({}, a, { [key]: i }), 52, label)}</button>`;
+  const sw = (key, i, col, label, cur) => `<button class="sw" data-act="mk" data-key="${key}" data-v="${i}" aria-pressed="${cur === i}" aria-label="${esc(label)}" style="background:${col}"></button>`;
+  let body = '';
+  if (makerTab === 'face') body = `<div class="mkgrid">${FACES.map((f, i) => opt('face', i, f.n, a.face)).join('')}</div>`;
+  if (makerTab === 'hair') body = `<div class="mkgrid">${HAIRS.map((f, i) => opt('hair', i, f.n, a.hair)).join('')}</div><div class="swrow" style="margin-top:16px">${HAIRC.map((c, i) => sw('hc', i, c, '髪色', a.hc)).join('')}</div>`;
+  if (makerTab === 'skin') body = `<div class="swrow">${SKIN.map((c, i) => sw('skin', i, c, '肌の色', a.skin)).join('')}</div>`;
+  if (makerTab === 'beard') body = `<div class="mkgrid">${BEARDS.map((f, i) => opt('beard', i, f.n, a.beard)).join('')}</div>`;
+  if (makerTab === 'item') body = `<div class="mkgrid">${ITEMS.map((f, i) => opt('item', i, f.n, a.item)).join('')}</div>`;
+  if (makerTab === 'bg') body = `<div class="swrow">${AVBG.map((c, i) => sw('bg', i, c, '背景色', a.bg)).join('')}</div>`;
+  return `<div class="mkprev" id="mkprev">${avHTML(a, 120, 'プレビュー')}</div>
+    <div class="mktabs" role="tablist">${MAKER_TABS.map(t => `<button role="tab" data-act="mk-tab" data-v="${t[0]}" aria-selected="${makerTab === t[0]}">${t[1]}</button>`).join('')}</div>
+    <div class="mkbody">${body}</div>`;
+}
+
+const GENRES = {
+  walk:  { n: 'あるく',  e: '🚶' }, eat:   { n: 'たべる',  e: '🍜' }, learn: { n: 'まなぶ',  e: '📖' },
+  make:  { n: 'つくる',  e: '🎨' }, touch: { n: 'ふれる',  e: '🎧' }, body:  { n: 'からだ',  e: '🧘' }
+};
+const STAGES = [
+  { id: 1, n: 'ゆるっと', d: '気軽に始められるものだけ' },
+  { id: 2, n: 'ちょい冒険', d: '少しだけ新しいことも' },
+  { id: 3, n: '本気のチャレンジ', d: '思い切った体験も' }
+];
+const FX_OLD = [
+  { id: 1, n: 'きろくだけ', d: '演出はなし。やったことが残るだけ' },
+  { id: 2, n: 'ひかえめ', d: 'セッカくんの角に若葉が芽吹く。ひとこと応援' },
+  { id: 3, n: 'ふつう', d: '芽吹きに加えて、バッジとレベル' },
+  { id: 4, n: 'しっかり', d: 'さらにミッションと紙ふぶき' }
+];
+const MOODS = [{ k: 1, n: 'ぐったり', e: '😪' }, { k: 2, n: 'ふつう', e: '🙂' }, { k: 3, n: 'ちょっと元気', e: '😊' }, { k: 4, n: 'やる気あり', e: '🔥' }];
+const TIMES = [{ k: 15, n: '15分くらい' }, { k: 30, n: '30分くらい' }, { k: 90, n: '1〜2時間' }, { k: 300, n: '半日くらい' }];
+const PLACES = [{ k: 'home', n: 'おうち' }, { k: 'near', n: '近所' }, { k: 'far', n: '少し遠くてもOK' }, { k: 'any', n: 'どこでも' }];
+const BUDGETS = [{ k: 0, n: '0円' }, { k: 1000, n: '1,000円まで' }, { k: 3000, n: '3,000円まで' }, { k: 99999, n: '気にしない' }];
+const SKIPS = [
+  { k: 'time', n: '時間がなかった' }, { k: 'mood', n: '気分が乗らなかった' }, { k: 'hurdle', n: 'ハードルが高かった' },
+  { k: 'weather', n: '天気・体調がいまいち' }, { k: 'other', n: 'ほかのことをした' }
+];
+const PLACE_N = { home: 'おうち', near: '近所', far: '少し遠く' };
+
+/* k = 提案の一言（「せっかく〜」の後ろに続く） */
+const EVENTS = [
+  { id: 1, t: '知らない道を1本だけ歩く', g: 'walk', min: 15, pl: 'near', cost: 0, lv: 1, en: 1, out: 1, k: 'いつもの角を、ひとつ曲がってみよう', d: '帰り道や散歩のとちゅうで、いつもは曲がらない角を1回だけ曲がってみます。目的地はなし。', tip: '見つけたものを1つだけ覚えておくと、ふりかえりが楽しくなります。' },
+  { id: 2, t: 'いつもと違うカフェで1杯', g: 'eat', min: 60, pl: 'near', cost: 800, lv: 1, en: 1, k: '入ったことのないお店をのぞいてみよう', d: '通りすぎていたお店に入って、メニューの一番上以外を頼んでみます。', tip: '席に座ったら、スマホをしまって5分だけ周りを見てみましょう。' },
+  { id: 3, t: '背表紙だけで本を1冊選ぶ', g: 'learn', min: 60, pl: 'near', cost: 800, lv: 1, en: 1, k: '直感で1冊、連れて帰ってみよう', d: '図書館か本屋で、タイトルと背表紙の雰囲気だけで1冊を選びます。', tip: '読み切らなくてOK。最初の10ページだけでも十分です。' },
+  { id: 4, t: '空の写真を3枚撮る', g: 'walk', min: 15, pl: 'near', cost: 0, lv: 1, en: 1, out: 1, k: '空を見上げて、3枚だけ撮ってみよう', d: '外に出て、いまの空を3枚撮ります。構図はなんでもOK。', tip: '同じ場所で撮ると、あとで見返したときに違いが分かります。' },
+  { id: 5, t: '公園のベンチで10分ぼーっとする', g: 'body', min: 15, pl: 'near', cost: 0, lv: 1, en: 1, out: 1, k: '何もしない10分を、あげてみよう', d: 'ベンチに座って、10分だけ何もしません。音や風を感じるだけ。', tip: 'スマホは見ないで、聞こえた音を3つ数えてみましょう。' },
+  { id: 6, t: '知らない国の料理を家で作る', g: 'make', min: 120, pl: 'home', cost: 1500, lv: 2, en: 2, k: '冷蔵庫の外のレシピに挑戦してみよう', d: '食べたことはあるけど作ったことのない国の料理を、1品だけ作ります。', tip: '材料は2つまで置き換えOK。完成度より「作った」が大事。' },
+  { id: 7, t: 'ワンデー体験（陶芸）に参加する', g: 'make', min: 180, pl: 'far', cost: 4500, lv: 3, en: 2, pr: 1, k: '手を動かす半日を、予約してみよう', d: '初心者向けの1日体験で、器を1つ作ります。道具や先生はおまかせ。', tip: '汚れてもいい服で。仕上がりは後日受け取りです。' },
+  { id: 8, t: '銭湯に行ってととのう', g: 'body', min: 90, pl: 'near', cost: 600, lv: 2, en: 1, k: '大きなお風呂で、頭を空っぽにしてみよう', d: '近くの銭湯で、お湯と水風呂（または休憩）を2セットだけ。', tip: 'タオルと小銭を持っていくと安心です。' },
+  { id: 9, t: '美術館・ギャラリーにふらっと入る', g: 'touch', min: 60, pl: 'near', cost: 1000, lv: 2, en: 2, k: '1枚だけ気に入る絵を探してみよう', d: '近くのギャラリーや美術館で、「1枚だけ」好きな作品を見つけます。', tip: '好きな理由は言葉にしなくてもOK。' },
+  { id: 10, t: '初めての駅で降りて商店街を歩く', g: 'walk', min: 90, pl: 'far', cost: 500, lv: 2, en: 2, out: 1, k: '知らない駅に、途中下車してみよう', d: '行ったことのない駅で降りて、商店街を30分歩きます。', tip: '気になったお店では、何か1つ買ってみましょう。' },
+  { id: 11, t: '気になっていた講座の1本目を見る', g: 'learn', min: 30, pl: 'home', cost: 0, lv: 1, en: 1, k: '保存したままの動画を、1本だけ再生してみよう', d: '「いつか見よう」と保存してある動画講座の1本目だけを見ます。', tip: '続きは見なくてOK。1本目で十分です。' },
+  { id: 12, t: '本棚の1冊を15分だけ読む', g: 'learn', min: 15, pl: 'home', cost: 0, lv: 1, en: 1, k: '積んである本の1冊目を開いてみよう', d: '積んだままの本を1冊選んで、タイマー15分だけ読みます。', tip: '好きなページから読んでOK。' },
+  { id: 13, t: '久しぶりの人に「最近どう？」と送る', g: 'touch', min: 15, pl: 'home', cost: 0, lv: 1, en: 1, soc: 1, k: 'ふと浮かんだ人に、ひとこと送ってみよう', d: '最近連絡していない人に、短いメッセージを1通送ります。', tip: '返事を期待しなくてOK。送ったら完了です。' },
+  { id: 14, t: '地域のマルシェ・イベントをのぞく', g: 'touch', min: 60, pl: 'near', cost: 500, lv: 2, en: 2, out: 1, soc: 1, k: '街のにぎわいに、ちょっと顔を出してみよう', d: '近くで開催中のマルシェやイベントを探して、ぐるっと1周します。', tip: '気になる出店者に1つ質問してみると、会話が生まれます。' },
+  { id: 15, t: '20分だけ軽く走る', g: 'body', min: 30, pl: 'near', cost: 0, lv: 2, en: 3, out: 1, k: '軽く走って、風を感じてみよう', d: '会話できるペースで、20分だけ走るか早歩きします。', tip: '距離は気にせず、時間だけ決めましょう。' },
+  { id: 16, t: 'ひとりで映画館に行く', g: 'touch', min: 180, pl: 'near', cost: 1900, lv: 2, en: 2, k: '気になっていた1本を、大きな画面で観てみよう', d: '予定を合わせず、観たい映画をひとりで観に行きます。', tip: '終わったあとに、感想を1行だけメモしてみましょう。' },
+  { id: 17, t: '日帰りで行ったことのない街へ', g: 'walk', min: 300, pl: 'far', cost: 4000, lv: 3, en: 3, out: 1, k: '地図の外側へ、半日だけ出かけてみよう', d: '電車で行ける、行ったことのない街へ日帰りで出かけます。', tip: '帰りの時間だけ決めて、あとは気の向くままに。' },
+  { id: 18, t: 'クライミング体験に挑戦', g: 'body', min: 120, pl: 'far', cost: 3500, lv: 3, en: 3, pr: 1, k: '壁を登る2時間に、挑戦してみよう', d: '初心者向けの体験で、道具のレンタルとレッスンつき。', tip: '動きやすい服で。握力はあとからついてきます。' },
+  { id: 19, t: 'ハガキを1枚書く', g: 'make', min: 30, pl: 'home', cost: 100, lv: 1, en: 1, soc: 1, k: '1枚だけ、手書きで届けてみよう', d: '誰かに宛てて、ハガキを1枚書いて出します。', tip: '内容は「元気ですか」だけでも十分です。' },
+  { id: 20, t: '部屋の1か所だけ模様替え', g: 'make', min: 30, pl: 'home', cost: 0, lv: 1, en: 2, k: 'いつもの景色を、1か所だけ変えてみよう', d: '棚の上や机の端など、1か所だけ配置を変えます。', tip: 'ビフォーの写真を撮っておくと、軌跡になります。' },
+  { id: 21, t: 'ライブ・舞台を観に行く', g: 'touch', min: 240, pl: 'far', cost: 4500, lv: 3, en: 2, k: '生の音と空気を、浴びに行ってみよう', d: '気になっていたライブや舞台のチケットを取って観に行きます。', tip: '予習はしなくてOK。初めて聴く曲も楽しめます。' },
+  { id: 22, t: '30分早起きして散歩する', g: 'body', min: 30, pl: 'near', cost: 0, lv: 2, en: 2, out: 1, k: '朝の空気を、少しだけ先取りしてみよう', d: 'いつもより30分早く起きて、近所をぐるっと歩きます。', tip: '前の晩に服を出しておくと起きやすくなります。' },
+  { id: 23, t: '知らないジャンルの音楽を1枚聴く', g: 'touch', min: 30, pl: 'home', cost: 0, lv: 1, en: 1, k: '聴いたことのない音を、1枚分だけ浴びてみよう', d: 'ふだん聴かないジャンルのアルバムを、最初から最後まで聴きます。', tip: '気になった曲名を1つメモしておきましょう。' },
+  { id: 24, t: 'あまり話さない人をランチに誘う', g: 'touch', min: 60, pl: 'near', cost: 1000, lv: 2, en: 2, soc: 1, k: 'いつもと違う人と、ごはんを食べてみよう', d: '話したことの少ない同僚や知人を、ランチに誘います。', tip: '「たまには」の一言から始めると自然です。' },
+  { id: 25, t: '近所の神社やお寺をお参りする', g: 'walk', min: 60, pl: 'near', cost: 300, lv: 1, en: 1, out: 1, k: '近くにあるのに行ったことのない場所へ寄ってみよう', d: '近所の神社やお寺に寄って、手を合わせます。', tip: '境内で見つけたものを1つ写真に撮ってみましょう。' },
+  { id: 26, t: 'スパイスからカレーを作る', g: 'make', min: 120, pl: 'home', cost: 1500, lv: 2, en: 2, k: '香りが立つ2時間を、つくってみよう', d: '基本のスパイス3種から、カレーを1鍋作ります。', tip: '失敗しても食べられるのが、カレーのいいところ。' },
+  { id: 27, t: '朝の市場で朝ごはん', g: 'eat', min: 90, pl: 'far', cost: 2000, lv: 2, en: 2, out: 1, k: '早起きのごほうびを、食べに行ってみよう', d: '市場や朝市に出かけて、その場で朝ごはんを食べます。', tip: 'お店の人に「おすすめは？」と聞いてみましょう。' },
+  { id: 28, t: 'ひとりキャンプ体験', g: 'body', min: 600, pl: 'far', cost: 6000, lv: 3, en: 3, out: 1, pr: 1, k: '一晩だけ、外で過ごしてみよう', d: '道具のレンタルつきのキャンプ場で、1泊の体験をします。', tip: '初回は設営サポートつきのプランが安心です。' },
+  { id: 29, t: '目の前のものを1枚スケッチ', g: 'make', min: 15, pl: 'home', cost: 0, lv: 1, en: 1, k: '上手じゃなくていいから、1枚描いてみよう', d: '机の上のものを、紙とペンで1枚だけ描きます。', tip: '3分で描くと決めると、気楽に始められます。' },
+  { id: 30, t: '初めてのお店で「おすすめ」を頼む', g: 'eat', min: 60, pl: 'near', cost: 1500, lv: 1, en: 1, k: 'メニューを選ぶのを、お店の人にまかせてみよう', d: '初めてのお店で、メニューを見ずに「おすすめは？」と聞いて決めます。', tip: '食べたあとに、一番おいしかった一口をメモしてみましょう。' }
+];
+
+const GOALS = [
+  { id: 'run', t: '痩せるために、ランニングを始める', e: '🏃', steps: [
+    { id: 'run1', t: 'とりあえず10分走ってみる', g: 'body', min: 15, pl: 'near', cost: 0, lv: 1, en: 2, out: 1, k: 'とりあえず外に出て、走ってみよう', d: '距離も速さも決めずに、10分だけ走ります（歩いてもOK）。', tip: '終わったら、体の感じを1行メモしてみましょう。', hint: 'まず動いてみたい日に' },
+    { id: 'run2', t: '1kmを決めて走ってみる', g: 'body', min: 30, pl: 'near', cost: 0, lv: 2, en: 3, out: 1, k: '距離を決めて、ゴールまで走ってみよう', d: '1kmの目印を決めて、そこまで走ります。', tip: 'スマホの地図で、1km先の目印を探しておくと安心です。', hint: '目標があると燃える日に' },
+    { id: 'run3', t: 'ランニングシューズを買ってみる', g: 'body', min: 60, pl: 'near', cost: 8000, lv: 1, en: 1, k: 'シューズを見に行くだけでも、一歩にしてみよう', d: 'お店で試し履きをして、気に入ったら1足買います。', tip: '店員さんに、走る頻度や目的を伝えると選びやすいです。', hint: '走る気分じゃない日でも、買うだけで一歩' }
+  ] },
+  { id: 'eng', t: '英語で話せるようになりたい', e: '💬', steps: [
+    { id: 'eng1', t: '英語の動画を1本見てみる', g: 'learn', min: 15, pl: 'home', cost: 0, lv: 1, en: 1, k: '英語の動画を、1本だけ見てみよう', d: '興味のあるテーマの英語動画を、字幕つきで1本見ます。', tip: '分からなくてOK。耳に入った単語を1つ書き留めましょう。', hint: '元気がない日でもできる' },
+    { id: 'eng2', t: 'オンライン英会話の体験を受けてみる', g: 'learn', min: 30, pl: 'home', cost: 0, lv: 2, en: 2, k: '体験レッスンを、予約してみよう', d: '無料体験のあるサービスで、1回だけレッスンを受けます。', tip: '自己紹介を1文だけ用意しておくと落ち着きます。', hint: '話してみたい気分の日に' },
+    { id: 'eng3', t: '外国の人に英語で話しかけてみる', g: 'touch', min: 30, pl: 'near', cost: 0, lv: 3, en: 3, out: 1, k: '勇気を出して、ひとこと話しかけてみよう', d: '観光地やお店で、困っていそうな人に声をかけます。', tip: '「Hello」だけでも立派な一歩です。', hint: '思い切りたい日に' }
+  ] },
+  { id: 'cook', t: '料理を始めたい', e: '🍳', steps: [
+    { id: 'cook1', t: '知らない食材を1つ買ってみる', g: 'eat', min: 30, pl: 'near', cost: 300, lv: 1, en: 1, k: '食べたことのない食材を、カゴに入れてみよう', d: 'スーパーで、いつもは選ばない食材を1つ買います。', tip: '調理法は、あとで調べればOKです。', hint: '買い物のついでに' },
+    { id: 'cook2', t: 'レシピを見て1品作ってみる', g: 'make', min: 60, pl: 'home', cost: 800, lv: 2, en: 2, k: 'レシピを見ながら、1品作ってみよう', d: '簡単なレシピ動画を見ながら、1品だけ作ります。', tip: '分量どおりに作ると、失敗が少ないです。', hint: '家にいる日に' },
+    { id: 'cook3', t: '誰かに食べてもらう', g: 'touch', min: 90, pl: 'home', cost: 1500, lv: 3, en: 2, soc: 1, k: '作った料理を、誰かにふるまってみよう', d: '家族や友だちに、作った料理を食べてもらいます。', tip: '感想は、ひとことだけ聞いてみましょう。', hint: '自信がついたときに' }
+  ] }
+];
+const STEP_EVS = {};
+GOALS.forEach(go => go.steps.forEach(st => { st.goal = go.id; STEP_EVS[st.id] = st; }));
+
+/* みんなの初めて（サンプル投稿） */
+
+const FEED = [
+  { id: 's1', nick: 'ゆうさん', av: {face:0,hair:1,hc:0,skin:1,beard:0,item:1,bg:1}, g: 'body', t: '初めての銭湯で、ととのってみた', note: '熱いのが少し苦手だったけど、水風呂のあとの休憩が最高。次は平日の昼に行ってみたい。', feeling: 'good', lv: 2, min: 90, cost: 600, pl: 'near' },
+  { id: 's2', nick: '匿名タヌキLさん', av: 'anon', g: 'walk', t: '知らない駅で途中下車', note: '商店街で食べたコロッケがおいしかった。目的がない散歩も悪くない。', feeling: 'good', lv: 2, min: 90, cost: 500, pl: 'far' },
+  { id: 's3', nick: 'そらさん', av: {face:3,hair:9,hc:1,skin:2,beard:0,item:6,bg:4}, g: 'body', t: 'ランニングシューズを買ってみた', note: '店員さんに走り方を見てもらって選んだ。買っただけで、走りたくなった。', feeling: 'good', lv: 1, min: 60, cost: 8000, pl: 'near' },
+  { id: 's4', nick: '匿名ウサギKさん', av: 'anon', g: 'make', t: 'スパイスからカレーを作った', note: 'スパイスの量が分からなくて、辛すぎた。でも、また作りたい。', feeling: 'ok', lv: 2, min: 120, cost: 1500, pl: 'home' },
+  { id: 's5', nick: 'たろうさん', av: {face:2,hair:3,hc:0,skin:3,beard:2,item:4,bg:5}, g: 'body', t: 'クライミング体験に参加', note: '腕がぱんぱんになった。登り切れた瞬間は、ちょっと感動した。', feeling: 'good', lv: 3, min: 120, cost: 3500, pl: 'far' },
+  { id: 's6', nick: 'みどりさん', av: {face:0,hair:6,hc:1,skin:1,beard:0,item:0,bg:2}, g: 'touch', t: 'ひとりで映画館に行った', note: '誰にも気を遣わずに観られた。終わったあとの余韻が長かった。', feeling: 'good', lv: 2, min: 180, cost: 1900, pl: 'near' },
+  { id: 's7', nick: '匿名ペンギンMさん', av: 'anon', g: 'learn', t: '背表紙だけで本を選んだ', note: '全然知らない作家だったけど、最初の10ページが面白かった。', feeling: 'good', lv: 1, min: 60, cost: 800, pl: 'near' },
+  { id: 's8', nick: 'ぴよさん', av: {face:3,hair:8,hc:0,skin:0,beard:0,item:0,bg:3}, g: 'make', t: 'ハガキを書いて出した', note: 'ポストに入れるときが、ちょっとドキドキ。返事はなくても満足。', feeling: 'ok', lv: 1, min: 30, cost: 100, pl: 'home' },
+  { id: 's9', nick: '匿名コアラQさん', av: 'anon', g: 'touch', t: '知らないジャンルの音楽を1枚聴いた', note: '合わなかった。でも、1曲だけ気に入った曲があった。', feeling: 'meh', lv: 1, min: 30, cost: 0, pl: 'home' },
+  { id: 's10', nick: 'かなえさん', av: {face:0,hair:5,hc:2,skin:1,beard:0,item:1,bg:6}, g: 'eat', t: '朝の市場で朝ごはん', note: 'お店の人に聞いたおすすめが、大当たりだった。早起きしてよかった。', feeling: 'good', lv: 2, min: 90, cost: 2000, pl: 'far' }
+];
+
+
+function parseHint(text) {
+  const h = {};
+  if (/雨|あめ/.test(text)) h.rain = 1;
+  if (/疲|つか|眠|ねむ|だる/.test(text)) h.tired = 1;
+  if (/近く|近所/.test(text)) h.near = 1;
+  if (/節約|お金|金欠/.test(text)) h.cheap = 1;
+  if (/友|誰か|だれか|一緒|いっしょ/.test(text)) h.social = 1;
+  if (/ひとり|一人|1人/.test(text)) h.solo = 1;
+  return h;
+}
+function pick(ctx, exclude, n = 3) {
+  const hint = ctx.hint || {};
+  let relax = 0, list = [];
+  const stageCap = S.nextAdjust ? Math.max(1, S.stage - 1) : S.stage;
+  let enCap = hint.tired ? 1 : (ctx.mood <= 1 ? 1 : ctx.mood === 2 ? 2 : 3);
+  if (S.block === 'energy') enCap = Math.min(enCap, 2);
+  const recent = new Set(doneList().filter(r => r.date >= daysAgo(14)).map(r => r.evId));
+  const liked = {}; S.records.forEach(r => { if (r.kind === 'done') liked[r.g] = (liked[r.g] || 0) + (r.feeling === 'good' ? 1 : r.feeling === 'meh' ? -1 : 0); });
+  while (relax <= 3) {
+    list = EVENTS.filter(e => !exclude.includes(e.id)).filter(e => {
+      if (e.lv > stageCap) return false;
+      if (e.en > enCap) return false;
+      if (relax < 3 && e.min > (S.nextAdjust === 'shorter' ? Math.min(ctx.time, 60) : ctx.time)) return false;
+      if (relax < 2) { if (ctx.place === 'home' && e.pl !== 'home') return false; if (ctx.place === 'near' && e.pl === 'far') return false; }
+      if (relax < 1 && e.cost > (hint.cheap ? 0 : ctx.budget)) return false;
+      if (hint.rain && e.out) return false;
+      if (ctx.genres && ctx.genres.length && relax < 2 && !ctx.genres.includes(e.g)) return false;
+      return true;
+    });
+    if (list.length >= n) break;
+    relax++;
+  }
+  const scored = list.map(e => {
+    let s = 50 + (e.lv === stageCap ? 12 : 4) + (3 - Math.abs(e.en - Math.min(3, ctx.mood))) * 2 + (liked[e.g] || 0) * 6 + Math.random() * 8;
+    if (recent.has(e.id)) s -= 25;
+    if (hint.social && e.soc) s += 10;
+    if (hint.near && e.pl === 'near') s += 8;
+    if ((GC[S.goalCat] || []).includes(e.g)) s += 10;
+    if (S.block === 'time') s -= e.min / 30;
+    if (S.block === 'money' && e.cost > 1000) s -= 12;
+    if (S.block === 'alone' && e.soc) s += 8;
+    return { e, s };
+  }).sort((a, b) => b.s - a.s);
+  const out = [];
+  for (const x of scored) { if (out.length >= n) break; if (out.filter(o => o.g === x.e.g).length < 1 || scored.length <= n + 2) out.push(x.e); }
+  for (const x of scored) { if (out.length >= n) break; if (!out.includes(x.e)) out.push(x.e); }
+  return { items: out, relaxed: relax > 0 };
+}
+function hook(ev, ctx) {
+  const wk = [0, 6].includes(new Date().getDay());
+  const h = ctx.hint || {};
+  let pre;
+  if (h.rain) pre = 'せっかくの雨の日だから';
+  else if (wk) pre = 'せっかくの休みだし';
+  else if (ctx.time <= 30) pre = 'せっかく空いた' + (ctx.time <= 15 ? '15分' : '時間') + 'だし';
+  else if (ctx.place === 'near' && ev.pl === 'near') pre = 'せっかく近所にあるんだから';
+  else if (ctx.place === 'home') pre = 'せっかくおうちにいるなら';
+  else if (ctx.mood >= 3) pre = 'せっかく元気な日だから';
+  else pre = 'せっかくなら、無理のない一歩から';
+  return pre + '、' + ev.k;
+}
+const timeLabel = (m) => m >= 300 ? '半日〜' : m >= 120 ? Math.round(m / 60) + '時間くらい' : m >= 60 ? (m === 60 ? '1時間くらい' : '1〜2時間') : m + '分くらい';
+
+/* ============ state ============ */
+const KEY = 'nara-demo-v1';
+const doneList = (s) => (s || S).records.filter(r => r.kind === 'done');
+const evById = (id) => EVENTS.find(e => e.id === id) || STEP_EVS[id] || (S.customEvs || {})[id];
+const costLabel = (c) => c === 0 ? '0円' : '約' + c.toLocaleString() + '円';
+const lvName = (lv) => STAGES[lv - 1].n;
+function lvXp() { const lv = Math.floor(S.xp / 40) + 1; return { lv, pct: Math.round((S.xp % 40) / 40 * 100) }; }
+function seedMoods() { const v = [3, 2, 3, 4, 3, 2, 4, 5, 3, 3, 2, 4, 3, 4, 5, 3, 2, 3, 4, 4, 3, 5, 3, 2, 3, 4, 3, 4]; const o = {}; v.forEach((m, i) => { if (i % 5 !== 4) o[daysAgo(i + 1)] = m; }); return o; }
+function seed() {
+  return {
+    onboarded: false, tutorialSeen: false, nick: 'あなた', nickSet: false, av: defAv(), nameMode: 'anon', anon: pickAnon(),
+    stage: 1, fx: 2, theme: 'auto', char: 'on', xp: 0, planned: null, later: [], plan: null, nextAdjust: null, dismissSuggest: false, sid: 100,
+    goalCat: 'any', block: 'none', react: {}, customEvs: {}, moods: seedMoods(),
+    records: [
+      { id: 1, evId: 4, t: '空の写真を3枚撮る', g: 'walk', lv: 1, date: daysAgo(19), kind: 'done', feeling: 'good', note: '夕焼けがきれいだった', moodBefore: 2, moodAfter: 4, sample: 1 },
+      { id: 2, evId: 2, t: 'いつもと違うカフェで1杯', g: 'eat', lv: 1, date: daysAgo(14), kind: 'done', feeling: 'good', note: '窓際の席が落ち着いた', moodBefore: 3, moodAfter: 4, sample: 1 },
+      { id: 3, evId: 11, t: '気になっていた講座の1本目を見る', g: 'learn', lv: 1, date: daysAgo(9), kind: 'skip', skipReason: 'mood', sample: 1 },
+      { id: 4, evId: 3, t: '背表紙だけで本を1冊選ぶ', g: 'learn', lv: 1, date: daysAgo(6), kind: 'done', feeling: 'ok', note: '思ったより難しかった', moodBefore: 3, moodAfter: 3, sample: 1 },
+      { id: 5, evId: 25, t: '近所の神社やお寺をお参りする', g: 'walk', lv: 1, date: daysAgo(2), kind: 'done', feeling: 'good', note: '知らない小道を見つけた', moodBefore: 2, moodAfter: 5, sample: 1 }
+    ]
+  };
+}
+let S;
+function fillDefaults() { const d = seed(); Object.keys(d).forEach(k => { if (S[k] === undefined) S[k] = d[k]; }); if (!S.av || typeof S.av !== 'object') S.av = defAv(); }
+function load() { try { const raw = localStorage.getItem(KEY); if (raw) { S = JSON.parse(raw); fillDefaults(); return; } } catch (e) {} S = seed(); }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+load();
+function applyTheme() { const r = document.documentElement; if (S.theme === 'auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', S.theme); }
+applyTheme();
+
+/* ============ icons ============ */
+const I = (p, w) => `<svg viewBox="0 0 24 24" width="${w || 22}" height="${w || 22}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const ICO = {
+  clock: I('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>', 15), pin: I('<path d="M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10z"/><circle cx="12" cy="11" r="2.2"/>', 15), yen: I('<path d="M6 4l6 9 6-9M12 13v8M7.5 15.5h9M7.5 12h9"/>', 15),
+  body: I('<path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/>', 28), walk: I('<path d="M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10z"/><circle cx="12" cy="11" r="2.2"/>', 28),
+  eat: I('<path d="M7 3v8M5 3v4a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 2-2 6 0 8v10"/>', 28), learn: I('<path d="M4 5.5C6 4.5 9 4.5 12 6c3-1.5 6-1.5 8-.5V19c-2-1-5-1-8 .5-3-1.5-6-1.5-8-.5z"/><path d="M12 6v13.5"/>', 28),
+  make: I('<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>', 28), touch: I('<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>', 28), any: I('<path d="M4 7h4l8 10h4M4 17h4l3-4M20 7h-4l-3 4M18 5l2 2-2 2M18 15l2 2-2 2"/>', 28),
+  bolt: I('<path d="M13 2L5 14h6l-1 8 8-12h-6z"/>', 28), sun: I('<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>', 28), moon: I('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>', 28), flag: I('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>', 28), cal: I('<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>', 28),
+  back: I('<path d="M15 5l-7 7 7 7"/>', 24), x: I('<path d="M6 6l12 12M18 6L6 18"/>', 20), check: I('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 18),
+  t_today: I('<path d="M13 2L5 14h6l-1 8 8-12h-6z"/>', 26), t_feed: I('<circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.5" r="2.5"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5M15.5 14.8c2.6-.5 4.8.7 5.5 4.2"/>', 26),
+  t_log: I('<rect x="4" y="4" width="7" height="7" rx="2.4"/><rect x="13" y="4" width="7" height="7" rx="2.4"/><rect x="4" y="13" width="7" height="7" rx="2.4"/><rect x="13" y="13" width="7" height="7" rx="2.4"/>', 26), t_me: I('<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.2 4-6.5 8-6.5s7 2.3 8 6.5"/>', 26)
+};
+ICO.clockL = I('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>', 28); ICO.yenL = I('<path d="M6 4l6 9 6-9M12 13v8M7.5 15.5h9M7.5 12h9"/>', 28); ICO.checkL = I('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 28);
+const metaHTML = (e) => `<span class="mi">${ICO.clock}${timeLabel(e.min)}</span><span class="mi">${ICO.pin}${PLACE_N[e.pl]}</span><span class="mi">${ICO.yen}${costLabel(e.cost)}</span>`;
+
+/* ============ view state ============ */
+let tab = 'today', ov = null, toastT = null, fresh = null, lastOvKey = '';
+let introStep = 0, splashT0 = Date.now(), splashSkipped = false, tutStep = 0, tutTimer = null;
+let ci = { step: 0, when: null, slot: null, dt: '', genres: [], budget: 3000, time: 30 };
+let rf = { feeling: null, note: '', pub: null, nameMode: null, moodAfter: null };
+let rs = { why: null }, dn = null, gid = null, feedGenre = 'all';
+const root = document.getElementById('phone');
+const todayStr = () => ymd(new Date());
+const curMood = () => S.moods[todayStr()] || 0;
+const doneToday = (id) => doneList().some(r => r.evId === id && r.date === todayStr());
+function todayPlan() { return S.plan && S.plan.date === todayStr() ? S.plan : null; }
+function whenLabel(c) {
+  if (c.when === 'now') return 'いま';
+  const slot = c.slot ? ' ' + c.slot : '';
+  if (c.when === 'today') return 'きょう' + slot; if (c.when === 'tomorrow') return 'あした' + slot; if (c.when === 'weekend') return '週末' + slot;
+  if (c.dt) { const d = new Date(c.dt); if (!isNaN(d)) return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + z2(d.getHours()) + ':' + z2(d.getMinutes()); }
+  return 'いつか';
+}
+function toast(t, act) {
+  clearTimeout(toastT); const old = root.querySelector('.toast'); if (old) old.remove();
+  const d = document.createElement('div'); d.className = 'toast'; d.setAttribute('role', 'status');
+  d.innerHTML = `<span>${esc(t)}</span>${act ? `<button data-act="${act[1]}" data-v="${act[2] || ''}">${esc(act[0])}</button>` : ''}`;
+  root.appendChild(d); toastT = setTimeout(() => d.remove(), act ? 4200 : 2200);
+}
+function confetti() {
+  if (S.fx < 4) return; const cols = [MOOD[1].c, MOOD[3].c, MOOD[4].c, MOOD[5].c, '#111418'];
+  for (let i = 0; i < 26; i++) { const s = document.createElement('span'); s.className = 'confetti'; s.style.left = Math.random() * 100 + '%'; s.style.background = cols[i % 5]; s.style.animationDelay = Math.random() * .5 + 's'; root.appendChild(s); setTimeout(() => s.remove(), 2600); }
+}
+function burst(el, col) {
+  const r = el.getBoundingClientRect(), pr = root.getBoundingClientRect(); const cx = r.left - pr.left + r.width / 2, cy = r.top - pr.top + r.height / 2;
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement('span'); s.className = 'bst'; const a = (i / 10) * Math.PI * 2, d = 38 + Math.random() * 26;
+    s.style.cssText = `left:${cx}px;top:${cy}px;background:${col};--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px`; root.appendChild(s); setTimeout(() => s.remove(), 750);
+  }
+}
+
+/* ============ render ============ */
+const TABS = [['today', 'きょう'], ['feed', 'みんな'], ['log', 'きろく'], ['me', 'わたし']];
+function render() {
+  const m = curMood(); const acc = m ? MOOD[m].c : '#111418';
+  root.setAttribute('data-char', S.char); root.style.setProperty('--accent', acc); root.style.setProperty('--on-accent', onColor(acc));
+  const body = tab === 'today' ? viewToday() : tab === 'feed' ? viewFeed() : tab === 'log' ? viewLog() : viewMe();
+  root.innerHTML = `
+    <header class="top"><span class="wm">NARA</span></header>
+    <main class="scroll" id="scroll">${body}</main>
+    <nav class="tabbar" aria-label="メニュー">${TABS.map(t => `<button class="tab" data-act="tab" data-v="${t[0]}" aria-label="${t[1]}" ${tab === t[0] ? 'aria-current="page"' : ''}>${ICO['t_' + (t[0] === 'today' ? 'today' : t[0])]}<i></i></button>`).join('')}</nav>
+    ${ov ? renderOverlay() : ''}`;
+  const key = ov ? ov + ':' + (ov === 'intro' ? introStep : ov === 'tutorial' ? tutStep : ov === 'ask' ? ci.step : '') : '';
+  if (key && key !== lastOvKey) { const el = root.querySelector('.overlay'); if (el) el.classList.add('enter'); }
+  lastOvKey = key;
+  if (ov === 'tutorial') startTutAnim();
+}
+
+/* ---- today ---- */
+function viewToday() {
+  const m = curMood(); const plan = todayPlan(); const p = S.planned; const l = lvXp();
+  const wk = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const ds = ymd(d); wk.push({ on: doneList().some(r => r.date === ds), today: i === 0 }); }
+  return `<div class="home">
+    <div class="hero" id="hero">${S.char === 'off' ? '' : naraSVG({ mood: m, size: 168, cls: 'idle' })}</div>
+    <h1 class="q">いまの気分は？</h1>
+    <div class="moods" id="moods" role="group" aria-label="気分">${[1, 2, 3, 4, 5].map(k => `<button class="md" data-act="mood-pick" data-v="${k}" aria-pressed="${m === k}" aria-label="${MOOD[k].n}" style="--mc:${MOOD[k].c}"><i></i></button>`).join('')}</div>
+    <div class="moodname" id="moodname">${m ? MOOD[m].n : ''}</div>
+    ${p ? `<section class="doing"><div class="rt">${esc(evById(p.evId).t)}</div><div class="acts"><button class="btn dark" data-act="reflect">やってみた</button><button class="btn line" data-act="doing">開く</button></div></section>` : ''}
+    <button class="cta ${m ? 'ready' : ''}" id="startBtn" data-act="ask" ${m ? '' : 'disabled'}>折角なら、やってみる</button>
+    ${plan ? planHTML(plan) : ''}
+    ${laterHTML()}
+    <h2 class="sec">目標から</h2>
+    <div class="rows">${GOALS.map(go => { const n = goalDone(go); return `<button class="row2 btnrow" data-act="goal" data-v="${go.id}"><div class="grow"><div class="rt">${esc(go.t)}</div><div class="dots3">${go.steps.map((_, i) => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</div></div><span class="chev" aria-hidden="true">›</span></button>`; }).join('')}</div>
+    ${S.fx >= 2 ? `<h2 class="sec">この1週間</h2><div class="week">${wk.map(w => `<i class="${w.on ? 'on' : ''} ${w.today ? 'today' : ''}"></i>`).join('')}</div>` : ''}
+    ${S.fx >= 3 ? `<h2 class="sec">レベル</h2><div class="row2" style="gap:14px"><b style="font-size:20px">${l.lv}</b><div class="grow"><div class="bar"><b style="width:${l.pct}%"></b></div></div></div>` : ''}
+  </div>`;
+}
+function planHTML(plan) {
+  const items = plan.items.map(id => evById(id)).filter(Boolean); const now = plan.ctx.when === 'now'; const anim = plan.fresh; plan.fresh = false;
+  return `<section class="sugs" aria-label="きょうの3つ">${items.map((e, i) => {
+    const added = S.later.some(x => x.evId === e.id); const d = doneToday(e.id);
+    const b1 = `<button class="btn ${now ? 'dark' : 'line'}" data-act="now" data-v="${e.id}">いまやる</button>`;
+    const b2 = `<button class="btn ${now ? 'line' : 'dark'} ${added ? 'on' : ''}" data-act="later-add" data-v="${e.id}" aria-pressed="${added}">${added ? ICO.check + '入れた' : '予定に入れる'}</button>`;
+    return `<article class="sug ${anim ? 'anim' : ''}" style="animation-delay:${i * 110}ms"><h3>${esc(e.t)}</h3><p class="hk">${esc(hook(e, plan.ctx))}</p><div class="mis">${metaHTML(e)}</div>${d ? '<div class="done-tag">完了</div>' : `<div class="acts">${now ? b1 + b2 : b2 + b1}</div>`}</article>`;
+  }).join('')}<div class="again"><button class="btn ghost" data-act="reroll">ほかの案</button></div></section>`;
+}
+function laterHTML() {
+  if (!S.later.length) return '';
+  return `<h2 class="sec">予定</h2><div class="rows">${S.later.map(x => { const e = evById(x.evId); if (!e) return ''; return `<div class="row2"><div class="grow"><div class="rt">${esc(e.t)}</div><div class="rs">${esc(x.when)}</div></div><button class="btn dark sm" data-act="start-later" data-v="${x.id}">はじめる</button><button class="ib" data-act="later-del" data-v="${x.id}" aria-label="外す">${ICO.x}</button></div>`; }).join('')}</div>`;
+}
+const goalDone = (go) => go.steps.filter(st => doneList().some(r => r.evId === st.id)).length;
+function buildPlan(reroll) {
+  const t = todayStr(); const m5 = curMood() || 3;
+  const ctx = reroll && S.plan ? S.plan.ctx : { mood: moodMap(m5), time: ci.time, place: 'any', budget: ci.budget, hint: {}, genres: ci.genres.filter(g => g !== 'any'), when: ci.when || 'now', slot: ci.slot, dt: ci.dt };
+  const prev = S.plan && S.plan.date === t ? S.plan : null; let shown = prev ? prev.shown.slice() : [];
+  let r = pick(ctx, shown, 3); if (!r.items.length) { shown = []; r = pick(ctx, shown, 3); }
+  S.plan = { date: t, items: r.items.map(e => e.id), ctx, relaxed: r.relaxed, shown: shown.concat(r.items.map(e => e.id)), fresh: true }; save();
+}
+
+/* ---- feed ---- */
+function allPosts() {
+  const own = S.records.filter(r => r.kind === 'done' && r.pub).sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id).map(r => {
+    const e = evById(r.evId) || {};
+    return { id: 'r' + r.id, own: 1, nick: r.nameMode === 'nick' ? S.nick : S.anon, av: r.nameMode === 'nick' ? S.av : 'anon', g: r.g, t: r.t, note: r.note || '', feeling: r.feeling, lv: r.lv, min: e.min || 30, cost: e.cost || 0, pl: e.pl || 'near', rid: r.id };
+  });
+  return own.concat(FEED.map(p => Object.assign({ sample: 1 }, p)));
+}
+function postToEv(p) { return { id: 'p' + p.id, t: p.t, g: p.g, min: p.min, pl: p.pl, cost: p.cost, lv: p.lv, en: Math.min(3, p.lv), k: 'この「初めて」を、やってみよう', d: p.note, tip: p.note }; }
+function viewFeed() {
+  const posts = allPosts().filter(p => feedGenre === 'all' || p.g === feedGenre);
+  return `<div class="page">
+    <div class="filters" role="group" aria-label="ジャンル"><button class="fl" data-act="filter" data-v="all" aria-pressed="${feedGenre === 'all'}">すべて</button>${Object.keys(GENRES).map(g => `<button class="fl" data-act="filter" data-v="${g}" aria-pressed="${feedGenre === g}">${GENRES[g].n}</button>`).join('')}</div>
+    ${posts.map(p => { const nice = !!S.react[p.id]; const added = S.later.some(x => x.evId === 'p' + p.id);
+      return `<article class="post"><div class="who">${avHTML(p.av, 40, p.nick)}<div class="grow"><b>${esc(p.nick)}</b>${p.own ? '<span class="tag">あなた</span>' : ''}</div><span class="lvt">${lvName(p.lv)}</span></div>
+      <h3>${esc(p.t)}</h3><p class="note">${esc(p.note)}</p><div class="mis">${metaHTML(p)}</div>
+      ${p.own ? `<button class="btn line sm" data-act="togglepub" data-v="${p.rid}">非公開にする</button>` : `<div class="acts"><button class="nice" data-act="nice" data-v="${p.id}" aria-pressed="${nice}"><span class="cube" aria-hidden="true"></span>ナイスセッカク！</button><button class="btn dark ${added ? 'on' : ''}" data-act="tryit" data-v="${p.id}" aria-pressed="${added}">${added ? ICO.check + '入れた' : '自分もやってみる'}</button></div>`}</article>`;
+    }).join('')}
+    <p class="sub c">投稿はデモ用のサンプルです</p></div>`;
+}
+
+/* ---- log ---- */
+function viewLog() {
+  const dn2 = doneList().slice().sort((a, b) => a.date.localeCompare(b.date) || a.id - b.id); const n = dn2.length;
+  const total = Math.max(24, Math.ceil((n + 1) / 6) * 6); const cells = [];
+  for (let i = 0; i < total; i++) { const r = dn2[i]; if (r) { const c = r.moodAfter ? MOOD[r.moodAfter].c : '#D5DAE0'; cells.push(`<i class="tile ${fresh === r.id ? 'pop' : ''}" style="background:${c}" aria-label="${esc(r.t)}"></i>`); } else cells.push('<i class="tile empty"></i>'); }
+  const sorted = S.records.slice().sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
+  return `<div class="page">
+    <div class="count"><b>${n}</b><span>はじめて</span></div>
+    <div class="tiles" role="img" aria-label="${n}個の初めてが、気分の色のタイルになっています">${cells.join('')}</div>
+    ${calendarHTML()}${insightHTML()}
+    <h2 class="sec">軌跡</h2>
+    <ul class="tl">${sorted.map(r => {
+      const d = r.date.slice(5).replace('-', '/'); const c = r.kind === 'done' && r.moodAfter ? MOOD[r.moodAfter].c : '#D5DAE0';
+      return `<li><i class="dotc" style="background:${r.kind === 'skip' ? 'transparent' : c};${r.kind === 'skip' ? 'border:2px solid #D5DAE0' : ''}"></i><div class="grow"><div class="rt ${r.kind === 'skip' ? 'mut' : ''}">${esc(r.t)}</div><div class="rs">${d}${r.kind === 'skip' ? '・休み' : ''}${r.sample ? '・サンプル' : ''}</div></div>${r.kind === 'done' && !r.sample ? `<button class="pubb" data-act="togglepub" data-v="${r.id}" aria-pressed="${!!r.pub}">${r.pub ? '公開中' : '非公開'}</button>` : ''}</li>`;
+    }).join('')}</ul></div>`;
+}
+function calendarHTML() {
+  const now = new Date(); const y = now.getFullYear(), mo = now.getMonth(); const first = new Date(y, mo, 1).getDay(); const days = new Date(y, mo + 1, 0).getDate();
+  let cells = ['日', '月', '火', '水', '木', '金', '土'].map(w => `<div class="w">${w}</div>`).join(''); for (let i = 0; i < first; i++) cells += '<i></i>';
+  for (let d = 1; d <= days; d++) { const ds = ymd(new Date(y, mo, d)); const m = S.moods[ds]; const did = doneList().some(r => r.date === ds);
+    cells += `<div class="cal-d ${ds === todayStr() ? 'today' : ''}" style="${m ? 'background:' + MOOD[m].c + ';color:' + onColor(MOOD[m].c) : ''}" aria-label="${mo + 1}月${d}日 ${m ? MOOD[m].n : '記録なし'}${did ? '、初めてをやった日' : ''}">${d}${did ? '<b></b>' : ''}</div>`; }
+  return `<h2 class="sec">${mo + 1}月の気分</h2><div class="cal">${cells}</div>`;
+}
+function insightHTML() {
+  const rs2 = doneList().filter(r => r.moodBefore && r.moodAfter); if (!rs2.length) return '';
+  const avg = rs2.reduce((a, r) => a + (r.moodAfter - r.moodBefore), 0) / rs2.length;
+  return `<div class="insight"><b>${avg >= 0 ? '+' : ''}${avg.toFixed(1)}</b><span>やる前より、気分が上がった平均</span></div>`;
+}
+
+/* ---- me ---- */
+function viewMe() {
+  const seg = (act, arr, cur) => `<div class="seg" role="group">${arr.map(o => `<button data-act="${act}" data-v="${o[0]}" aria-pressed="${String(cur) === String(o[0])}">${o[1]}</button>`).join('')}</div>`;
+  return `<div class="page">
+    <button class="me-prof" data-act="profile">${avHTML(S.av, 72, 'アイコン')}<div class="grow"><b>${esc(S.nick)}</b><div class="sub">編集</div></div><span class="chev" aria-hidden="true">›</span></button>
+    <h2 class="sec">ペース</h2>${seg('stage', [[1, 'ゆるっと'], [2, 'ちょい冒険'], [3, '本気']], S.stage)}
+    <h2 class="sec">演出</h2>${seg('fx', [[1, 'なし'], [2, '弱'], [3, '中'], [4, '強']], S.fx)}
+    <h2 class="sec">相棒</h2>${seg('char', [['on', '表示'], ['off', '非表示']], S.char)}
+    <h2 class="sec">表示</h2>${seg('theme', [['auto', '自動'], ['light', '白'], ['dark', '黒']], S.theme)}
+    <div class="rows" style="margin-top:32px">
+      <button class="row2 btnrow" data-act="tut-replay"><div class="grow rt">チュートリアル</div><span class="chev">›</span></button>
+      <button class="row2 btnrow" data-act="share"><div class="grow rt">友だちに教える</div><span class="chev">›</span></button>
+      <button class="row2 btnrow" data-act="reset"><div class="grow rt mut">最初からやり直す</div><span class="chev">›</span></button>
+    </div></div>`;
+}
+
+/* ============ overlays ============ */
+function renderOverlay() {
+  if (ov === 'intro') return viewIntro(); if (ov === 'tutorial') return viewTutorial(); if (ov === 'ask') return viewAsk();
+  if (ov === 'doing') return viewDoing(); if (ov === 'reflect') return viewReflect(); if (ov === 'skip') return viewSkip();
+  if (ov === 'done') return viewDone(); if (ov === 'goal') return viewGoal(); if (ov === 'profile') return viewProfile();
+  return '';
+}
+const head = (back, mid) => `<div class="ohead"><button class="back" data-act="${back}" aria-label="戻る">${ICO.back}</button>${mid || ''}</div>`;
+
+/* ---- intro ---- */
+const Q1 = [['body', '体を動かしたい', 'body'], ['learn', '学びたい', 'learn'], ['people', '人と会いたい', 'touch'], ['refresh', '気分転換', 'walk'], ['any', 'なんとなく', 'any']];
+const Q2 = [['time', '時間がない', 'clockL'], ['energy', '気力が出ない', 'bolt'], ['unknown', '何をすれば？', 'any'], ['money', 'お金', 'yenL'], ['alone', 'ひとりは不安', 'touch'], ['none', '特にない', 'checkL']];
+function viewIntro() {
+  const dots = `<div class="pages">${[0, 1, 2, 3, 4].map(i => `<i class="${i === introStep ? 'on' : ''}"></i>`).join('')}</div>`;
+  const wrap = (inner, cta, off) => `<div class="overlay intro">${head('intro-back')}<div class="ibody">${inner}</div><div class="ifoot">${dots}<button class="cta ${off ? '' : 'ready'}" data-act="intro-next" ${off ? 'disabled' : ''}>${cta}</button></div></div>`;
+  if (introStep === 0) return `<div class="overlay splash ${splashSkipped ? 'skip' : ''}" id="splash"><div class="box">
+      <div class="ln l1">気分に合わせて、<br>きょうの「初めて」を<br>決める。</div>
+      <div class="ln l2">なんか変わりたい。<br>でも、何から始めればいいか分からない。</div>
+      <div class="ln l3">そんな日の背中を、軽く押す<br>アプリ<span class="brand">【NARA】</span>です。</div>
+    </div><div class="ctaw"><button class="cta" data-act="intro-next">はじめる</button></div></div>`;
+  if (introStep === 1) return wrap(`<h1 class="it">プロフィール</h1>
+    <input id="nick-intro" class="txt" maxlength="12" value="${S.nickSet ? esc(S.nick) : ''}" placeholder="ニックネーム" aria-label="ニックネーム" autocomplete="off">
+    <div id="maker">${makerHTML(S.av)}</div>`, '次へ', !(S.nickSet && S.nick.trim()));
+  const opts = (arr, act, cur, iconKey) => `<div class="bigopts">${arr.map(o => `<button class="bo" data-act="${act}" data-v="${o[0]}" aria-pressed="${cur === o[0]}">${ICO[o[2]] || ''}<span>${o[1]}</span></button>`).join('')}</div>`;
+  if (introStep === 2) return wrap(`<h1 class="it">変えたいのは？</h1>${opts(Q1, 'q1', S.goalCat)}`, '次へ');
+  if (introStep === 3) return wrap(`<h1 class="it">動けない理由は？</h1>${opts(Q2, 'q2', S.block)}`, '次へ');
+  return wrap(`<h1 class="it">ペースは？</h1><div class="stack">${STAGES.map(st => `<button class="pace" data-act="stage-intro" data-v="${st.id}" aria-pressed="${S.stage === st.id}"><b>${st.n}</b><span>${st.d}</span></button>`).join('')}</div>`, 'チュートリアルへ');
+}
+
+/* ---- tutorial ---- */
+const TUT = [
+  { title: '気分で色が変わる相棒', text: '', kind: 'cycle' },
+  { title: '① 気分を選ぶ', text: '相棒の色が変わる。', kind: 'mood' },
+  { title: '② 折角なら、やってみる', text: 'いつ・何を・予算・時間。', kind: 'ask' },
+  { title: '③ いまやる？ 予定に入れる？', text: '3つから選ぶ。', kind: 'sug' },
+  { title: '④ みんなの初めて', text: 'ナイスを送る。自分もやってみる。', kind: 'feed' },
+  { title: '⑤ 色のタイルが増える', text: 'やるたび、1枚。', kind: 'tiles' },
+  { title: 'はじめよう', text: '', kind: 'last' }
+];
+function tutMock(k) {
+  if (k === 'cycle') return `<div class="tutchar" id="tutchar">${naraSVG({ mood: 3, size: 200, cls: 'idle', pose: 'wave' })}</div>`;
+  if (k === 'mood') return `<div class="tutchar" id="tutchar">${naraSVG({ mood: 1, size: 130, cls: 'idle' })}</div><div class="moods" aria-hidden="true">${[1, 2, 3, 4, 5].map(i => `<span class="md mk-md" style="--mc:${MOOD[i].c}"><i></i></span>`).join('')}</div>`;
+  if (k === 'ask') return `<div class="bigopts mini" aria-hidden="true"><span class="bo" aria-pressed="true">${ICO.bolt}<span>今すぐ</span></span><span class="bo">${ICO.cal}<span>日時</span></span><span class="bo">${ICO.body}<span>動く</span></span><span class="bo">${ICO.touch}<span>体験</span></span></div>`;
+  if (k === 'sug') return `<div class="sug mini" aria-hidden="true"><h3>知らない道を1本だけ歩く</h3><div class="mis">${ICO.clock}<span>15分</span></div><div class="acts"><span class="btn dark">いまやる</span><span class="btn line">予定に入れる</span></div></div>`;
+  if (k === 'feed') return `<div class="post mini" aria-hidden="true"><div class="who">${avHTML(FEED[0].av, 36, '')}<b>ゆうさん</b></div><h3>初めての銭湯</h3><div class="acts"><span class="nice" aria-pressed="true"><span class="cube"></span>ナイスセッカク！</span><span class="btn dark">自分もやってみる</span></div></div>`;
+  if (k === 'tiles') return `<div class="tiles mini" aria-hidden="true">${[3, 4, 2, 5, 3, 4, 0, 0, 0, 0, 0, 0].map((m, i) => `<i class="tile ${m ? '' : 'empty'} ${i === 5 ? 'pop' : ''}" style="${m ? 'background:' + MOOD[m].c : ''}"></i>`).join('')}</div>`;
+  return `<div class="tutchar">${naraSVG({ mood: 4, size: 190, cls: 'idle', pose: 'cheer' })}</div>`;
+}
+function viewTutorial() {
+  const t = TUT[tutStep]; const last = tutStep === TUT.length - 1;
+  const dots = `<div class="pages">${TUT.map((_, i) => `<i class="${i === tutStep ? 'on' : ''}"></i>`).join('')}</div>`;
+  return `<div class="overlay tut" role="dialog" aria-label="チュートリアル"><div class="tuthead"><span class="sub">${tutStep + 1} / ${TUT.length}</span><button data-act="tut-skip">スキップ</button></div>
+    <div class="tutbody"><div class="tutm">${tutMock(t.kind)}</div><h1 class="it c">${t.title}</h1>${t.text ? `<p class="tt">${t.text}</p>` : ''}</div>
+    <div class="ifoot">${dots}${last ? '<button class="cta ready" data-act="tut-plan">はじめる</button>' : `<div class="row3">${tutStep > 0 ? '<button class="btn line" data-act="tut-back">戻る</button>' : ''}<button class="cta ready grow" data-act="tut-next">次へ</button></div>`}</div></div>`;
+}
+function startTutAnim() {
+  clearInterval(tutTimer); const el = document.getElementById('tutchar'); if (!el) return;
+  const k = TUT[tutStep].kind; if (k !== 'cycle' && k !== 'mood') return; let m = k === 'cycle' ? 3 : 1;
+  tutTimer = setInterval(() => { if (!document.getElementById('tutchar')) { clearInterval(tutTimer); return; } m = m % 5 + 1; setNara(document.getElementById('tutchar'), m); if (k === 'mood') { document.querySelectorAll('.mk-md').forEach((e, i) => e.classList.toggle('sel', i + 1 === m)); } }, 1300);
+}
+
+/* ---- ask (折角ならアクション) ---- */
+const WHEN = [['now', 'いますぐ', 'bolt'], ['today', 'きょう', 'sun'], ['tomorrow', 'あした', 'moon'], ['weekend', '週末', 'flag'], ['custom', '日時', 'cal']];
+const WANT = [['touch', '体験', 'touch'], ['body', '体を動かす', 'body'], ['walk', 'あるく', 'walk'], ['learn', '学ぶ', 'learn'], ['make', 'つくる', 'make'], ['eat', 'たべる', 'eat'], ['any', 'おまかせ', 'any']];
+function viewAsk() {
+  const m = curMood(); const dots = `<div class="pages inline">${[0, 1, 2].map(i => `<i class="${i === ci.step ? 'on' : ''}"></i>`).join('')}</div>`;
+  let body = '', cta = '次へ', off = false;
+  if (ci.step === 0) {
+    body = `<h1 class="it">いつ？</h1><div class="bigopts">${WHEN.map(o => `<button class="bo" data-act="ci-when" data-v="${o[0]}" aria-pressed="${ci.when === o[0]}">${ICO[o[2]]}<span>${o[1]}</span></button>`).join('')}</div>
+      ${ci.when === 'custom' ? `<input id="ci-dt" class="txt" type="datetime-local" value="${esc(ci.dt)}" aria-label="日時" style="margin-top:18px">` : ''}
+      ${(ci.when === 'today' || ci.when === 'tomorrow' || ci.when === 'weekend') ? `<div class="chips" style="margin-top:18px">${['朝', '昼', '夕方', '夜'].map(s => `<button class="chp" data-act="ci-slot" data-v="${s}" aria-pressed="${ci.slot === s}">${s}</button>`).join('')}</div>` : ''}`;
+    off = !ci.when || (ci.when === 'custom' && !ci.dt);
+  } else if (ci.step === 1) {
+    body = `<h1 class="it">なにする？</h1><div class="bigopts">${WANT.map(o => `<button class="bo" data-act="ci-genre" data-v="${o[0]}" aria-pressed="${ci.genres.includes(o[0])}">${ICO[o[2]]}<span>${o[1]}</span></button>`).join('')}</div>`;
+    off = !ci.genres.length;
+  } else {
+    body = `<h1 class="it">予算と時間</h1><div class="lab">予算</div><div class="chips">${BUDGETS.map(o => `<button class="chp" data-act="ci-budget" data-v="${o.k}" aria-pressed="${ci.budget === o.k}">${o.k === 99999 ? '指定なし' : o.k === 0 ? '0円' : '〜' + o.k.toLocaleString()}</button>`).join('')}</div>
+      <div class="lab">時間</div><div class="chips">${TIMES.map(o => `<button class="chp" data-act="ci-time" data-v="${o.k}" aria-pressed="${ci.time === o.k}">${o.k === 300 ? '半日' : o.k === 90 ? '1〜2時間' : o.k + '分'}</button>`).join('')}</div>`;
+    cta = '折角なら、これ';
+  }
+  return `<div class="overlay ask"><div class="ohead"><button class="back" data-act="ask-back" aria-label="戻る">${ICO.back}</button>${dots}<span style="width:44px"></span></div>
+    <div class="ibody"><div class="mini-nara" id="mini">${S.char === 'off' ? '' : naraSVG({ mood: m, size: 70, cls: 'idle' })}</div><div>${body}</div></div>
+    <div class="ifoot"><button class="cta ready" data-act="ask-next" ${off ? 'disabled' : ''}>${cta}</button></div></div>`;
+}
+
+/* ---- doing / reflect / skip / done ---- */
+function viewDoing() {
+  const p = S.planned; const e = evById(p.evId); const m = p.moodBefore || curMood() || 3;
+  return `<div class="overlay doing">${head('ov-close')}<div class="ibody c">
+    <div class="tutchar">${S.char === 'off' ? '' : naraSVG({ mood: m, size: 170, cls: 'idle', pose: 'cheer' })}</div>
+    <h1 class="it">${esc(e.t)}</h1><div class="timer" id="tm">${elapsed()}</div><div class="mis c">${metaHTML(e)}</div></div>
+    <div class="ifoot"><button class="cta ready" data-act="reflect">やってみた</button><div class="row3" style="margin-top:12px"><button class="btn line grow" data-act="later-back">あとで</button><button class="btn line grow" data-act="skip">休む</button></div></div></div>`;
+}
+function elapsed() { const p = S.planned; if (!p || !p.startedAt) return '0:00'; const sec = Math.max(0, Math.floor((Date.now() - p.startedAt) / 1000)); return Math.floor(sec / 60) + ':' + z2(sec % 60); }
+function captureNote() { const n = document.getElementById('note'); if (n) rf.note = n.value; }
+function viewReflect() {
+  const p = S.planned; const e = evById(p.evId); const m0 = rf.moodAfter || p.moodBefore || curMood() || 3;
+  const nm = rf.nameMode || S.nameMode; const ready = rf.feeling && rf.pub;
+  return `<div class="overlay reflect">${head('ov-close')}<div class="ibody">
+    <div class="tutchar" id="rhero">${S.char === 'off' ? '' : naraSVG({ mood: rf.moodAfter ? m0 : (p.moodBefore || 3), size: 130, cls: 'idle' })}</div>
+    <h1 class="it c">いまの気分は？</h1>
+    <div class="moods" id="rmoods" role="group" aria-label="いまの気分">${[1, 2, 3, 4, 5].map(k => `<button class="md" data-act="mood-after" data-v="${k}" aria-pressed="${rf.moodAfter === k}" aria-label="${MOOD[k].n}" style="--mc:${MOOD[k].c}"><i></i></button>`).join('')}</div>
+    <div class="lab c">どうだった？</div>
+    <div class="chips c">${[['good', 'たのしい'], ['ok', 'ふつう'], ['meh', 'いまいち']].map(([k, n]) => `<button class="chp" data-act="feel" data-v="${k}" aria-pressed="${rf.feeling === k}">${n}</button>`).join('')}</div>
+    <input id="note" class="txt" maxlength="60" placeholder="ひとこと（任意）" value="${esc(rf.note || '')}" aria-label="ひとこと" style="margin-top:24px">
+    <div class="lab c">みんなに出す？</div>
+    <div class="row3"><button class="btn line grow big" data-act="pub" data-v="yes" aria-pressed="${rf.pub === 'yes'}">出す</button><button class="btn line grow big" data-act="pub" data-v="no" aria-pressed="${rf.pub === 'no'}">出さない</button></div>
+    ${rf.pub === 'yes' ? `<div class="chips c" style="margin-top:16px"><button class="chp" data-act="nm" data-v="nick" aria-pressed="${nm === 'nick'}">${esc(S.nick)}</button><button class="chp" data-act="nm" data-v="anon" aria-pressed="${nm === 'anon'}">${esc(S.anon)}</button></div><p class="sub c" style="margin-top:8px">顔や場所が分かる情報は書かないでね</p>` : ''}
+  </div><div class="ifoot"><button class="cta ${ready ? 'ready' : ''}" data-act="reflect-save" ${ready ? '' : 'disabled'}>きろくする</button></div></div>`;
+}
+function viewSkip() {
+  const e = evById(S.planned.evId);
+  return `<div class="overlay">${head('ov-close')}<div class="ibody c"><div class="tutchar">${S.char === 'off' ? '' : naraSVG({ mood: 2, size: 130, cls: 'idle' })}</div><h1 class="it">休んでも、減らない</h1><p class="tt">${esc(e.t)}</p>
+    <div class="chips c" style="margin-top:24px">${SKIPS.map(s => `<button class="chp" data-act="why" data-v="${s.k}" aria-pressed="${rs.why === s.k}">${s.n.replace('がなかった', 'なし').replace('が乗らなかった', 'が乗らない').replace('が高かった', 'が高い').replace('・体調がいまいち', '・体調').replace('のことをした', 'の用事')}</button>`).join('')}</div></div>
+    <div class="ifoot"><button class="cta ${rs.why ? 'ready' : ''}" data-act="skip-save" ${rs.why ? '' : 'disabled'}>休む</button></div></div>`;
+}
+function viewDone() {
+  const n = doneList().length;
+  return `<div class="overlay done"><div class="ibody c">
+    <div class="tutchar">${S.char === 'off' ? '' : naraSVG({ mood: dn.mood, size: 190, cls: 'hop', pose: 'cheer' })}</div>
+    <div class="bignum"><i class="tile pop" style="background:${MOOD[dn.mood].c}"></i><b>${n}</b></div><div class="sub">はじめて</div></div>
+    <div class="ifoot"><button class="cta ready" data-act="done-close">OK</button></div></div>`;
+}
+function viewGoal() {
+  const go = GOALS.find(x => x.id === gid); const left = go.steps.filter(st => !doneList().some(r => r.evId === st.id));
+  const ok = left.filter(st => st.lv <= S.stage); const rec = left.length ? (ok.length ? ok : left).slice().sort((a, b) => a.lv - b.lv)[0] : null;
+  return `<div class="overlay">${head('ov-close', `<div class="ottl">${esc(go.t)}</div>`)}<div class="ibody" style="padding-top:8px">
+    ${go.steps.map(st => { const d = doneList().some(r => r.evId === st.id); const added = S.later.some(x => x.evId === st.id);
+      return `<article class="sug ${d ? 'dim' : ''}"><div class="mis">${rec && rec.id === st.id ? '<span class="tag">おすすめ</span>' : ''}<span class="lvt">${lvName(st.lv)}</span></div><h3>${d ? ICO.check + ' ' : ''}${esc(st.t)}</h3><div class="mis">${metaHTML(st)}</div>
+      ${d ? '' : `<div class="acts"><button class="btn dark" data-act="now" data-v="${st.id}">いまやる</button><button class="btn line ${added ? 'on' : ''}" data-act="later-add" data-v="${st.id}" aria-pressed="${added}">${added ? ICO.check + '入れた' : '予定に入れる'}</button></div>`}</article>`; }).join('')}
+    <p class="sub c">どの順番でもOK</p></div></div>`;
+}
+function viewProfile() {
+  return `<div class="overlay">${head('ov-close', '<div class="ottl">プロフィール</div>')}<div class="ibody"><input id="nick" class="txt" maxlength="12" value="${esc(S.nick)}" aria-label="ニックネーム"><div id="maker">${makerHTML(S.av)}</div></div></div>`;
+}
+
+/* ============ finish flows ============ */
+function startDoing(evId) {
+  S.planned = { evId, when: 'いま', startedAt: Date.now(), createdAt: todayStr(), moodBefore: curMood() || null }; save();
+  ov = 'doing'; tab = 'today'; render();
+}
+function finishDone() {
+  const p = S.planned; const e = evById(p.evId); captureNote();
+  S.records.push({ id: ++S.sid, evId: e.id, t: e.t, g: e.g, lv: e.lv, date: todayStr(), kind: 'done', feeling: rf.feeling, note: rf.note || '', pub: rf.pub === 'yes', nameMode: rf.nameMode || S.nameMode, moodBefore: p.moodBefore || null, moodAfter: rf.moodAfter || null });
+  if (rf.pub === 'yes' && rf.nameMode) S.nameMode = rf.nameMode;
+  if (rf.moodAfter) S.moods[todayStr()] = rf.moodAfter;
+  S.xp += 10 + 10 * e.lv; S.planned = null; S.nextAdjust = null; save();
+  fresh = S.sid; dn = { mood: rf.moodAfter || p.moodBefore || 3 }; rf = { feeling: null, note: '', pub: null, nameMode: null, moodAfter: null };
+  ov = 'done'; render(); confetti();
+}
+function finishSkip() {
+  const p = S.planned; const e = evById(p.evId);
+  S.records.push({ id: ++S.sid, evId: e.id, t: e.t, g: e.g, lv: e.lv, date: todayStr(), kind: 'skip', skipReason: rs.why });
+  S.nextAdjust = rs.why === 'time' ? 'shorter' : (rs.why === 'hurdle' || rs.why === 'mood') ? 'lighter' : null; S.planned = null; save(); rs = { why: null };
+  ov = null; render(); toast('次は軽めに出すね');
+}
+function openAsk() { ci = { step: 0, when: null, slot: null, dt: '', genres: [], budget: 3000, time: 30 }; ov = 'ask'; render(); }
+
+/* ============ events ============ */
+root.addEventListener('click', async (ev) => {
+  const t = ev.target.closest('[data-act]'); if (!t) return; const a = t.dataset.act, v = t.dataset.v;
+  switch (a) {
+    case 'tab': tab = v; render(); break;
+    /* home */
+    case 'mood-pick': {
+      const m = +v; S.moods[todayStr()] = m; save();
+      setNara(document.getElementById('hero'), m); document.querySelectorAll('#moods .md').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === m)));
+      const nm = document.getElementById('moodname'); if (nm) nm.textContent = MOOD[m].n; const sb = document.getElementById('startBtn'); if (sb) { sb.disabled = false; sb.classList.add('ready'); }
+      root.style.setProperty('--accent', MOOD[m].c); root.style.setProperty('--on-accent', onColor(MOOD[m].c)); break;
+    }
+    case 'ask': openAsk(); break;
+    case 'ask-back': if (ci.step === 0) { ov = null; render(); } else { ci.step--; render(); } break;
+    case 'ci-when': ci.when = v; if (v !== 'custom') ci.dt = ''; if (v === 'now') ci.slot = null; render(); break;
+    case 'ci-slot': ci.slot = ci.slot === v ? null : v; render(); break;
+    case 'ci-genre': { if (v === 'any') ci.genres = ci.genres.includes('any') ? [] : ['any']; else { ci.genres = ci.genres.filter(x => x !== 'any'); ci.genres = ci.genres.includes(v) ? ci.genres.filter(x => x !== v) : ci.genres.concat(v); } render(); break; }
+    case 'ci-budget': ci.budget = +v; render(); break;
+    case 'ci-time': ci.time = +v; render(); break;
+    case 'ask-next': {
+      if (ci.step < 2) { ci.step++; render(); break; }
+      buildPlan(false); ov = null; render(); const el = root.querySelector('.sugs'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); break;
+    }
+    case 'reroll': buildPlan(true); render(); toast('ほかの案に替えた'); break;
+    case 'now': startDoing(parseId(v)); break;
+    case 'later-add': {
+      const id = parseId(v); if (S.later.some(x => x.evId === id)) break;
+      const plan = todayPlan(); const w = tab === 'today' && plan && plan.items.includes(id) ? whenLabel(plan.ctx) : 'いつか';
+      S.later.push({ id: ++S.sid, evId: id, when: w }); save(); t.setAttribute('aria-pressed', 'true'); t.classList.add('on', 'pop'); t.innerHTML = ICO.check + '入れた'; burst(t, 'var(--accent)'); toast('予定に入れた', ['いまやる', 'now', String(id)]); break;
+    }
+    case 'later-del': S.later = S.later.filter(x => x.id !== +v); save(); render(); break;
+    case 'start-later': { const x = S.later.find(y => y.id === +v); if (x) { S.later = S.later.filter(y => y.id !== x.id); startDoing(x.evId); } break; }
+    case 'later-back': if (S.planned) { S.later.push({ id: ++S.sid, evId: S.planned.evId, when: 'あとで' }); S.planned = null; save(); } ov = null; render(); toast('予定に戻した'); break;
+    case 'doing': ov = 'doing'; render(); break;
+    case 'ov-close': ov = null; render(); break;
+    /* reflect */
+    case 'reflect': rf = { feeling: null, note: '', pub: null, nameMode: null, moodAfter: null }; ov = 'reflect'; render(); break;
+    case 'mood-after': { captureNote(); rf.moodAfter = +v; setNara(document.getElementById('rhero'), rf.moodAfter); document.querySelectorAll('#rmoods .md').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === rf.moodAfter))); break; }
+    case 'feel': captureNote(); rf.feeling = v; render(); break;
+    case 'pub': captureNote(); rf.pub = v; if (v === 'yes' && !rf.nameMode) rf.nameMode = S.nameMode; render(); break;
+    case 'nm': captureNote(); rf.nameMode = v; render(); break;
+    case 'reflect-save': if (rf.feeling && rf.pub) finishDone(); break;
+    case 'done-close': ov = null; tab = 'log'; render(); fresh = null; break;
+    case 'skip': rs = { why: null }; ov = 'skip'; render(); break;
+    case 'why': rs.why = v; render(); break;
+    case 'skip-save': if (rs.why) finishSkip(); break;
+    /* feed */
+    case 'filter': feedGenre = v; render(); break;
+    case 'nice': { const on = !S.react[v]; if (on) S.react[v] = true; else delete S.react[v]; save(); t.setAttribute('aria-pressed', String(on)); if (on) { t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop'); burst(t, 'var(--accent)'); } break; }
+    case 'tryit': {
+      const p = allPosts().find(x => x.id === v); if (!p) break; const e = postToEv(p); S.customEvs[e.id] = e;
+      if (!S.later.some(x => x.evId === e.id)) { S.later.push({ id: ++S.sid, evId: e.id, when: 'いつか' }); } save();
+      t.setAttribute('aria-pressed', 'true'); t.classList.add('on', 'pop'); t.innerHTML = ICO.check + '入れた'; burst(t, 'var(--accent)'); toast('予定に入れた', ['いまやる', 'now', e.id]); break;
+    }
+    case 'togglepub': { const r = S.records.find(x => x.id === +v); if (r) { r.pub = !r.pub; if (r.pub && !r.nameMode) r.nameMode = S.nameMode; save(); render(); toast(r.pub ? 'みんなに出した' : '非公開にした'); } break; }
+    /* goals */
+    case 'goal': gid = v; ov = 'goal'; render(); break;
+    /* me */
+    case 'stage': S.stage = +v; save(); render(); break;
+    case 'fx': S.fx = +v; save(); render(); break;
+    case 'char': S.char = v; save(); render(); break;
+    case 'theme': S.theme = v; applyTheme(); save(); render(); break;
+    case 'profile': ov = 'profile'; render(); break;
+    case 'share': try { if (navigator.share) await navigator.share({ title: 'NARA', text: '気分に合わせて、きょうの「初めて」を決めるアプリ' }); else toast('共有はデモでは使えません'); } catch (e) { toast('共有はデモでは使えません'); } break;
+    case 'reset': if (!window._ra) { window._ra = true; toast('もう一度押すと、最初からやり直します'); setTimeout(() => { window._ra = false; }, 3000); } else { window._ra = false; S = seed(); save(); applyTheme(); tab = 'today'; introStep = 0; splashT0 = Date.now(); splashSkipped = false; ov = 'intro'; render(); } break;
+    /* avatar maker */
+    case 'mk-tab': makerTab = v; document.getElementById('maker').innerHTML = makerHTML(S.av); break;
+    case 'mk': { const key = t.dataset.key; S.av[key] = +v; save(); document.getElementById('maker').innerHTML = makerHTML(S.av); if (ov === 'intro' || ov === 'profile') { /* keep nickname focus state */ } break; }
+    /* intro */
+    case 'intro-back': introStep = Math.max(0, introStep - 1); if (introStep === 0) splashSkipped = true; render(); break;
+    case 'intro-next':
+      if (introStep === 0 && !splashSkipped && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - splashT0 < 5600) { splashSkipped = true; const el = document.getElementById('splash'); if (el) el.classList.add('skip'); break; }
+      if (introStep === 1 && !(S.nickSet && S.nick.trim())) break;
+      if (introStep < 4) { introStep++; render(); } else { S.onboarded = true; S.tutorialSeen = false; save(); tutStep = 0; ov = 'tutorial'; render(); } break;
+    case 'q1': S.goalCat = v; save(); render(); break;
+    case 'q2': S.block = v; save(); render(); break;
+    case 'stage-intro': S.stage = +v; save(); render(); break;
+    /* tutorial */
+    case 'tut-next': if (tutStep < TUT.length - 1) { tutStep++; render(); } break;
+    case 'tut-back': if (tutStep > 0) { tutStep--; render(); } break;
+    case 'tut-skip': clearInterval(tutTimer); S.tutorialSeen = true; save(); ov = null; render(); break;
+    case 'tut-plan': clearInterval(tutTimer); S.tutorialSeen = true; save(); ov = null; tab = 'today'; render(); break;
+    case 'tut-replay': tutStep = 0; ov = 'tutorial'; render(); break;
+  }
+});
+root.addEventListener('input', (e) => {
+  if (e.target.id === 'nick') { S.nick = e.target.value.trim() || 'あなた'; S.nickSet = true; save(); }
+  if (e.target.id === 'nick-intro') { const v = e.target.value.trim(); S.nick = v || 'あなた'; S.nickSet = !!v; save(); const b = root.querySelector('[data-act=intro-next]'); if (b) { b.disabled = !v; b.classList.toggle('ready', !!v); } }
+  if (e.target.id === 'ci-dt') { ci.dt = e.target.value; const b = root.querySelector('[data-act=ask-next]'); if (b) b.disabled = !ci.dt; }
+});
+setInterval(() => { if (ov === 'doing') { const t = document.getElementById('tm'); if (t) t.textContent = elapsed(); } }, 1000);
+if (!S.onboarded) ov = 'intro';
+render();
+
+</script>
+</body>
+</html>
