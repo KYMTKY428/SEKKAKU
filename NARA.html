@@ -167,11 +167,19 @@ img { display: block; }
 .splash { background: #111418; color: #fff; z-index: 30; }
 .splash .box { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px 32px 20px; gap: 34px; }
 .splash .ln { opacity: 0; animation: lnIn .95s cubic-bezier(.2, .7, .2, 1) forwards; font-weight: 700; line-height: 1.6; }
-.splash .l1 { font-size: 28px; font-weight: 900; line-height: 1.5; animation-delay: .4s; } .splash .l2 { font-size: 16px; color: #A9B1BA; animation-delay: 1.9s; } .splash .l3 { font-size: 20px; animation-delay: 3.5s; }
-.splash .brand { font-weight: 900; white-space: nowrap; letter-spacing: .04em; background: linear-gradient(90deg, #2F6FD6, #38B28A, #F2C230, #F28A2E); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.splash .ctaw { opacity: 0; animation: lnIn .8s ease forwards; animation-delay: 5s; padding: 0 28px calc(28px + env(safe-area-inset-bottom, 0px) * 0); }
+.splash .l1 { font-size: 27px; font-weight: 900; line-height: 1.55; animation-delay: .5s; }
+.splash .l2 { font-size: 17px; color: #A9B1BA; animation-delay: 2.1s; }
+.splash .l3 { font-size: 34px; font-weight: 900; line-height: 1.5; animation-delay: 3.9s; }
+.splash .em { position: relative; display: inline-block; background: linear-gradient(90deg, #2F6FD6, #38B28A, #F2C230, #F28A2E); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: 6px; }
+.splash .em::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #2F6FD6, #38B28A, #F2C230, #F28A2E); transform: scaleX(0); transform-origin: left; animation: uline .9s cubic-bezier(.3, .8, .2, 1) 4.7s forwards; }
+.splash .l4 { display: flex; align-items: baseline; gap: 12px; animation-delay: 6.3s; }
+.splash .l4 b { font-size: 22px; font-weight: 900; letter-spacing: .34em; }
+.splash .l4 span { font-size: 14px; color: #A9B1BA; letter-spacing: .2em; }
+@keyframes uline { to { transform: scaleX(1); } }
+.splash .ctaw { opacity: 0; animation: lnIn .8s ease forwards; animation-delay: 7.3s; padding: 0 28px calc(28px + env(safe-area-inset-bottom, 0px) * 0); }
 .splash .cta { background: #fff; color: #111418; margin-top: 0; }
 .splash.skip .ln, .splash.skip .ctaw { animation: none; opacity: 1; transform: none; filter: none; }
+.splash.skip .em::after { animation: none; transform: scaleX(1); }
 @keyframes lnIn { from { opacity: 0; transform: translateY(14px); filter: blur(5px); } to { opacity: 1; transform: none; filter: none; } }
 
 /* avatar + maker */
@@ -185,6 +193,7 @@ img { display: block; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
   .splash .ln, .splash .ctaw { animation: none !important; opacity: 1; transform: none; filter: none; }
+  .splash .em::after { animation: none !important; transform: scaleX(1); }
 }
 
 </style>
@@ -702,9 +711,10 @@ function viewIntro() {
   const dots = `<div class="pages">${[0, 1, 2, 3, 4].map(i => `<i class="${i === introStep ? 'on' : ''}"></i>`).join('')}</div>`;
   const wrap = (inner, cta, off) => `<div class="overlay intro">${head('intro-back')}<div class="ibody">${inner}</div><div class="ifoot">${dots}<button class="cta ${off ? '' : 'ready'}" data-act="intro-next" ${off ? 'disabled' : ''}>${cta}</button></div></div>`;
   if (introStep === 0) return `<div class="overlay splash ${splashSkipped ? 'skip' : ''}" id="splash"><div class="box">
-      <div class="ln l1">気分に合わせて、<br>きょうの「初めて」を<br>決める。</div>
-      <div class="ln l2">なんか変わりたい。<br>でも、何から始めればいいか分からない。</div>
-      <div class="ln l3">そんな日の背中を、軽く押す<br>アプリ<span class="brand">【NARA】</span>です。</div>
+      <div class="ln l1">習慣の中に、<br>非習慣を。</div>
+      <div class="ln l2">今日、ちょっと予定外を。</div>
+      <div class="ln l3"><span class="em">せっかくなら</span>、<br>やってみよう。</div>
+      <div class="ln l4"><b>NARA</b><span>ナラ</span></div>
     </div><div class="ctaw"><button class="cta" data-act="intro-next">はじめる</button></div></div>`;
   if (introStep === 1) return wrap(`<h1 class="it">プロフィール</h1>
     <input id="nick-intro" class="txt" maxlength="12" value="${S.nickSet ? esc(S.nick) : ''}" placeholder="ニックネーム" aria-label="ニックネーム" autocomplete="off">
@@ -915,7 +925,7 @@ root.addEventListener('click', async (ev) => {
     /* intro */
     case 'intro-back': introStep = Math.max(0, introStep - 1); if (introStep === 0) splashSkipped = true; render(); break;
     case 'intro-next':
-      if (introStep === 0 && !splashSkipped && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - splashT0 < 5600) { splashSkipped = true; const el = document.getElementById('splash'); if (el) el.classList.add('skip'); break; }
+      if (introStep === 0 && !splashSkipped && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - splashT0 < 8300) { splashSkipped = true; const el = document.getElementById('splash'); if (el) el.classList.add('skip'); break; }
       if (introStep === 1 && !(S.nickSet && S.nick.trim())) break;
       if (introStep < 4) { introStep++; render(); } else { S.onboarded = true; S.tutorialSeen = false; save(); tutStep = 0; ov = 'tutorial'; render(); } break;
     case 'q1': S.goalCat = v; save(); render(); break;
