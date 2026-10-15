@@ -166,17 +166,17 @@ img { display: block; }
 /* splash */
 .splash { background: #111418; color: #fff; z-index: 30; }
 .splash .box { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px 32px 20px; gap: 34px; }
-.splash .ln { opacity: 0; animation: lnIn .95s cubic-bezier(.2, .7, .2, 1) forwards; font-weight: 700; line-height: 1.6; }
-.splash .l1 { font-size: 27px; font-weight: 900; line-height: 1.55; animation-delay: .5s; }
-.splash .l2 { font-size: 17px; color: #A9B1BA; animation-delay: 2.1s; }
-.splash .l3 { font-size: 34px; font-weight: 900; line-height: 1.5; animation-delay: 3.9s; }
+.splash .ln { opacity: 0; animation: lnIn .55s cubic-bezier(.2, .7, .2, 1) forwards; font-weight: 700; line-height: 1.6; }
+.splash .l1 { font-size: 27px; font-weight: 900; line-height: 1.55; animation-delay: .2s; }
+.splash .l2 { font-size: 17px; color: #A9B1BA; animation-delay: .8s; }
+.splash .l3 { font-size: 34px; font-weight: 900; line-height: 1.5; animation-delay: 1.4s; }
 .splash .em { position: relative; display: inline-block; background: linear-gradient(90deg, #2F6FD6, #38B28A, #F2C230, #F28A2E); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: 6px; }
-.splash .em::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #2F6FD6, #38B28A, #F2C230, #F28A2E); transform: scaleX(0); transform-origin: left; animation: uline .9s cubic-bezier(.3, .8, .2, 1) 4.7s forwards; }
-.splash .l4 { display: flex; align-items: baseline; gap: 12px; animation-delay: 6.3s; }
+.splash .em::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #2F6FD6, #38B28A, #F2C230, #F28A2E); transform: scaleX(0); transform-origin: left; animation: uline .6s cubic-bezier(.3, .8, .2, 1) 1.9s forwards; }
+.splash .l4 { display: flex; align-items: baseline; gap: 12px; animation-delay: 2.1s; }
 .splash .l4 b { font-size: 22px; font-weight: 900; letter-spacing: .34em; }
 .splash .l4 span { font-size: 14px; color: #A9B1BA; letter-spacing: .2em; }
 @keyframes uline { to { transform: scaleX(1); } }
-.splash .ctaw { opacity: 0; animation: lnIn .8s ease forwards; animation-delay: 7.3s; padding: 0 28px calc(28px + env(safe-area-inset-bottom, 0px) * 0); }
+.splash .ctaw { opacity: 0; animation: lnIn .5s ease forwards; animation-delay: 2.5s; padding: 0 28px calc(28px + env(safe-area-inset-bottom, 0px) * 0); }
 .splash .cta { background: #fff; color: #111418; margin-top: 0; }
 .splash.skip .ln, .splash.skip .ctaw { animation: none; opacity: 1; transform: none; filter: none; }
 .splash.skip .em::after { animation: none; transform: scaleX(1); }
@@ -185,7 +185,7 @@ img { display: block; }
 /* avatar + maker */
 .avs { display: inline-block; border-radius: 50%; overflow: hidden; flex: none; vertical-align: middle; } .avs svg { display: block; width: 100%; height: 100%; }
 .mkprev { display: flex; justify-content: center; margin: 22px 0 18px; }
-.mktabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; } .mktabs button { flex: 1; min-height: 44px; padding: 0 12px; border-radius: 14px; font-weight: 700; font-size: 14px; color: var(--muted); } .mktabs button[aria-selected="true"] { background: var(--soft); color: var(--ink); }
+.mktabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 0 -28px; padding: 0 28px; } .mktabs::-webkit-scrollbar { display: none; } .mktabs button { flex: none; min-height: 44px; padding: 0 14px; border-radius: 14px; font-weight: 700; font-size: 14px; color: var(--muted); } .mktabs button[aria-selected="true"] { background: var(--soft); color: var(--ink); }
 .mkbody { margin-top: 18px; min-height: 150px; }
 .mkgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; justify-items: center; } .mk { border-radius: 50%; padding: 3px; border: 3px solid transparent; line-height: 0; min-width: 48px; min-height: 48px; } .mk[aria-pressed="true"] { border-color: var(--ink); }
 .swrow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; justify-items: center; } .sw { width: 44px; height: 44px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(17, 20, 24, .12); transition: transform .2s cubic-bezier(.3, 1.6, .5, 1); } .sw[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--ink); transform: scale(1.1); }
@@ -195,6 +195,10 @@ img { display: block; }
   .splash .ln, .splash .ctaw { animation: none !important; opacity: 1; transform: none; filter: none; }
   .splash .em::after { animation: none !important; transform: scaleX(1); }
 }
+
+.mk.crop { border-radius: 18px; } .mk.crop .avs { border-radius: 14px; background: var(--soft); }
+.mkgrid { grid-template-columns: repeat(4, 1fr); }
+.wildtag { display: inline-block; font-size: 11px; font-weight: 900; letter-spacing: .08em; padding: 3px 12px; border-radius: 10px; background: var(--accent); color: var(--on-accent); margin-bottom: 10px; }
 
 </style>
 </head>
@@ -223,11 +227,13 @@ const MOOD = [
   { k: 5, n: '絶好調', c: '#F28A2E', s: '#C76612' }
 ];
 const moodMap = (m) => m <= 2 ? 1 : m === 3 ? 2 : m === 4 ? 3 : 4;
+let _cid = 0;
 function moodFace(m) {
   const eyeL = '<ellipse cx="45" cy="62" rx="7.5" ry="9" fill="#fff"/>', eyeR = '<ellipse cx="75" cy="62" rx="7.5" ry="9" fill="#fff"/>';
   const st = 'fill="none" stroke="#fff" stroke-linecap="round"';
-  if (m === 1) return `<g class="eyes">${eyeL}${eyeR}<path class="cb" d="M33 49L55 49L33 64Z"/><path class="cb" d="M87 49L65 49L87 64Z"/></g><path d="M50 91Q60 82 70 91" ${st} stroke-width="4.5"/>`;
-  if (m === 2) return `<g class="eyes">${eyeL}${eyeR}<rect class="cb" x="33" y="49" width="24" height="11"/><rect class="cb" x="63" y="49" width="24" height="11"/></g><path d="M53 88L67 88" ${st} stroke-width="4.5"/>`;
+  const k = 'cp' + (++_cid);
+  if (m === 1) return `<defs><clipPath id="${k}a"><polygon points="55,49 60,49 60,80 33,80 33,64"/></clipPath><clipPath id="${k}b"><polygon points="65,49 60,49 60,80 87,80 87,64"/></clipPath></defs><g class="eyes"><ellipse cx="45" cy="62" rx="7.5" ry="9" fill="#fff" clip-path="url(#${k}a)"/><ellipse cx="75" cy="62" rx="7.5" ry="9" fill="#fff" clip-path="url(#${k}b)"/></g><path d="M50 91Q60 82 70 91" ${st} stroke-width="4.5"/>`;
+  if (m === 2) return `<defs><clipPath id="${k}"><rect x="30" y="60" width="60" height="22"/></clipPath></defs><g class="eyes"><ellipse cx="45" cy="62" rx="7.5" ry="9" fill="#fff" clip-path="url(#${k})"/><ellipse cx="75" cy="62" rx="7.5" ry="9" fill="#fff" clip-path="url(#${k})"/></g><path d="M53 88L67 88" ${st} stroke-width="4.5"/>`;
   if (m === 3) return `<g class="eyes">${eyeL}${eyeR}</g><path d="M52 86Q60 91 68 86" ${st} stroke-width="4.5"/>`;
   if (m === 4) return `<g class="eyes"><ellipse cx="45" cy="62" rx="8" ry="10" fill="#fff"/><ellipse cx="75" cy="62" rx="8" ry="10" fill="#fff"/></g><path d="M49 83Q60 95 71 83" ${st} stroke-width="4.5"/>`;
   if (m === 5) return `<g class="eyes"><path d="M37 66Q45 54 53 66" ${st} stroke-width="5"/><path d="M67 66Q75 54 83 66" ${st} stroke-width="5"/></g><path d="M47 82Q60 101 73 82Z" fill="#fff"/>`;
@@ -261,73 +267,129 @@ function setNara(el, mood) {
   svg.classList.remove('hop'); void svg.getBoundingClientRect(); svg.classList.add('hop');
 }
 
-/* ============ avatar maker (face / hair / skin / beard / item) ============ */
-const SKIN = ['#F6D5BC', '#EDBF9B', '#D9A07A', '#B97A55', '#8D5A3C', '#6B4430'];
-const HAIRC = ['#1F1B1A', '#4A3326', '#7A5236', '#C9A15B', '#B9BEC4', '#D9543F'];
-const AVBG = ['#EEF1F4', '#DCE8F7', '#E3F1E8', '#FBF0D2', '#F7DDD6', '#E8E0F5', '#FCE3EC', '#D9F0F0', '#E9E6DF', '#2B3540'];
+/* ============ avatar maker (reference: 顔型6 / 肌6 / 髪型 / 髪色 / 眉 / 目 / 口 / メガネ / ひげ / 背景 / アイテム) ============ */
+const SKIN6 = ['#FCE6D8', '#F6CDAE', '#E7AE86', '#C98A63', '#9A6244', '#6B4430'];
+const HAIRC9 = ['#1F1B1A', '#4A3326', '#7A5236', '#D2A26A', '#EBD9A0', '#E9A7B5', '#B9A4E8', '#6DC4E8', '#D9543F'];
+const CLOTH6 = ['#3E7CC0', '#F2A38A', '#2B2B2E', '#E8B84A', '#8A9A5B', '#A88BD9'];
+const INK = '#2B2220';
 const FACES = [
-  { n: '丸', head: (s) => `<ellipse cx="50" cy="46" rx="17" ry="19" fill="${s}"/>`, eyes: 'dot' },
-  { n: '面長', head: (s) => `<ellipse cx="50" cy="47" rx="15" ry="21" fill="${s}"/>`, eyes: 'dot' },
-  { n: '角', head: (s) => `<rect x="33" y="28" width="34" height="38" rx="12" fill="${s}"/>`, eyes: 'dot' },
-  { n: 'にっこり', head: (s) => `<ellipse cx="50" cy="46" rx="17" ry="19" fill="${s}"/>`, eyes: 'smile' },
-  { n: '眠そう', head: (s) => `<ellipse cx="50" cy="46" rx="17" ry="19" fill="${s}"/>`, eyes: 'sleepy' }
+  { n: 'やさしい丸顔', ex: 21.5, head: (s) => `<ellipse cx="50" cy="47" rx="21" ry="21" fill="${s}"/>` },
+  { n: '卵型', ex: 19.5, head: (s) => `<ellipse cx="50" cy="47" rx="19" ry="23" fill="${s}"/>` },
+  { n: '面長', ex: 17.5, head: (s) => `<ellipse cx="50" cy="48" rx="17" ry="25" fill="${s}"/>` },
+  { n: '逆三角', ex: 21, head: (s) => `<path d="M29 38C29 27 71 27 71 38C71 51 62 66 50 70C38 66 29 51 29 38Z" fill="${s}"/>` },
+  { n: 'ベース型', ex: 20, head: (s) => `<path d="M30 37C30 26 70 26 70 37L70 53C70 64 60 71 50 71C40 71 30 64 30 53Z" fill="${s}"/>` },
+  { n: '四角', ex: 20, head: (s) => `<rect x="30" y="27" width="40" height="44" rx="13" fill="${s}"/>` }
 ];
-const D = '#2B2220';
 const HAIRS = [
   { n: 'なし', back: () => '', front: () => '' },
-  { n: '短髪', back: () => '', front: (c) => `<path d="M32 45C29 26 41 21 50 21S71 26 68 45C64 36 58 32 50 32S36 36 32 45Z" fill="${c}"/>` },
-  { n: '七三', back: () => '', front: (c) => `<path d="M32 45C29 27 42 22 52 22C64 22 71 30 68 45C66 38 62 33 56 31C52 36 40 36 33 41Z" fill="${c}"/>` },
-  { n: 'ツンツン', back: () => '', front: (c) => `<path d="M32 44L33 29L40 34L43 21L50 30L57 21L60 34L67 29L68 44C64 36 58 32 50 32S36 36 32 44Z" fill="${c}"/>` },
-  { n: 'くせ毛', back: () => '', front: (c) => `<g fill="${c}"><circle cx="35" cy="34" r="8"/><circle cx="45" cy="26" r="8.5"/><circle cx="56" cy="26" r="8.5"/><circle cx="66" cy="34" r="8"/><circle cx="31" cy="44" r="5"/><circle cx="69" cy="44" r="5"/></g>` },
-  { n: 'ロング', back: (c) => `<path d="M29 48C27 20 73 20 71 48L73 86H27Z" fill="${c}"/>`, front: (c) => `<path d="M32 42C35 27 65 27 68 42C62 34 55 32 50 32S38 34 32 42Z" fill="${c}"/>` },
-  { n: 'ボブ', back: (c) => `<path d="M30 48C28 22 72 22 70 48L70 63C66 66 62 61 62 61L38 61C38 61 34 66 30 63Z" fill="${c}"/>`, front: (c) => `<path d="M32 43C35 27 65 27 68 43C62 35 55 33 50 33S38 35 32 43Z" fill="${c}"/>` },
-  { n: 'ポニー', back: (c) => `<ellipse cx="73" cy="52" rx="6" ry="13" transform="rotate(-12 73 52)" fill="${c}"/>`, front: (c) => `<path d="M32 44C30 24 70 24 68 44C62 35 56 32 50 32S38 35 32 44Z" fill="${c}"/>` },
-  { n: 'おだんご', back: (c) => `<circle cx="50" cy="19" r="9" fill="${c}"/>`, front: (c) => `<path d="M32 44C30 24 70 24 68 44C62 35 56 32 50 32S38 35 32 44Z" fill="${c}"/>` },
-  { n: 'マッシュ', back: () => '', front: (c) => `<path d="M31 48C28 21 72 21 69 48C67 41 62 35 50 35S33 41 31 48Z" fill="${c}"/><path d="M33 38C38 31 62 31 67 38L67 33C62 25 38 25 33 33Z" fill="${c}"/>` }
+  { n: 'ショート', back: () => '', front: (c) => `<path d="M28 47C23 30 36 17 51 18C66 17 78 30 72 47C70 38 66 32 60 30C56 35 44 36 38 31C34 34 30 39 28 47Z" fill="${c}"/>` },
+  { n: 'センター分け', back: () => '', front: (c) => `<path d="M28 48C25 28 40 19 52 19C66 19 77 29 72 48C70 38 64 33 58 31L50 26L43 31C37 33 30 38 28 48Z" fill="${c}"/>` },
+  { n: 'ボブ', back: (c) => `<path d="M25 52C22 22 78 22 75 52L76 72C71 78 64 73 63 67L37 67C36 73 29 78 24 72Z" fill="${c}"/>`, front: (c) => `<path d="M28 45C31 27 69 27 72 45C66 36 58 33 50 33S34 36 28 45Z" fill="${c}"/>` },
+  { n: 'ウェーブ', back: (c) => `<path d="M24 52C21 21 79 21 76 52L79 76C75 82 69 76 67 72C65 78 59 78 57 72C55 78 45 78 43 72C41 78 35 78 33 72C31 76 25 82 21 76Z" fill="${c}"/>`, front: (c) => `<path d="M27 47C29 27 71 27 73 47C66 38 58 31 50 31S34 38 27 47Z" fill="${c}"/>` },
+  { n: 'ロング', back: (c) => `<path d="M23 52C21 20 79 20 77 52L80 94L20 94Z" fill="${c}"/>`, front: (c) => `<path d="M28 45C32 25 68 25 72 45C64 33 56 31 50 31S36 33 28 45Z" fill="${c}"/>` },
+  { n: 'おだんご', back: (c) => `<circle cx="50" cy="21" r="10" fill="${c}"/>`, front: (c) => `<path d="M28 46C25 25 75 25 72 46C66 36 58 31 50 31S34 36 28 46Z" fill="${c}"/>` },
+  { n: 'ぱっつん', back: (c) => `<path d="M26 54C23 22 77 22 74 54L74 68C71 72 65 70 64 66L36 66C35 70 29 72 26 68Z" fill="${c}"/>`, front: (c) => `<path d="M27 46C25 24 75 24 73 46L73 41C60 44 40 44 27 41Z" fill="${c}"/><path d="M27 38C30 26 70 26 73 38L73 32C68 21 32 21 27 32Z" fill="${c}"/>` },
+  { n: 'マッシュ', back: () => '', front: (c) => `<path d="M26 50C22 21 78 21 74 50C72 41 65 36 50 36S28 41 26 50Z" fill="${c}"/><path d="M28 37C33 28 67 28 72 37L72 33C66 23 34 23 28 33Z" fill="${c}"/>` }
+];
+const BROWS = [
+  { n: 'アーチ', f: (c) => `<g stroke="${c}" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M36 41Q41 37 46 40"/><path d="M54 40Q59 37 64 41"/></g>` },
+  { n: 'まっすぐ', f: (c) => `<g stroke="${c}" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M36 40L46 40"/><path d="M54 40L64 40"/></g>` },
+  { n: '太め', f: (c) => `<g stroke="${c}" stroke-width="3.2" fill="none" stroke-linecap="round"><path d="M36 40Q41 38 46 40"/><path d="M54 40Q59 38 64 40"/></g>` },
+  { n: 'やわらか', f: (c) => `<g stroke="${c}" stroke-width="1.3" fill="none" stroke-linecap="round"><path d="M37 40Q42 38 46 39.5"/><path d="M54 39.5Q58 38 63 40"/></g>` },
+  { n: 'キリッ', f: (c) => `<g stroke="${c}" stroke-width="2.2" fill="none" stroke-linecap="round"><path d="M36 41L46 38"/><path d="M54 38L64 41"/></g>` },
+  { n: '短め', f: (c) => `<g stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round"><path d="M39 40L45 39.4"/><path d="M55 39.4L61 40"/></g>` }
+];
+const EYES = [
+  { n: '丸', f: () => `<ellipse cx="43" cy="48" rx="1.9" ry="2.6" fill="${INK}"/><ellipse cx="57" cy="48" rx="1.9" ry="2.6" fill="${INK}"/>` },
+  { n: '縦長', f: () => `<ellipse cx="43" cy="48" rx="1.8" ry="3.6" fill="${INK}"/><ellipse cx="57" cy="48" rx="1.8" ry="3.6" fill="${INK}"/>` },
+  { n: 'にっこり', f: () => `<g stroke="${INK}" stroke-width="1.9" fill="none" stroke-linecap="round"><path d="M39.5 49.5Q43 44.5 46.5 49.5"/><path d="M53.5 49.5Q57 44.5 60.5 49.5"/></g>` },
+  { n: '眠そう', f: () => `<path d="M39.5 46.5H46.5L43 50.5Z" fill="${INK}"/><path d="M53.5 46.5H60.5L57 50.5Z" fill="${INK}"/>` },
+  { n: 'つり目', f: () => `<g stroke="${INK}" stroke-width="2.2" fill="none" stroke-linecap="round"><path d="M39.5 46L46.5 49.5"/><path d="M60.5 46L53.5 49.5"/></g>` },
+  { n: 'ひし形', f: () => `<path d="M43 44.2L45.4 48L43 51.8L40.6 48Z" fill="${INK}"/><path d="M57 44.2L59.4 48L57 51.8L54.6 48Z" fill="${INK}"/>` },
+  { n: '星', f: () => `<g fill="none" stroke="${INK}" stroke-width="1.5" stroke-linejoin="round"><path d="M43 44L44.4 47L47.5 48L44.4 49L43 52L41.6 49L38.5 48L41.6 47Z"/><path d="M57 44L58.4 47L61.5 48L58.4 49L57 52L55.6 49L52.5 48L55.6 47Z"/></g>` }
+];
+const MOUTHS = [
+  { n: 'にっこり', f: () => `<path d="M45 57Q50 62 55 57" stroke="${INK}" stroke-width="1.9" fill="none" stroke-linecap="round"/>` },
+  { n: '開口', f: () => `<path d="M45 56H55Q55 64 50 64Q45 64 45 56Z" fill="#C9574F"/><path d="M47 61.5Q50 59.5 53 61.5Q50 64 47 61.5Z" fill="#F08B88"/>` },
+  { n: 'ぺろ', f: () => `<path d="M45 56Q50 58.5 55 56Q54.5 62 50 62Q45.5 62 45 56Z" fill="#B84A45"/><ellipse cx="50" cy="63" rx="2.6" ry="2.4" fill="#F08B88"/>` },
+  { n: 'ω', f: () => `<path d="M45 58Q47.5 61.5 50 58Q52.5 61.5 55 58" stroke="${INK}" stroke-width="1.7" fill="none" stroke-linecap="round"/>` },
+  { n: 'まっすぐ', f: () => `<path d="M46 59.5H54" stroke="${INK}" stroke-width="1.9" stroke-linecap="round"/>` },
+  { n: 'ゆるっと', f: () => `<path d="M44.5 59Q47.25 56.5 50 59T55.5 59" stroke="${INK}" stroke-width="1.7" fill="none" stroke-linecap="round"/>` },
+  { n: 'おっ', f: () => `<ellipse cx="50" cy="59.5" rx="2.1" ry="2.7" fill="#8B3A36"/>` }
+];
+const GLASSES = [
+  { n: 'なし', f: () => '' },
+  { n: '丸メガネ', f: () => `<g stroke="${INK}" stroke-width="1.8" fill="none"><circle cx="43" cy="48" r="6.3"/><circle cx="57" cy="48" r="6.3"/><path d="M49.3 47.5H50.7"/></g>` },
+  { n: '角メガネ', f: () => `<g stroke="${INK}" stroke-width="1.8" fill="none"><rect x="36" y="43.5" width="13" height="10" rx="2.6"/><rect x="51" y="43.5" width="13" height="10" rx="2.6"/><path d="M49 47.5H51"/></g>` },
+  { n: 'サングラス', f: () => `<g fill="${INK}"><rect x="35.5" y="43" width="14" height="10" rx="3.5"/><rect x="50.5" y="43" width="14" height="10" rx="3.5"/></g><path d="M49.5 46.5H50.5" stroke="${INK}" stroke-width="1.8"/>` },
+  { n: '細メガネ', f: () => `<g stroke="${INK}" stroke-width="1.1" fill="none"><circle cx="43" cy="48" r="5"/><circle cx="57" cy="48" r="5"/><path d="M48 47.5H52"/></g>` },
+  { n: 'ハーフリム', f: () => `<g stroke="${INK}" stroke-width="1.6" fill="none"><path d="M36.5 47H49.5M36.5 47Q38 54 43 54Q48 54 49.5 47"/><path d="M50.5 47H63.5M50.5 47Q52 54 57 54Q62 54 63.5 47"/></g>` }
 ];
 const BEARDS = [
   { n: 'なし', f: () => '' },
-  { n: '無精', f: (c) => `<path d="M34 53C34 69 66 69 66 53C62 61 38 61 34 53Z" fill="${c}" opacity=".35"/>` },
-  { n: '口ひげ', f: (c) => `<path d="M42 55Q50 52 58 55Q54 59 50 57Q46 59 42 55Z" fill="${c}"/>` },
-  { n: 'あご', f: (c) => `<path d="M44 62Q50 74 56 62Q50 66 44 62Z" fill="${c}"/><path d="M42 55Q50 52 58 55Q54 59 50 57Q46 59 42 55Z" fill="${c}"/>` },
-  { n: 'フル', f: (c) => `<path d="M33 52C33 72 67 72 67 52C63 62 37 62 33 52Z" fill="${c}"/><path d="M42 56Q50 53 58 56Q54 60 50 58Q46 60 42 56Z" fill="${c}"/>` }
+  { n: '口ひげ', f: (c) => `<path d="M41.5 55.5Q50 51.5 58.5 55.5Q54 60 50 57.5Q46 60 41.5 55.5Z" fill="${c}"/>` },
+  { n: '細ひげ', f: (c) => `<path d="M43 55.3Q50 53 57 55.3Q50 56.8 43 55.3Z" fill="${c}"/><path d="M47 66.5Q50 68.5 53 66.5Q50 68 47 66.5Z" fill="${c}"/>` },
+  { n: 'あごひげ', f: (c) => `<path d="M41.5 55.5Q50 51.5 58.5 55.5Q54 60 50 57.5Q46 60 41.5 55.5Z" fill="${c}"/><path d="M43.5 63Q50 76 56.5 63Q50 67 43.5 63Z" fill="${c}"/>` },
+  { n: 'フル', f: (c) => `<path d="M30.5 50C30.5 76 69.5 76 69.5 50C65 64 35 64 30.5 50Z" fill="${c}"/><path d="M41.5 55.5Q50 51.5 58.5 55.5Q54 60 50 57.5Q46 60 41.5 55.5Z" fill="${c}"/>` }
+];
+let _bgid = 0;
+const BGS = [
+  { n: 'ブルー', f: () => `<rect width="100" height="100" fill="#DCE9FA"/>` },
+  { n: 'ピンク', f: () => `<rect width="100" height="100" fill="#FBE0E6"/>` },
+  { n: 'クリーム', f: () => `<rect width="100" height="100" fill="#FDEFD9"/>` },
+  { n: 'ミント', f: () => `<rect width="100" height="100" fill="#DDF1E8"/>` },
+  { n: '空', f: () => { const i = 'bg' + (++_bgid); return `<defs><linearGradient id="${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8CC8F0"/><stop offset="1" stop-color="#E8F5FD"/></linearGradient></defs><rect width="100" height="100" fill="url(#${i})"/><ellipse cx="22" cy="24" rx="12" ry="5" fill="#fff" opacity=".85"/><ellipse cx="32" cy="21" rx="8" ry="5" fill="#fff" opacity=".85"/><ellipse cx="80" cy="34" rx="10" ry="4" fill="#fff" opacity=".7"/>`; } },
+  { n: '夕焼け', f: () => { const i = 'bg' + (++_bgid); return `<defs><linearGradient id="${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8E7BD0"/><stop offset=".6" stop-color="#F0A5A0"/><stop offset="1" stop-color="#F8C27A"/></linearGradient></defs><rect width="100" height="100" fill="url(#${i})"/><circle cx="24" cy="66" r="9" fill="#FFE2A8" opacity=".9"/>`; } },
+  { n: '山', f: () => { const i = 'bg' + (++_bgid); return `<defs><linearGradient id="${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A9C4DA"/><stop offset="1" stop-color="#EEF2F5"/></linearGradient></defs><rect width="100" height="100" fill="url(#${i})"/><path d="M0 78L22 50L40 72L58 44L82 76L100 60V100H0Z" fill="#8AA6BD" opacity=".7"/>`; } },
+  { n: 'チェック', f: () => `<rect width="100" height="100" fill="#FDF3E6"/><g stroke="#F0C9A0" stroke-width="1.4"><path d="M0 20H100M0 40H100M0 60H100M0 80H100M20 0V100M40 0V100M60 0V100M80 0V100"/></g>` },
+  { n: 'ラベンダー', f: () => `<rect width="100" height="100" fill="#E6DEF7"/>` },
+  { n: 'ダーク', f: () => `<rect width="100" height="100" fill="#2B3540"/>` }
 ];
 const ITEMS = [
-  { n: 'なし', f: () => '' },
-  { n: '丸メガネ', f: () => `<g stroke="${D}" stroke-width="1.8" fill="none"><circle cx="42.5" cy="47" r="5.6"/><circle cx="57.5" cy="47" r="5.6"/><path d="M48 47h4"/></g>` },
-  { n: '角メガネ', f: () => `<g stroke="${D}" stroke-width="1.8" fill="none"><rect x="36" y="42.5" width="12" height="9" rx="2"/><rect x="52" y="42.5" width="12" height="9" rx="2"/><path d="M48 47h4"/></g>` },
-  { n: 'サングラス', f: () => `<g fill="${D}"><rect x="35" y="42" width="13" height="9" rx="3"/><rect x="52" y="42" width="13" height="9" rx="3"/></g><path d="M48 46h4" stroke="${D}" stroke-width="1.8"/>` },
-  { n: 'キャップ', f: () => `<path d="M32 43C30 21 70 21 68 43Z" fill="#3A4450"/><path d="M30 43H80C80 48 72 49 66 47H30Z" fill="#2A323B"/>` },
-  { n: 'ニット帽', f: () => `<path d="M31 42C30 20 70 20 69 42Z" fill="#7A8794"/><rect x="30" y="38" width="40" height="9" rx="3.5" fill="#5F6B77"/><circle cx="50" cy="19" r="5" fill="#E8E2D4"/>` },
-  { n: 'ヘッドホン', f: () => `<path d="M30 48C29 20 71 20 70 48" stroke="#2B3540" stroke-width="4" fill="none"/><rect x="26" y="44" width="9" height="14" rx="4" fill="#9AA3AD"/><rect x="65" y="44" width="9" height="14" rx="4" fill="#9AA3AD"/>` }
+  { n: 'なし', f: () => '', head: false },
+  { n: 'キャップ', head: true, f: () => `<path d="M29 40C27 17 73 17 71 40Z" fill="#2B2B2E"/><path d="M27 40H73L73 43C62 45 38 45 27 43Z" fill="#1E1E20"/><path d="M62 40H86C86 45 78 47 70 45Z" fill="#1E1E20"/>` },
+  { n: 'ヘッドホン', head: true, f: () => `<path d="M28 49C27 20 73 20 72 49" stroke="#D9DDE2" stroke-width="4.2" fill="none"/><rect x="22.5" y="44" width="9.5" height="15" rx="4.5" fill="#C7CDD4"/><rect x="68" y="44" width="9.5" height="15" rx="4.5" fill="#C7CDD4"/>` },
+  { n: 'PC', f: () => `<rect x="60" y="74" width="30" height="19" rx="2" fill="#9AA3AD"/><rect x="62.5" y="76.5" width="25" height="14" rx="1" fill="#DCE3EA"/><path d="M56 94H94L91 97.5H59Z" fill="#B7BFC8"/>` },
+  { n: 'コーヒー', f: () => `<path d="M66 77H84L82 96H68Z" fill="#fff" stroke="#D9C9B8" stroke-width="1"/><path d="M67 81H83L82.4 85.5H67.6Z" fill="#8A5A3C"/><path d="M84 80q6 1 5 6.5q-1 4-6 4" fill="none" stroke="#D9C9B8" stroke-width="2"/>` },
+  { n: 'ゲーム', f: () => `<path d="M60 82C60 75 90 75 90 82L92.5 93C92.5 97 87 97 85 93.5L82 90H68L65 93.5C63 97 57.5 97 57.5 93Z" fill="#3A4450"/><circle cx="68" cy="84" r="2.6" fill="#8A93A0"/><circle cx="82" cy="85" r="1.5" fill="#E8B84A"/><circle cx="85" cy="82" r="1.5" fill="#E0705C"/>` },
+  { n: 'カメラ', f: () => `<rect x="60" y="78" width="32" height="20" rx="4" fill="#2E343B"/><rect x="66" y="74.5" width="10" height="5.5" rx="1.2" fill="#2E343B"/><circle cx="76" cy="88" r="6.8" fill="#6B7684"/><circle cx="76" cy="88" r="3.6" fill="#1D2126"/>` },
+  { n: '本', f: () => `<rect x="62" y="74" width="24" height="24" rx="2" fill="#D9653B"/><rect x="62" y="74" width="4" height="24" fill="#B34A25"/><rect x="69" y="80" width="12" height="2" fill="#F4C6A8"/><rect x="69" y="85" width="9" height="2" fill="#F4C6A8"/>` },
+  { n: '犬', f: () => `<ellipse cx="78" cy="88" rx="13" ry="11" fill="#F4E7D3"/><ellipse cx="68" cy="82" rx="4.5" ry="7" fill="#C9854A" transform="rotate(-15 68 82)"/><ellipse cx="88" cy="82" rx="4.5" ry="7" fill="#C9854A" transform="rotate(15 88 82)"/><circle cx="73" cy="86" r="1.6" fill="${INK}"/><circle cx="83" cy="86" r="1.6" fill="${INK}"/><ellipse cx="78" cy="91" rx="3" ry="2.2" fill="${INK}"/>` },
+  { n: '猫', f: () => `<path d="M66 80L68 70L75 77Z" fill="#6B7380"/><path d="M90 80L88 70L81 77Z" fill="#6B7380"/><circle cx="78" cy="88" r="12.5" fill="#6B7380"/><circle cx="73" cy="86" r="1.6" fill="#F4E27A"/><circle cx="83" cy="86" r="1.6" fill="#F4E27A"/><path d="M76.5 91Q78 92.5 79.5 91" stroke="#2B2B2E" stroke-width="1.2" fill="none"/>` },
+  { n: 'バスケ', f: () => `<circle cx="76" cy="86" r="11.5" fill="#E8833A"/><g stroke="#8F4417" stroke-width="1.2" fill="none"><path d="M64.5 86H87.5M76 74.5V97.5M67 78Q76 86 67 94M85 78Q76 86 85 94"/></g>` },
+  { n: 'ギター', f: () => `<g transform="rotate(30 76 84)"><ellipse cx="72" cy="93" rx="9.5" ry="8.5" fill="#B5683A"/><circle cx="72" cy="93" r="2.6" fill="#4A2A18"/><rect x="70.2" y="60" width="3.8" height="28" fill="#6B4430"/></g>` },
+  { n: '植物', f: () => `<path d="M76 98V84" stroke="#4C9A3A" stroke-width="2.5" stroke-linecap="round"/><path d="M76 86C70 86 68 80 70 77C75 77 77 81 76 86Z" fill="#6BAE45"/><path d="M76 84C82 84 85 78 83 75C78 75 75 79 76 84Z" fill="#8AC85A"/>` }
 ];
-const defAv = () => ({ face: 0, hair: 1, hc: 0, skin: 1, beard: 0, item: 0, bg: 0 });
+const defAv = () => ({ v: 2, face: 0, skin: 1, hair: 1, hc: 0, brow: 0, eye: 0, mouth: 0, glass: 0, beard: 0, bg: 0, item: 0 });
+function browColor(hc) { const n = parseInt(HAIRC9[hc].slice(1), 16); const l = 0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255); return l > 150 ? '#8A6A4F' : HAIRC9[hc]; }
 function avInner(a) {
-  const sk = SKIN[a.skin], hc = HAIRC[a.hc], F = FACES[a.face] || FACES[0], H = HAIRS[a.hair] || HAIRS[0];
-  const eyes = F.eyes === 'smile' ? `<g stroke="${D}" stroke-width="1.9" fill="none" stroke-linecap="round"><path d="M39 49Q43 44 47 49"/><path d="M53 49Q57 44 61 49"/></g>`
-    : F.eyes === 'sleepy' ? `<g stroke="${D}" stroke-width="2" stroke-linecap="round"><path d="M39.5 48H46"/><path d="M54 48H60.5"/></g>`
-      : `<circle cx="42.5" cy="47" r="1.9" fill="${D}"/><circle cx="57.5" cy="47" r="1.9" fill="${D}"/>`;
-  const mouth = (a.beard >= 3) ? `<path d="M46 60Q50 62 54 60" stroke="${sk}" stroke-width="1.6" fill="none" stroke-linecap="round"/>` : `<path d="M45 56Q50 ${F.eyes === 'smile' ? 61 : 59} 55 56" stroke="${D}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
-  return `${H.back(hc)}<path d="M12 100C14 76 32 70 50 70S86 76 88 100Z" fill="#2B3540"/><rect x="44" y="58" width="12" height="15" fill="${sk}" style="filter:brightness(.92)"/><circle cx="33" cy="48" r="3.4" fill="${sk}"/><circle cx="67" cy="48" r="3.4" fill="${sk}"/>${F.head(sk)}${eyes}${mouth}${BEARDS[a.beard].f(HAIRC[a.hc === 5 ? 1 : a.hc] || D)}${H.front(hc)}${ITEMS[a.item].f()}`;
+  const sk = SKIN6[a.skin], hc = HAIRC9[a.hc], F = FACES[a.face] || FACES[0], H = HAIRS[a.hair] || HAIRS[0], bg = (BGS[a.bg] || BGS[0]).f();
+  const cl = CLOTH6[a.face % 6]; const it = ITEMS[a.item] || ITEMS[0]; const ex = F.ex;
+  const beardC = a.hc >= 5 ? '#4A3326' : hc;
+  return `${bg}${H.back(hc)}<path d="M8 100C10 78 30 72 50 72S90 78 92 100Z" fill="${cl}"/><path d="M42 72Q50 81 58 72Z" fill="${sk}" style="filter:brightness(.94)"/><rect x="44" y="60" width="12" height="16" rx="3" fill="${sk}" style="filter:brightness(.93)"/>
+    <circle cx="${50 - ex}" cy="50" r="4.4" fill="${sk}"/><circle cx="${50 + ex}" cy="50" r="4.4" fill="${sk}"/>${F.head(sk)}
+    <circle cx="37.5" cy="55" r="3.6" fill="#F08B88" opacity=".28"/><circle cx="62.5" cy="55" r="3.6" fill="#F08B88" opacity=".28"/>
+    ${BROWS[a.brow].f(browColor(a.hc))}${EYES[a.eye].f()}${MOUTHS[a.mouth].f()}${BEARDS[a.beard].f(beardC)}${GLASSES[a.glass].f()}${H.front(hc)}${it.head ? it.f() : ''}${it.head ? '' : it.f()}`;
 }
-function avHTML(a, size, label) {
+function avHTML(a, size, label, vb) {
   const px = size || 40;
-  if (a === 'anon' || !a) return `<span class="avs" style="width:${px}px;height:${px}px;background:#E9ECEF" role="img" aria-label="${esc(label || '匿名')}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="42" r="17" fill="#B8BFC7"/><path d="M14 100C16 76 32 70 50 70S84 76 86 100Z" fill="#B8BFC7"/></svg></span>`;
-  return `<span class="avs" style="width:${px}px;height:${px}px;background:${AVBG[a.bg] || AVBG[0]}" role="img" aria-label="${esc(label || 'アイコン')}"><svg viewBox="0 0 100 100" aria-hidden="true">${avInner(a)}</svg></span>`;
+  if (a === 'anon' || !a) return `<span class="avs" style="width:${px}px;height:${px}px;background:#E9ECEF" role="img" aria-label="${esc(label || '匿名')}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="44" r="19" fill="#B8BFC7"/><path d="M12 100C14 78 32 72 50 72S86 78 88 100Z" fill="#B8BFC7"/></svg></span>`;
+  if (a.v !== 2) a = defAv();
+  return `<span class="avs" style="width:${px}px;height:${px}px" role="img" aria-label="${esc(label || 'アイコン')}"><svg viewBox="${vb || '0 0 100 100'}" aria-hidden="true">${avInner(a)}</svg></span>`;
 }
 let makerTab = 'face';
-const MAKER_TABS = [['face', '顔'], ['hair', '髪'], ['skin', '肌'], ['beard', 'ひげ'], ['item', '小物'], ['bg', '背景']];
+const MAKER_TABS = [['face', '顔型'], ['skin', '肌'], ['hair', '髪型'], ['hc', '髪色'], ['brow', '眉'], ['eye', '目'], ['mouth', '口'], ['glass', 'メガネ'], ['beard', 'ひげ'], ['bg', '背景'], ['item', 'アイテム']];
 function makerHTML(a) {
-  const opt = (key, i, label, cur) => `<button class="mk" data-act="mk" data-key="${key}" data-v="${i}" aria-pressed="${cur === i}" aria-label="${esc(label)}">${avHTML(Object.assign({}, a, { [key]: i }), 52, label)}</button>`;
+  if (a.v !== 2) { Object.assign(a, defAv()); }
+  const VB = { brow: '31 29 38 38', eye: '31 31 38 38', mouth: '31 40 38 38', glass: '31 30 38 38', beard: '28 36 44 44' };
+  const opt = (key, i, label, cur, list) => `<button class="mk ${VB[key] ? 'crop' : ''}" data-act="mk" data-key="${key}" data-v="${i}" aria-pressed="${cur === i}" aria-label="${esc(label)}">${avHTML(Object.assign({}, a, { [key]: i }), VB[key] ? 64 : 56, label, VB[key])}</button>`;
   const sw = (key, i, col, label, cur) => `<button class="sw" data-act="mk" data-key="${key}" data-v="${i}" aria-pressed="${cur === i}" aria-label="${esc(label)}" style="background:${col}"></button>`;
+  const lists = { face: FACES, hair: HAIRS, brow: BROWS, eye: EYES, mouth: MOUTHS, glass: GLASSES, beard: BEARDS, bg: BGS, item: ITEMS };
   let body = '';
-  if (makerTab === 'face') body = `<div class="mkgrid">${FACES.map((f, i) => opt('face', i, f.n, a.face)).join('')}</div>`;
-  if (makerTab === 'hair') body = `<div class="mkgrid">${HAIRS.map((f, i) => opt('hair', i, f.n, a.hair)).join('')}</div><div class="swrow" style="margin-top:16px">${HAIRC.map((c, i) => sw('hc', i, c, '髪色', a.hc)).join('')}</div>`;
-  if (makerTab === 'skin') body = `<div class="swrow">${SKIN.map((c, i) => sw('skin', i, c, '肌の色', a.skin)).join('')}</div>`;
-  if (makerTab === 'beard') body = `<div class="mkgrid">${BEARDS.map((f, i) => opt('beard', i, f.n, a.beard)).join('')}</div>`;
-  if (makerTab === 'item') body = `<div class="mkgrid">${ITEMS.map((f, i) => opt('item', i, f.n, a.item)).join('')}</div>`;
-  if (makerTab === 'bg') body = `<div class="swrow">${AVBG.map((c, i) => sw('bg', i, c, '背景色', a.bg)).join('')}</div>`;
-  return `<div class="mkprev" id="mkprev">${avHTML(a, 120, 'プレビュー')}</div>
+  if (makerTab === 'skin') body = `<div class="swrow">${SKIN6.map((c, i) => sw('skin', i, c, '肌の色', a.skin)).join('')}</div>`;
+  else if (makerTab === 'hc') body = `<div class="swrow">${HAIRC9.map((c, i) => sw('hc', i, c, '髪の色', a.hc)).join('')}</div>`;
+  else { const L = lists[makerTab]; body = `<div class="mkgrid">${L.map((f, i) => opt(makerTab, i, f.n, a[makerTab])).join('')}</div>`; }
+  return `<div class="mkprev" id="mkprev">${avHTML(a, 132, 'プレビュー')}</div>
     <div class="mktabs" role="tablist">${MAKER_TABS.map(t => `<button role="tab" data-act="mk-tab" data-v="${t[0]}" aria-selected="${makerTab === t[0]}">${t[1]}</button>`).join('')}</div>
     <div class="mkbody">${body}</div>`;
 }
@@ -414,16 +476,16 @@ GOALS.forEach(go => go.steps.forEach(st => { st.goal = go.id; STEP_EVS[st.id] = 
 /* みんなの初めて（サンプル投稿） */
 
 const FEED = [
-  { id: 's1', nick: 'ゆうさん', av: {face:0,hair:1,hc:0,skin:1,beard:0,item:1,bg:1}, g: 'body', t: '初めての銭湯で、ととのってみた', note: '熱いのが少し苦手だったけど、水風呂のあとの休憩が最高。次は平日の昼に行ってみたい。', feeling: 'good', lv: 2, min: 90, cost: 600, pl: 'near' },
+  { id: 's1', nick: 'ゆうさん', av: {v:2,face:0,skin:1,hair:2,hc:0,brow:0,eye:0,mouth:0,glass:1,beard:0,bg:1,item:0}, g: 'body', t: '初めての銭湯で、ととのってみた', note: '熱いのが少し苦手だったけど、水風呂のあとの休憩が最高。次は平日の昼に行ってみたい。', feeling: 'good', lv: 2, min: 90, cost: 600, pl: 'near' },
   { id: 's2', nick: '匿名タヌキLさん', av: 'anon', g: 'walk', t: '知らない駅で途中下車', note: '商店街で食べたコロッケがおいしかった。目的がない散歩も悪くない。', feeling: 'good', lv: 2, min: 90, cost: 500, pl: 'far' },
-  { id: 's3', nick: 'そらさん', av: {face:3,hair:9,hc:1,skin:2,beard:0,item:6,bg:4}, g: 'body', t: 'ランニングシューズを買ってみた', note: '店員さんに走り方を見てもらって選んだ。買っただけで、走りたくなった。', feeling: 'good', lv: 1, min: 60, cost: 8000, pl: 'near' },
+  { id: 's3', nick: 'そらさん', av: {v:2,face:2,skin:2,hair:8,hc:1,brow:2,eye:2,mouth:1,glass:0,beard:0,bg:5,item:2}, g: 'body', t: 'ランニングシューズを買ってみた', note: '店員さんに走り方を見てもらって選んだ。買っただけで、走りたくなった。', feeling: 'good', lv: 1, min: 60, cost: 8000, pl: 'near' },
   { id: 's4', nick: '匿名ウサギKさん', av: 'anon', g: 'make', t: 'スパイスからカレーを作った', note: 'スパイスの量が分からなくて、辛すぎた。でも、また作りたい。', feeling: 'ok', lv: 2, min: 120, cost: 1500, pl: 'home' },
-  { id: 's5', nick: 'たろうさん', av: {face:2,hair:3,hc:0,skin:3,beard:2,item:4,bg:5}, g: 'body', t: 'クライミング体験に参加', note: '腕がぱんぱんになった。登り切れた瞬間は、ちょっと感動した。', feeling: 'good', lv: 3, min: 120, cost: 3500, pl: 'far' },
-  { id: 's6', nick: 'みどりさん', av: {face:0,hair:6,hc:1,skin:1,beard:0,item:0,bg:2}, g: 'touch', t: 'ひとりで映画館に行った', note: '誰にも気を遣わずに観られた。終わったあとの余韻が長かった。', feeling: 'good', lv: 2, min: 180, cost: 1900, pl: 'near' },
+  { id: 's5', nick: 'たろうさん', av: {v:2,face:4,skin:3,hair:1,hc:0,brow:4,eye:0,mouth:0,glass:0,beard:3,bg:7,item:1}, g: 'body', t: 'クライミング体験に参加', note: '腕がぱんぱんになった。登り切れた瞬間は、ちょっと感動した。', feeling: 'good', lv: 3, min: 120, cost: 3500, pl: 'far' },
+  { id: 's6', nick: 'みどりさん', av: {v:2,face:1,skin:1,hair:3,hc:1,brow:0,eye:0,mouth:1,glass:0,beard:0,bg:3,item:0}, g: 'touch', t: 'ひとりで映画館に行った', note: '誰にも気を遣わずに観られた。終わったあとの余韻が長かった。', feeling: 'good', lv: 2, min: 180, cost: 1900, pl: 'near' },
   { id: 's7', nick: '匿名ペンギンMさん', av: 'anon', g: 'learn', t: '背表紙だけで本を選んだ', note: '全然知らない作家だったけど、最初の10ページが面白かった。', feeling: 'good', lv: 1, min: 60, cost: 800, pl: 'near' },
-  { id: 's8', nick: 'ぴよさん', av: {face:3,hair:8,hc:0,skin:0,beard:0,item:0,bg:3}, g: 'make', t: 'ハガキを書いて出した', note: 'ポストに入れるときが、ちょっとドキドキ。返事はなくても満足。', feeling: 'ok', lv: 1, min: 30, cost: 100, pl: 'home' },
+  { id: 's8', nick: 'ぴよさん', av: {v:2,face:0,skin:0,hair:6,hc:1,brow:1,eye:2,mouth:0,glass:0,beard:0,bg:2,item:4}, g: 'make', t: 'ハガキを書いて出した', note: 'ポストに入れるときが、ちょっとドキドキ。返事はなくても満足。', feeling: 'ok', lv: 1, min: 30, cost: 100, pl: 'home' },
   { id: 's9', nick: '匿名コアラQさん', av: 'anon', g: 'touch', t: '知らないジャンルの音楽を1枚聴いた', note: '合わなかった。でも、1曲だけ気に入った曲があった。', feeling: 'meh', lv: 1, min: 30, cost: 0, pl: 'home' },
-  { id: 's10', nick: 'かなえさん', av: {face:0,hair:5,hc:2,skin:1,beard:0,item:1,bg:6}, g: 'eat', t: '朝の市場で朝ごはん', note: 'お店の人に聞いたおすすめが、大当たりだった。早起きしてよかった。', feeling: 'good', lv: 2, min: 90, cost: 2000, pl: 'far' }
+  { id: 's10', nick: 'かなえさん', av: {v:2,face:3,skin:1,hair:5,hc:2,brow:3,eye:0,mouth:0,glass:2,beard:0,bg:4,item:12}, g: 'eat', t: '朝の市場で朝ごはん', note: 'お店の人に聞いたおすすめが、大当たりだった。早起きしてよかった。', feeling: 'good', lv: 2, min: 90, cost: 2000, pl: 'far' }
 ];
 
 
@@ -493,7 +555,7 @@ const timeLabel = (m) => m >= 300 ? '半日〜' : m >= 120 ? Math.round(m / 60) 
 /* ============ state ============ */
 const KEY = 'nara-demo-v1';
 const doneList = (s) => (s || S).records.filter(r => r.kind === 'done');
-const evById = (id) => EVENTS.find(e => e.id === id) || STEP_EVS[id] || (S.customEvs || {})[id];
+const evById = (id) => EVENTS.find(e => e.id === id) || WILD.find(e => e.id === id) || STEP_EVS[id] || (S.customEvs || {})[id];
 const costLabel = (c) => c === 0 ? '0円' : '約' + c.toLocaleString() + '円';
 const lvName = (lv) => STAGES[lv - 1].n;
 function lvXp() { const lv = Math.floor(S.xp / 40) + 1; return { lv, pct: Math.round((S.xp % 40) / 40 * 100) }; }
@@ -513,12 +575,44 @@ function seed() {
   };
 }
 let S;
-function fillDefaults() { const d = seed(); Object.keys(d).forEach(k => { if (S[k] === undefined) S[k] = d[k]; }); if (!S.av || typeof S.av !== 'object') S.av = defAv(); }
+function fillDefaults() { const d = seed(); Object.keys(d).forEach(k => { if (S[k] === undefined) S[k] = d[k]; }); if (!S.av || typeof S.av !== 'object' || S.av.v !== 2) S.av = defAv(); }
 function load() { try { const raw = localStorage.getItem(KEY); if (raw) { S = JSON.parse(raw); fillDefaults(); return; } } catch (e) {} S = seed(); }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 load();
 function applyTheme() { const r = document.documentElement; if (S.theme === 'auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', S.theme); }
 applyTheme();
+
+
+/* ============ 予定外（突飛だけど、現実的にできる提案） ============ */
+const W = (id, t, g, min, pl, cost, lv, en, k, d, tip, out) => ({ id, t, g, min, pl, cost, lv, en, k, d, tip, wild: 1, out: out ? 1 : 0 });
+const WILD = [
+  W(201, '左折だけで散歩する', 'walk', 30, 'near', 0, 1, 1, '交差点では、必ず左に曲がってみよう', '交差点では必ず左に曲がる。戻れなくなったら地図アプリでOK。', '歩道を歩き、暗い道は避けましょう。', 1),
+  W(202, '100円ショップで「使い道が分からないもの」を買う', 'make', 45, 'near', 100, 1, 1, '一番用途が想像できないものを、1つ買ってみよう', '店内で一番用途が想像できない商品を選び、使い道を考えて試します。', '100円までで。使えなくても、笑い話になります。'),
+  W(203, '行き先を決めず、バスの終点まで乗る', 'walk', 120, 'far', 600, 2, 1, '知らない路線の、終点まで行ってみよう', '普段使わない路線に乗り、終点の周りを少し歩いて戻ります。', '帰りの最終便の時間だけ、確認しておきましょう。', 1),
+  W(204, '朝5時台に起きて、夜明けを見に行く', 'body', 90, 'near', 0, 2, 2, '夜明けの空を、先取りしてみよう', '日の出に合わせて、近所の見晴らしのいい場所へ行きます。', '防寒と足元の明かりを忘れずに。明るく人通りのある場所で。', 1),
+  W(205, '駅名の響きだけで選んで、降りてみる', 'walk', 120, 'far', 500, 2, 1, '名前の響きで選んだ駅に、降りてみよう', '路線図を見て、響きが気になる駅に降ります。少し歩いて戻ります。', '往復の電車賃だけ、先に確認を。', 1),
+  W(206, '専門店で、一番のおすすめを聞く', 'touch', 45, 'near', 500, 2, 2, '普段入らない専門店で、おすすめを聞いてみよう', '文具店、金物店、靴ひも専門店など。店員さんに一番のおすすめを聞きます。', '混んでいない時間帯に。買わなくてもお礼を言えばOK。'),
+  W(207, 'ご当地の変わった看板・マンホールを5つ探す', 'walk', 45, 'near', 0, 1, 1, '街の変わった看板やマンホールを、5つ探してみよう', '歩きながら、珍しい看板やマンホールの絵柄を5つ写真に撮ります。', '歩きスマホは危ないので、立ち止まって撮りましょう。', 1),
+  W(208, 'サイコロで決めた国の料理を作る', 'make', 90, 'home', 1200, 2, 2, 'サイコロで決まった国の料理を、作ってみよう', '国と主な食材を、サイコロやくじで決めて、1品作ります。', '結果が微妙でも、ネタになります。'),
+  W(209, 'ストリートビューで、世界の街を1時間歩く', 'learn', 60, 'home', 0, 1, 1, '知らない国の街を、画面の中で歩いてみよう', '地図アプリのストリートビューで、行ったことのない国の街を歩きます。', '気に入った場所は、ブックマークしておきましょう。'),
+  W(210, '利き手と逆の手で、1食を食べる', 'body', 20, 'home', 0, 1, 1, '利き手と逆の手で、1食だけ食べてみよう', '1食だけ、利き手ではない方で食べます。こぼしても平気な食事で。', 'スープや熱いものは避けて。'),
+  W(211, '自分のテーマソングの歌詞を3行書く', 'make', 20, 'home', 0, 1, 1, '自分のテーマソングの歌詞を、3行書いてみよう', 'いまの自分を主人公にした歌の歌詞を、3行だけ書きます。', '上手さは気にしないで。'),
+  W(212, '無料の展望スペースで、街を見下ろす', 'walk', 90, 'far', 0, 1, 1, '高いところから、自分の街を見下ろしてみよう', '市役所や商業施設などの、無料で入れる展望スペースから街を眺めます。', '開放時間を、先に調べておきましょう。'),
+  W(213, '道ばたの植物の名前を5つ調べる', 'learn', 40, 'near', 0, 1, 1, '道ばたの植物の名前を、5つ調べてみよう', '近所を歩きながら、気になった植物を撮って、名前を調べます。', '他人の庭には入らず、道から見える範囲で。', 1),
+  W(214, '近所で一番古い建物を探して、由来を調べる', 'learn', 60, 'near', 0, 1, 1, '近所で一番古そうな建物の、由来を調べてみよう', '歩いて古そうな建物を探し、地図アプリや検索で由来を調べます。', '私有地には入らず、外から見るだけで。', 1),
+  W(215, '1年後の自分に、手紙を書く', 'make', 30, 'home', 0, 1, 1, '1年後の自分へ、手紙を書いてみよう', '便箋に書いて保管するか、無料の「未来メール」サービスを使います。', '今のうちの悩みと、楽しみを1つずつ書くと面白いです。'),
+  W(216, '知らない言語の「ありがとう」を3つ覚える', 'learn', 20, 'home', 0, 1, 1, '知らない言語の「ありがとう」を、3つ覚えてみよう', '興味のある国を3つ選んで、「ありがとう」を調べて声に出します。', '発音は、音声で確認できます。'),
+  W(217, '夜の公園で、10分だけ星を見る', 'body', 30, 'near', 0, 1, 1, '星空を、10分だけ見上げてみよう', '明るく人通りのある公園で、10分だけ空を見上げます。', '暗い場所や人通りのない場所は避けましょう。', 1)
+];
+function pickWild(ctx, exclude) {
+  const lvCap = S.stage >= 2 ? 2 : 1; const enCap = ctx.mood <= 1 ? 1 : 2;
+  for (let relax = 0; relax <= 3; relax++) {
+    const list = WILD.filter(w => !exclude.includes(w.id) && w.en <= enCap && (w.lv <= lvCap || relax >= 3) && (relax >= 2 || w.min <= ctx.time) && (relax >= 2 || w.cost <= ctx.budget));
+    if (list.length) return list[Math.floor(Math.random() * list.length)];
+  }
+  return null;
+}
+const hook2 = (e, ctx) => e.wild ? 'せっかくなら、予定外をひとつ。' : hook(e, ctx);
 
 /* ============ icons ============ */
 const I = (p, w) => `<svg viewBox="0 0 24 24" width="${w || 22}" height="${w || 22}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
@@ -573,7 +667,10 @@ function burst(el, col) {
 
 /* ============ render ============ */
 const TABS = [['today', 'きょう'], ['feed', 'みんな'], ['log', 'きろく'], ['me', 'わたし']];
+let lastTab = 'today';
 function render() {
+  const _sc = document.getElementById('scroll'); const _top = _sc ? _sc.scrollTop : 0;
+  const _ob = root.querySelector('.overlay .ibody, .overlay .tutbody'); const _otop = _ob ? _ob.scrollTop : 0;
   const m = curMood(); const acc = m ? MOOD[m].c : '#111418';
   root.setAttribute('data-char', S.char); root.style.setProperty('--accent', acc); root.style.setProperty('--on-accent', onColor(acc));
   const body = tab === 'today' ? viewToday() : tab === 'feed' ? viewFeed() : tab === 'log' ? viewLog() : viewMe();
@@ -584,6 +681,9 @@ function render() {
     ${ov ? renderOverlay() : ''}`;
   const key = ov ? ov + ':' + (ov === 'intro' ? introStep : ov === 'tutorial' ? tutStep : ov === 'ask' ? ci.step : '') : '';
   if (key && key !== lastOvKey) { const el = root.querySelector('.overlay'); if (el) el.classList.add('enter'); }
+  const _sameOv = key && key === lastOvKey;
+  const _nsc = document.getElementById('scroll'); if (_nsc && tab === lastTab) _nsc.scrollTop = _top; lastTab = tab;
+  if (_sameOv) { const nob = root.querySelector('.overlay .ibody, .overlay .tutbody'); if (nob) nob.scrollTop = _otop; }
   lastOvKey = key;
   if (ov === 'tutorial') startTutAnim();
 }
@@ -613,7 +713,7 @@ function planHTML(plan) {
     const added = S.later.some(x => x.evId === e.id); const d = doneToday(e.id);
     const b1 = `<button class="btn ${now ? 'dark' : 'line'}" data-act="now" data-v="${e.id}">いまやる</button>`;
     const b2 = `<button class="btn ${now ? 'line' : 'dark'} ${added ? 'on' : ''}" data-act="later-add" data-v="${e.id}" aria-pressed="${added}">${added ? ICO.check + '入れた' : '予定に入れる'}</button>`;
-    return `<article class="sug ${anim ? 'anim' : ''}" style="animation-delay:${i * 110}ms"><h3>${esc(e.t)}</h3><p class="hk">${esc(hook(e, plan.ctx))}</p><div class="mis">${metaHTML(e)}</div>${d ? '<div class="done-tag">完了</div>' : `<div class="acts">${now ? b1 + b2 : b2 + b1}</div>`}</article>`;
+    return `<article class="sug ${anim ? 'anim' : ''}" style="animation-delay:${i * 110}ms">${e.wild ? '<span class="wildtag">予定外</span>' : ''}<h3>${esc(e.t)}</h3><p class="hk">${esc(hook2(e, plan.ctx))}</p><div class="mis">${metaHTML(e)}</div>${d ? '<div class="done-tag">完了</div>' : `<div class="acts">${now ? b1 + b2 : b2 + b1}</div>`}</article>`;
   }).join('')}<div class="again"><button class="btn ghost" data-act="reroll">ほかの案</button></div></section>`;
 }
 function laterHTML() {
@@ -626,7 +726,8 @@ function buildPlan(reroll) {
   const ctx = reroll && S.plan ? S.plan.ctx : { mood: moodMap(m5), time: ci.time, place: 'any', budget: ci.budget, hint: {}, genres: ci.genres.filter(g => g !== 'any'), when: ci.when || 'now', slot: ci.slot, dt: ci.dt };
   const prev = S.plan && S.plan.date === t ? S.plan : null; let shown = prev ? prev.shown.slice() : [];
   let r = pick(ctx, shown, 3); if (!r.items.length) { shown = []; r = pick(ctx, shown, 3); }
-  S.plan = { date: t, items: r.items.map(e => e.id), ctx, relaxed: r.relaxed, shown: shown.concat(r.items.map(e => e.id)), fresh: true }; save();
+  const w = pickWild(ctx, shown); const items = (w ? r.items.slice(0, 2).concat(w) : r.items).map(e => e.id);
+  S.plan = { date: t, items, ctx, relaxed: r.relaxed, shown: shown.concat(r.items.map(e => e.id), w ? [w.id] : []), fresh: true }; save();
 }
 
 /* ---- feed ---- */
@@ -925,7 +1026,7 @@ root.addEventListener('click', async (ev) => {
     /* intro */
     case 'intro-back': introStep = Math.max(0, introStep - 1); if (introStep === 0) splashSkipped = true; render(); break;
     case 'intro-next':
-      if (introStep === 0 && !splashSkipped && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - splashT0 < 8300) { splashSkipped = true; const el = document.getElementById('splash'); if (el) el.classList.add('skip'); break; }
+      if (introStep === 0 && !splashSkipped && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - splashT0 < 3400) { splashSkipped = true; const el = document.getElementById('splash'); if (el) el.classList.add('skip'); break; }
       if (introStep === 1 && !(S.nickSet && S.nick.trim())) break;
       if (introStep < 4) { introStep++; render(); } else { S.onboarded = true; S.tutorialSeen = false; save(); tutStep = 0; ov = 'tutorial'; render(); } break;
     case 'q1': S.goalCat = v; save(); render(); break;
