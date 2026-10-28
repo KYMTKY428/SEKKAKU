@@ -1,0 +1,609 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>TKY</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=IBM+Plex+Sans+JP:wght@400;500;600&display=swap">
+<style>
+/* Layout: one phone-width column, a quiet notebook page; the only loud thing is the marker-yellow highlight on what you did. */
+:root{
+  --paper:#F6F7F9; --card:#FFFFFF; --ink:#1F2433; --sub:#6A7084; --line:#E3E6EC;
+  --marker:#FFE45C; --markerSoft:#FFF4B0; --blue:#2E4BD6; --blueSoft:#E8ECFF;
+  --t:#2E4BD6; --k:#C27A00; --y:#1E8A5A;
+  --shadow:0 1px 2px rgba(31,36,51,.06),0 6px 18px rgba(31,36,51,.06);
+  --f-display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --f-body:"IBM Plex Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#14161C; --card:#1D2029; --ink:#EEF0F5; --sub:#9AA0B3; --line:#2C303C;
+  --marker:#E8C93A; --markerSoft:#3A3418; --blue:#8DA0FF; --blueSoft:#252C4D;
+  --t:#8DA0FF; --k:#F0B246; --y:#5BC892; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#14161C; --card:#1D2029; --ink:#EEF0F5; --sub:#9AA0B3; --line:#2C303C;
+  --marker:#E8C93A; --markerSoft:#3A3418; --blue:#8DA0FF; --blueSoft:#252C4D;
+  --t:#8DA0FF; --k:#F0B246; --y:#5BC892; --shadow:none; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+.app{max-width:440px;margin:0 auto;padding-block:20px 120px;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;font-weight:700}
+.hello{font-size:26px;line-height:1.35;font-weight:900}
+.hl{background:linear-gradient(transparent 58%,var(--marker) 58%);padding:0 2px}
+.muted{color:var(--sub)}
+.small{font-size:13px}
+.label{font-size:12px;letter-spacing:.08em;color:var(--sub);font-weight:600}
+.sec{display:flex;flex-direction:column;gap:10px}
+.sechead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sechead h2{font-size:17px}
+.link{background:none;border:0;color:var(--blue);font-size:13px;padding:4px 0}
+.cta{display:flex;gap:10px}
+.btn-main{flex:1;border:0;border-radius:18px;background:var(--ink);color:var(--paper);padding:18px 16px;font-family:var(--f-display);font-weight:700;font-size:17px;box-shadow:var(--shadow)}
+.btn-voice{border:1.5px solid var(--ink);background:var(--card);border-radius:18px;padding:0 16px;font-size:13px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:92px}
+.btn-voice svg{width:22px;height:22px}
+.count{font-family:var(--f-display);font-size:15px}
+.count b{font-size:30px;font-weight:900;margin:0 4px;font-variant-numeric:tabular-nums}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow)}
+.tky{display:grid;grid-template-columns:22px 1fr;gap:4px 8px;align-items:baseline}
+.tky .L{font-family:var(--f-display);font-weight:900;font-size:14px}
+.tky .L.t{color:var(--t)} .tky .L.k{color:var(--k)} .tky .L.y{color:var(--y)}
+.tky .v{min-width:0;overflow-wrap:anywhere}
+.tky .v.t{font-weight:600}
+.cardtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px}
+.date{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.tag{font-size:11px;border-radius:999px;padding:2px 8px;background:var(--paper);border:1px solid var(--line);color:var(--sub);white-space:nowrap}
+.tag.sample{background:var(--markerSoft);border-color:transparent;color:var(--ink)}
+.entry{text-align:left;width:100%;cursor:pointer}
+.list{display:flex;flex-direction:column;gap:10px}
+.sugg{background:var(--blueSoft);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.sugg .what{font-family:var(--f-display);font-weight:700;font-size:18px;line-height:1.4}
+.dur{font-size:12px;color:var(--blue);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-size:13px}
+.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pill.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.pill.ghost{background:transparent;border-color:transparent;color:var(--sub)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:13px}
+.chip.on{background:var(--markerSoft);border-color:var(--marker);font-weight:600}
+.empty{border:1.5px dashed var(--line);border-radius:16px;padding:18px;text-align:center;color:var(--sub);display:flex;flex-direction:column;gap:10px;align-items:center}
+.wish{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.wish .tt{min-width:0;overflow-wrap:anywhere}
+.wish .tt b{font-weight:600}
+.temp{font-family:var(--f-display);font-size:13px;color:var(--sub);margin-top:6px}
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding:6px max(16px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:5}
+.nav .in{max-width:440px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav button{background:none;border:0;padding:8px 0;font-size:12px;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:2px}
+.nav button svg{width:22px;height:22px}
+.nav button.on{color:var(--ink);font-weight:600}
+.fab{position:fixed;right:calc(max(16px,env(safe-area-inset-right,0px)) + 4px);bottom:calc(76px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);font-size:28px;box-shadow:var(--shadow);z-index:6}
+@media (min-width:520px){.fab{right:calc(50% - 220px)}}
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(10,12,20,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--paper);width:100%;max-width:480px;max-height:92%;overflow:auto;border-radius:22px 22px 0 0;
+  padding:18px max(18px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
+.sheet h3{font-size:20px}
+.sheettop{display:flex;justify-content:space-between;align-items:center}
+.x{background:none;border:0;font-size:22px;color:var(--sub);padding:4px 8px}
+.q{display:flex;flex-direction:column;gap:8px}
+.q .qq{font-family:var(--f-display);font-weight:700;font-size:16px}
+.q .qq span{font-weight:900;margin-right:6px}
+.field{width:100%;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:12px 14px;outline:none}
+.field:focus{border-color:var(--blue)}
+textarea.field{min-height:120px;resize:vertical;line-height:1.6}
+.moods{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.mood{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:8px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--sub)}
+.mood .e{font-size:24px;line-height:1.2}
+.mood.on{border-color:var(--ink);background:var(--markerSoft);color:var(--ink);font-weight:600}
+.save{border:0;border-radius:16px;background:var(--ink);color:var(--paper);padding:16px;font-family:var(--f-display);font-weight:700;font-size:17px;width:100%}
+.save:disabled{opacity:.4}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;border-radius:9px;padding:8px;font-size:13px}
+.seg button.on{background:var(--ink);color:var(--paper);font-weight:600}
+.note{font-size:12px;color:var(--sub)}
+.confirm{display:flex;flex-direction:column;gap:12px}
+.confirm .rowx{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:center}
+.confirm .rowx .L{font-family:var(--f-display);font-weight:900}
+.thinking{display:flex;gap:8px;align-items:center;color:var(--sub);font-size:14px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--marker);animation:b 1s infinite alternate}
+@keyframes b{to{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(150px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:14px;font-size:14px;z-index:30;max-width:calc(100% - 32px);text-align:center}
+/* reflection */
+.big{font-family:var(--f-display);font-size:22px;font-weight:900;line-height:1.45}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:56px 1fr 28px;gap:10px;align-items:center;font-size:13px}
+.bar .tr{height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar .fi{height:100%;background:var(--marker);border-radius:6px}
+.bar .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--sub)}
+.rank{display:flex;flex-direction:column;gap:6px}
+.rank div{display:flex;gap:10px;align-items:baseline}
+.rank .r{font-family:var(--f-display);font-weight:900;color:var(--k);width:28px}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:90px}
+.months div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}
+.months i{display:block;width:100%;background:var(--marker);border-radius:4px 4px 2px 2px;min-height:2px}
+.months span{font-size:10px;color:var(--sub)}
+.insight{background:var(--markerSoft);border-radius:14px;padding:14px 16px;font-family:var(--f-display);font-weight:700;line-height:1.6}
+.switch{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tog{width:46px;height:28px;border-radius:999px;border:0;background:var(--line);position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--card);transition:left .15s}
+.tog.on{background:var(--y)} .tog.on::after{left:21px}
+.danger{color:#C2412B}
+</style>
+
+<div class="app" id="view" aria-live="polite"></div>
+<button class="fab" id="fab" aria-label="とりあえず記録する">＋</button>
+<nav class="nav" aria-label="メニュー"><div class="in" id="nav"></div></nav>
+<div id="sheetRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+(() => {
+/* ---------- master data ---------- */
+const TRIGGERS = [
+  ['nantonaku','なんとなく'],['sekkaku','せっかくだから'],['kininatteta','気になってた'],
+  ['sasowareta','誘われた'],['susumerareta','すすめられた'],['sns','SNSで見た'],
+  ['jikan','時間があった'],['chikaku','近くにあった'],['hitsuyou','必要になった']];
+const TL = Object.fromEntries(TRIGGERS);
+const TRIGGER_PHRASE = {nantonaku:'なんとなく思い立った時',sekkaku:'「せっかくだから」と思った時',kininatteta:'前から気になっていた時',sasowareta:'誰かに誘われた時',susumerareta:'誰かにすすめられた時',sns:'SNSで見かけた時',jikan:'時間ができた時',chikaku:'たまたま近くにあった時',hitsuyou:'必要に迫られた時'};
+const CATS = [['taberu','食べる'],['iku','行く'],['asobu','遊ぶ'],['manabu','学ぶ'],['shigoto','仕事'],['undou','運動'],['hito','人'],['kau','買う'],['tsukuru','作る'],['other','その他']];
+const CL = Object.fromEntries(CATS);
+const CAT_KW = {
+  tsukuru:['作','料理','陶芸','描','DIY','編み','焼いた','書いてみ'],
+  undou:['歩','走','ジム','ヨガ','ストレッチ','泳','筋トレ','運動','自転車','登山'],
+  taberu:['食','ラーメン','カフェ','コーヒー','飲','ランチ','寿司','パン','スイーツ','定食','居酒屋','バー','お茶','ご飯','頼ん'],
+  asobu:['映画','ゲーム','カラオケ','ライブ','遊','ボウリング','サウナ','温泉'],
+  manabu:['読','本','勉強','学','講座','記事','調べ','語'],
+  shigoto:['仕事','会社','資料','会議','ChatGPT','AI','業務','プレゼン','打ち合わせ'],
+  hito:['連絡','話しかけ','誘っ','友','会った','電話','久しぶり','挨拶'],
+  kau:['買','購入','注文','ポチ'],
+  iku:['行','駅','旅','展示','美術館','道','降り','寄っ','入っ','神社','公園']};
+const MOODS = [[5,'😀','かなりよかった'],[4,'🙂','よかった'],[3,'😐','まあまあ'],[2,'😕','微妙'],[1,'😣','合わなかった']];
+const ME = Object.fromEntries(MOODS.map(m=>[m[0],m[1]]));
+const TEMPS = [['planned','予定あり'],['soon','近いうち'],['someday','いつか']];
+const TEMPL = Object.fromEntries(TEMPS);
+const DUR = {min5:'5分くらい',min30:'30分くらい',holiday:'休日なら'};
+const SUGGESTIONS = [
+ ['s1','買ったことのない飲み物を選ぶ','min5','taberu','買ったことのない飲み物を選んでみた'],
+ ['s2','普段見ないジャンルの記事を読む','min5','manabu','普段見ないジャンルの記事を読んでみた'],
+ ['s3','いつも選ばない飲み物を頼む','min5','taberu','いつも選ばない飲み物を頼んでみた'],
+ ['s4','久しぶりの人に連絡する','min5','hito','久しぶりの人に連絡してみた'],
+ ['s5','知らない曲を1曲だけ聴く','min5','asobu','知らない曲を聴いてみた'],
+ ['s6','窓を開けて空の写真を撮る','min5','other','空の写真を撮ってみた'],
+ ['s7','いつもと違う席に座る','min5','other','いつもと違う席に座ってみた'],
+ ['s8','コンビニの新商品を1つ買う','min5','kau','コンビニの新商品を買ってみた'],
+ ['s9','ストレッチを3分だけ','min5','undou','ストレッチを3分やってみた'],
+ ['s10','AIに今日の晩ごはんを決めてもらう','min5','shigoto','AIに晩ごはんを決めてもらってみた'],
+ ['m1','近所を散歩する','min30','undou','近所を散歩してみた'],
+ ['m2','行ったことのない店に入る','min30','iku','行ったことのない店に入ってみた'],
+ ['m3','一駅歩いてみる','min30','undou','一駅歩いてみた'],
+ ['m4','本屋で表紙買いする','min30','kau','本屋で表紙買いしてみた'],
+ ['m5','いつもと違う道で帰る','min30','iku','いつもと違う道で帰ってみた'],
+ ['m6','冷蔵庫にあるもので一品作る','min30','tsukuru','冷蔵庫にあるもので一品作ってみた'],
+ ['m7','図書館に寄ってみる','min30','manabu','図書館に寄ってみた'],
+ ['m8','朝カフェに行く','min30','taberu','朝カフェに行ってみた'],
+ ['m9','銭湯に入ってみる','min30','asobu','銭湯に行ってみた'],
+ ['m10','気になってたアプリを触ってみる','min30','shigoto','気になってたアプリを使ってみた'],
+ ['h1','行ったことのない駅で降りる','holiday','iku','行ったことのない駅で降りてみた'],
+ ['h2','美術館や展示に行く','holiday','iku','展示に行ってみた'],
+ ['h3','一人映画をしてみる','holiday','asobu','一人映画をしてみた'],
+ ['h4','体験教室に申し込む','holiday','tsukuru','体験教室に行ってみた'],
+ ['h5','知らない町の商店街を歩く','holiday','iku','知らない町の商店街を歩いてみた'],
+ ['h6','作ったことのない料理に挑む','holiday','tsukuru','作ったことのない料理を作ってみた'],
+ ['h7','少し遠くの公園でぼーっとする','holiday','iku','遠くの公園に行ってみた'],
+ ['h8','誰かを誘ってごはんに行く','holiday','hito','誰かを誘ってごはんに行ってみた']
+].map(([id,text,duration,cat,t])=>({id,text,duration,cat,t}));
+// 「挑む」はNGワード寄りなので差し替え
+SUGGESTIONS.find(s=>s.id==='h6').text='作ったことのない料理を作る';
+const NG = [['挑戦','やってみた'],['チャレンジ','やってみた'],['成長',''],['目標',''],['成功',''],['失敗',''],['努力',''],['習慣化',''],['自己改善','']];
+
+/* ---------- utils ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today = () => iso(new Date());
+const md = s => `${Number(s.slice(5,7))}/${Number(s.slice(8,10))}`;
+const uid = () => Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
+const daysAgo = (s) => (Date.parse(today())-Date.parse(s))/864e5;
+const softenNG = s => { let x = String(s||''); for (const [a,b] of NG) x = x.split(a).join(b); return x.trim(); };
+function guessCat(text){
+  const t = String(text||''); let best='other', score=0;
+  for (const [c,kws] of Object.entries(CAT_KW)){ const n = kws.reduce((a,k)=>a+(t.includes(k)?1:0),0); if(n>score){score=n;best=c;} }
+  return best;
+}
+function wishToT(title){
+  const t = title.trim();
+  if (/みたい$/.test(t)) return t.replace(/みたい$/,'みた');
+  if (/行きたい$/.test(t)) return t.replace(/行きたい$/,'行ってみた');
+  if (/たい$/.test(t)) return `「${t.replace(/たい$/,'')}」をやってみた`.replace('」をやってみた','」をやってみた');
+  return `${t}をやってみた`;
+}
+
+/* ---------- state & persistence ---------- */
+const LS_KEY = 'tky-state-v1';
+let S = {entries:[],wishes:[],events:[],settings:{monthlyDigest:true},v:1};
+let store = null; // {save(obj)}
+let tab = 'home';
+try { tab = localStorage.getItem('tky-tab') || 'home'; } catch(e){}
+let view = {recFilter:'all', refMode:'month', refMonth:today().slice(0,7), refYear:today().slice(0,4)};
+function loadLocal(){ try { const v = JSON.parse(localStorage.getItem(LS_KEY)||'null'); if (v && v.entries) S = Object.assign(S,v); } catch(e){} }
+let saveTimer=null;
+function persist(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(e){}
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{ if(store) store.save(JSON.parse(JSON.stringify(S))).catch(()=>{}); }, 700);
+}
+async function connectDb(){
+  try{
+    if(!window.claude || !window.claude.use) return;
+    const [db,user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
+    if(!db || !user || !user.id) return;
+    const id = await user.id(); if(!id) return;
+    const ref = db.doc(`data/users/${id}/state`);
+    let remote = null;
+    try{ const r = await ref.get(); remote = r && (typeof r.data==='function' ? r.data() : (r.data!==undefined ? r.data : r)); }catch(e){}
+    if (remote && Array.isArray(remote.entries)) {
+      S = Object.assign({entries:[],wishes:[],events:[],settings:{monthlyDigest:true},v:1}, remote);
+      try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(e){}
+      render();
+    }
+    store = { save: async (obj)=> ref.set(obj) };
+    if (!remote && (S.entries.length||S.wishes.length)) store.save(JSON.parse(JSON.stringify(S))).catch(()=>{});
+  }catch(e){}
+}
+
+/* ---------- derived ---------- */
+const entriesIn = (prefix) => S.entries.filter(e=>e.done_on.startsWith(prefix));
+const openWishes = () => S.wishes.filter(w=>w.status==='open');
+function pickSuggestion(){
+  const now = new Date(), h = now.getHours(), dow = now.getDay(), holiday = dow===0||dow===6;
+  const durs = holiday ? ['min5','min30','holiday'] : (h>=17 ? ['min5','min30'] : ['min5']);
+  const skipped = new Set(S.events.filter(e=>e.action==='skip' && daysAgo(e.on)<30).map(e=>e.sid));
+  const skippedToday = S.events.some(e=>e.action==='skip' && e.on===today() && e.where==='home');
+  if (skippedToday) return null;
+  const wished = new Set(S.wishes.filter(w=>w.suggestion_id).map(w=>w.suggestion_id));
+  const done = new Set(S.entries.filter(e=>e.suggestion_id).map(e=>e.suggestion_id));
+  const pool = SUGGESTIONS.filter(s=>durs.includes(s.duration) && !skipped.has(s.id) && !wished.has(s.id) && !done.has(s.id));
+  if(!pool.length) return null;
+  const catCount = {}; S.entries.forEach(e=>catCount[e.category_code]=(catCount[e.category_code]||0)+1);
+  const avg = S.entries.length / CATS.length;
+  const weights = pool.map(s => (catCount[s.cat]||0) < avg ? 1.5 : 1);
+  let seed = [...today()].reduce((a,c)=>a*31+c.charCodeAt(0),7) % 100000;
+  const r = (Math.sin(seed)*10000) % 1; const rr = Math.abs(r) * weights.reduce((a,b)=>a+b,0);
+  let acc=0; for (let i=0;i<pool.length;i++){ acc+=weights[i]; if(rr<=acc) return pool[i]; }
+  return pool[0];
+}
+
+/* ---------- icons ---------- */
+const IC = {
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z"/></svg>',
+  wish:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l2.3 4.7 5.2.8-3.7 3.6.9 5.1L12 15.8 7.3 18.2l.9-5.1L4.5 9.5l5.2-.8z"/></svg>',
+  rec:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>',
+  me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20c1.2-3.5 4-5 7-5s5.8 1.5 7 5"/></svg>',
+  talk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>'
+};
+
+/* ---------- render ---------- */
+function renderNav(){
+  const items = [['home','ホーム'],['wish','やってみたい'],['rec','記録'],['me','自分']];
+  $('#nav').innerHTML = items.map(([k,l])=>`<button data-tab="${k}" class="${tab===k?'on':''}" aria-current="${tab===k?'page':'false'}">${IC[k]}<span>${l}</span></button>`).join('');
+}
+function entryCard(e){
+  const mood = e.y_mood ? ` ${ME[e.y_mood]}` : '';
+  return `<button class="card entry" data-edit="${e.id}">
+    <div class="cardtop"><span class="date">${md(e.done_on)}</span><span class="row" style="gap:6px">${e.sample?'<span class="tag sample">見本</span>':''}${e.kind==='wished'?'<span class="tag">前からやりたかった</span>':''}<span class="tag">${esc(CL[e.category_code]||'その他')}</span></span></div>
+    <div class="tky">
+      <span class="L t">T</span><span class="v t">${esc(e.t_text)}</span>
+      ${(e.k_text||e.k_trigger_codes?.length)?`<span class="L k">K</span><span class="v">${esc(e.k_text || e.k_trigger_codes.map(c=>TL[c]).join('・'))}</span>`:''}
+      ${(e.y_text||e.y_mood)?`<span class="L y">Y</span><span class="v">${esc(e.y_text||'')}${mood}</span>`:''}
+    </div></button>`;
+}
+function suggCard(s, where){
+  return `<div class="sugg"><div><div class="dur">${DUR[s.duration]}</div><div class="what">${esc(s.text)}</div></div>
+    <div class="row"><button class="pill primary" data-try="${s.id}">今やってみる</button><button class="pill" data-swish="${s.id}">やってみたい</button><button class="pill ghost" data-skip="${s.id}" data-where="${where}">今日はいいや</button></div></div>`;
+}
+function renderHome(){
+  const ym = today().slice(0,7), m = Number(ym.slice(5));
+  const n = entriesIn(ym).length;
+  const recent = [...S.entries].sort((a,b)=>b.done_on.localeCompare(a.done_on)||b.created_at-a.created_at).slice(0,3);
+  const s = pickSuggestion();
+  const ws = openWishes().slice(0,4);
+  const tryingNow = S.events.find(e=>e.action==='try_now' && e.on===today() && !S.entries.some(x=>x.suggestion_id===e.sid));
+  return `
+  <header class="sec"><span class="label">${m}月${new Date().getDate()}日</span><h1 class="hello">今日、<span class="hl">なんかやってみた？</span></h1></header>
+  <div class="cta"><button class="btn-main" data-open="form">＋ とりあえず記録する</button><button class="btn-voice" data-open="talk">${IC.talk}話して残す</button></div>
+  <div class="count">${n?`${m}月は<b>${n}</b>個やってみた`:`${m}月は、これから。`}</div>
+  ${tryingNow?(()=>{const ts=SUGGESTIONS.find(x=>x.id===tryingNow.sid);return ts?`<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div><div class="label">やってる途中</div><b>${esc(ts.text)}</b></div><button class="pill primary" data-done-sugg="${ts.id}">やったら教えて</button></div>`:''})():''}
+  <section class="sec"><div class="sechead"><h2>最近のやってみた</h2>${S.entries.length?'<button class="link" data-tab="rec">ぜんぶ見る</button>':''}</div>
+    ${recent.length?`<div class="list">${recent.map(entryCard).join('')}</div>`:
+    `<div class="empty"><div>まだ何もないけど、それで大丈夫。<br>小さなことでも「やってみた」は残せます。</div><button class="pill" data-sample="1">見本データで雰囲気を見る</button></div>`}
+  </section>
+  <section class="sec"><div class="sechead"><h2>こんなのどう？</h2><button class="link" data-tab="wish" data-goto="sugg">ほかにも</button></div>
+    ${s?suggCard(s,'home'):`<div class="empty small">今日はこのへんで。また今度。</div>`}</section>
+  <section class="sec"><div class="sechead"><h2>やってみたいこと</h2><button class="link" data-tab="wish">${ws.length?'もっと見る':'追加する'}</button></div>
+    ${ws.length?`<div class="chips">${ws.map(w=>`<button class="chip" data-wdone="${w.id}">${esc(w.title)}</button>`).join('')}</div><div class="note">タップすると「やってみた」として残せます</div>`:`<div class="note">「ちょっと気になる」を置いておく場所です</div>`}
+  </section>`;
+}
+function renderWish(){
+  const groups = TEMPS.map(([k,l])=>{
+    const items = openWishes().filter(w=>(w.temperature||'someday')===k);
+    if(!items.length) return '';
+    return `<div class="temp">${l}</div><div class="list">${items.map(w=>`
+      <div class="card wish"><div class="tt"><b>${esc(w.title)}</b>${w.sample?' <span class="tag sample">見本</span>':''}${(w.trigger_text||w.trigger_codes?.length)?`<div class="small muted">${esc(w.trigger_text||w.trigger_codes.map(c=>TL[c]).join('・'))}</div>`:''}</div>
+      <div class="row" style="flex:none;flex-direction:column;gap:4px;align-items:flex-end"><button class="pill primary" data-wdone="${w.id}">やってみた</button><button class="link" style="color:var(--sub)" data-wlet="${w.id}">もういいかな</button></div></div>`).join('')}</div>`;
+  }).join('');
+  const now = new Date(), holiday = now.getDay()===0||now.getDay()===6;
+  const wished = new Set(S.wishes.filter(w=>w.suggestion_id).map(w=>w.suggestion_id));
+  const skipped = new Set(S.events.filter(e=>e.action==='skip' && daysAgo(e.on)<30).map(e=>e.sid));
+  const byDur = ['min5','min30','holiday'].map(d=>{
+    const list = SUGGESTIONS.filter(s=>s.duration===d && !wished.has(s.id) && !skipped.has(s.id));
+    const off = (Number(today().slice(8))*3) % Math.max(1,list.length);
+    const three = [...list.slice(off),...list.slice(0,off)].slice(0,3);
+    return `<div class="temp">${DUR[d]}${d==='holiday'&&holiday?'（今日がそう）':''}</div><div class="list">${three.map(s=>`
+      <div class="card wish"><div class="tt"><b>${esc(s.text)}</b></div><div class="row" style="flex:none;gap:6px"><button class="pill" data-try="${s.id}">今やる</button><button class="pill" data-swish="${s.id}">保存</button></div></div>`).join('')}</div>`;
+  }).join('');
+  return `<header class="sechead"><h1 class="hello" style="font-size:24px">やってみたいこと</h1><button class="pill primary" data-open="wish">＋ 追加</button></header>
+  ${openWishes().length?`<section class="sec">${groups}</section>`:`<div class="empty"><div>「ちょっと気になる」を忘れないための場所。<br>期限も優先順位もありません。</div><button class="pill" data-open="wish">最初の1つを置いてみる</button></div>`}
+  <section class="sec" id="sugg"><div class="sechead"><h2>こんなのどう？</h2></div><div class="note">気が向いたら。やらなくても何も起きません。</div>${byDur}</section>`;
+}
+function renderRec(){
+  const list = [...S.entries].filter(e=>view.recFilter==='all'||e.category_code===view.recFilter)
+    .sort((a,b)=>b.done_on.localeCompare(a.done_on)||b.created_at-a.created_at);
+  const used = [...new Set(S.entries.map(e=>e.category_code))];
+  let html = `<header class="sec"><h1 class="hello" style="font-size:24px">あなたの<span class="hl">「やってみた」</span></h1><div class="muted small">これまでに ${S.entries.length} 個</div></header>`;
+  if (used.length>1) html += `<div class="chips"><button class="chip ${view.recFilter==='all'?'on':''}" data-rf="all">ぜんぶ</button>${CATS.filter(c=>used.includes(c[0])).map(([k,l])=>`<button class="chip ${view.recFilter===k?'on':''}" data-rf="${k}">${l}</button>`).join('')}</div>`;
+  if(!list.length) return html + `<div class="empty"><div>ここに「やってみた」が並びます。</div><button class="pill" data-open="form">とりあえず1つ残す</button></div>`;
+  let cur=''; let out='';
+  for(const e of list){ const ym=e.done_on.slice(0,7); if(ym!==cur){ if(cur) out+='</div>'; cur=ym; out+=`<div class="temp">${ym.slice(0,4)}年${Number(ym.slice(5))}月</div><div class="list">`; } out+=entryCard(e); }
+  return html + `<section class="sec">${out}</div></section>`;
+}
+function stats(list){
+  const cat={}, trg={}; let moodN=0, good=0;
+  list.forEach(e=>{ cat[e.category_code]=(cat[e.category_code]||0)+1; (e.k_trigger_codes||[]).forEach(t=>trg[t]=(trg[t]||0)+1); if(e.y_mood){moodN++; if(e.y_mood>=4) good++;} });
+  const catS = Object.entries(cat).sort((a,b)=>b[1]-a[1]);
+  const trgS = Object.entries(trg).sort((a,b)=>b[1]-a[1]);
+  const withK = list.filter(e=>(e.k_trigger_codes||[]).length).length;
+  return {catS,trgS,moodN,good,withK};
+}
+function renderMe(){
+  const isM = view.refMode==='month';
+  const prefix = isM ? view.refMonth : view.refYear;
+  const list = entriesIn(prefix);
+  const st = stats(list);
+  const label = isM ? `${Number(prefix.slice(5))}月` : `${prefix}年`;
+  const max = st.catS.length ? st.catS[0][1] : 1;
+  let cats = st.catS.slice(0,5); const rest = st.catS.slice(5).reduce((a,b)=>a+b[1],0); if(rest) cats.push(['other_rest',rest]);
+  const insight = (st.withK>=8 && st.trgS.length && st.trgS[0][1]/st.withK>=0.3) ? `あなたは${TRIGGER_PHRASE[st.trgS[0][0]]}に新しいことを始めることが多いようです。` : '';
+  let yearBars='';
+  if(!isM){
+    const counts = Array.from({length:12},(_,i)=>entriesIn(`${prefix}-${pad(i+1)}`).length); const mx=Math.max(1,...counts);
+    yearBars = `<section class="sec"><h2 style="font-size:16px">月ごとの「やってみた」</h2><div class="months" role="img" aria-label="月ごとの件数">${counts.map((c,i)=>`<div><i style="height:${Math.round(c/mx*70)}px"></i><span>${i+1}</span></div>`).join('')}</div></section>`;
+    const wishedN = list.filter(e=>e.kind==='wished').length;
+    const again = list.filter(e=>(e.y_tags||[]).includes('mata_yaritai') || /またやりたい/.test(e.y_text||''));
+    yearBars += `<section class="sec"><div class="card small">「やってみたい」から「やってみた」になったこと：<b>${wishedN}個</b></div>${again.length?`<div class="sec"><h2 style="font-size:16px">「またやりたい」</h2><div class="chips">${again.map(e=>`<span class="chip">${esc(e.t_text)}</span>`).join('')}</div></div>`:''}</section>`;
+  }
+  const empty = !list.length;
+  return `<header class="sechead"><h1 class="hello" style="font-size:24px">自分</h1></header>
+  <div class="seg" role="tablist"><button class="${isM?'on':''}" data-rm="month">月</button><button class="${!isM?'on':''}" data-rm="year">年</button></div>
+  <div class="sechead"><button class="pill ghost" data-rp="-1" aria-label="前へ">◀</button><b class="count" style="font-size:18px">${label}のあなた</b><button class="pill ghost" data-rp="1" aria-label="次へ">▶</button></div>
+  ${empty?`<div class="empty">${label}は、のんびり。<br>そういう時期もあります。</div>`:`
+  <div class="big">${label}、<span class="hl">${list.length}個</span>の新しいことをやってみました。</div>
+  ${insight?`<div class="insight">${esc(insight)}</div>`:''}
+  <section class="sec"><h2 style="font-size:16px">どんなこと？</h2><div class="bars">${cats.map(([k,n])=>`<div class="bar"><span>${k==='other_rest'?'ほか':esc(CL[k]||'その他')}</span><div class="tr"><div class="fi" style="width:${Math.round(n/max*100)}%"></div></div><span class="n">${n}</span></div>`).join('')}</div></section>
+  ${st.trgS.length?`<section class="sec"><h2 style="font-size:16px">多かった「きっかけ」</h2><div class="rank">${st.trgS.slice(0,3).map(([k,n],i)=>`<div><span class="r">${i+1}位</span><span>${esc(TL[k])}</span><span class="muted small">${n}回</span></div>`).join('')}</div></section>`:''}
+  ${st.moodN?`<section class="sec"><h2 style="font-size:16px">やってみて</h2><div>「やってみた」のうち <b class="count" style="font-size:22px">${Math.round(st.good/st.moodN*100)}%</b> が「やってよかった」</div></section>`:''}
+  `}
+  ${yearBars}
+  <section class="sec" style="margin-top:12px"><h2 style="font-size:16px">設定</h2>
+    <div class="card switch"><div><b>月末のまとめ</b><div class="small muted">月末に1回だけ「${Number(today().slice(5,7))}月のやってみた、まとめたよ」をお知らせ。記録が0件の月は送りません。</div></div><button class="tog ${S.settings.monthlyDigest?'on':''}" id="digest" aria-pressed="${S.settings.monthlyDigest}" aria-label="月末のまとめ"></button></div>
+    <div class="note">このプロトタイプでは通知は実際には届きません。記録はあなたのアカウントにだけ保存されます。</div>
+    ${S.entries.some(e=>e.sample)||S.wishes.some(w=>w.sample)?'<button class="pill" data-clearsample="1">見本データを消す</button>':''}
+  </section>`;
+}
+function render(){
+  renderNav();
+  const v = $('#view');
+  v.innerHTML = tab==='home'?renderHome():tab==='wish'?renderWish():tab==='rec'?renderRec():renderMe();
+  $('#fab').hidden = tab==='home';
+}
+
+/* ---------- sheet ---------- */
+function closeSheet(){ $('#sheetRoot').innerHTML=''; }
+function sheet(inner){
+  $('#sheetRoot').innerHTML = `<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true">${inner}</div></div>`;
+  $('#scrim').addEventListener('click',e=>{ if(e.target.id==='scrim') closeSheet(); });
+  const f = $('#sheetRoot').querySelector('input,textarea'); if(f) setTimeout(()=>f.focus(),50);
+}
+function toast(msg){ const r=$('#toastRoot'); r.innerHTML=`<div class="toast" role="status">${esc(msg)}</div>`; setTimeout(()=>{ r.innerHTML=''; },2200); }
+
+let draft = null;
+function openForm(pre={}){
+  const ex = pre.editId ? S.entries.find(e=>e.id===pre.editId) : null;
+  draft = Object.assign({t_text:'',k_trigger_codes:[],k_text:'',y_mood:null,y_text:'',done_on:today(),category_code:null,kind:'spontaneous'}, ex||{}, pre);
+  drawForm(!!ex);
+}
+function drawForm(isEdit){
+  const d = draft;
+  sheet(`<div class="sheettop"><h3>${isEdit?'記録をなおす':'なんかやってみた？'}</h3><button class="x" data-close aria-label="閉じる">×</button></div>
+  <div class="q"><label class="qq" for="ft"><span style="color:var(--t)">T</span>何をやってみた？</label><input class="field" id="ft" maxlength="60" placeholder="例：初めて朝カフェに行った" value="${esc(d.t_text)}"></div>
+  <div class="q"><div class="qq"><span style="color:var(--k)">K</span>きっかけは？</div>
+    <div class="chips">${TRIGGERS.map(([k,l])=>`<button class="chip ${d.k_trigger_codes.includes(k)?'on':''}" data-kt="${k}" aria-pressed="${d.k_trigger_codes.includes(k)}">${l}</button>`).join('')}</div>
+    <input class="field" id="fk" maxlength="80" placeholder="ひとこと（なくてもOK）" value="${esc(d.k_text)}"></div>
+  <div class="q"><div class="qq"><span style="color:var(--y)">Y</span>やってみてどうだった？</div>
+    <div class="moods">${MOODS.map(([v,e,l])=>`<button class="mood ${d.y_mood===v?'on':''}" data-mood="${v}" aria-pressed="${d.y_mood===v}"><span class="e">${e}</span>${l}</button>`).join('')}</div>
+    <input class="field" id="fy" maxlength="80" placeholder="ひとこと（例：またやりたい）" value="${esc(d.y_text)}"></div>
+  <div class="row" style="align-items:center;justify-content:space-between"><label class="small muted" for="fd">やった日</label><input type="date" id="fd" class="field" style="width:auto;padding:8px 10px" value="${esc(d.done_on)}" max="${today()}"></div>
+  ${isEdit?`<div class="row" style="align-items:center;justify-content:space-between"><label class="small muted" for="fc">カテゴリ</label><select id="fc" class="field" style="width:auto;padding:8px 10px">${CATS.map(([k,l])=>`<option value="${k}" ${d.category_code===k?'selected':''}>${l}</option>`).join('')}</select></div>`:''}
+  <button class="save" id="fsave" ${d.t_text.trim()?'':'disabled'}>これで残す</button>
+  ${isEdit?`<div id="delwrap"><button class="link danger" id="del">この記録を消す</button></div>`:'<div class="note" style="text-align:center">書くのはTだけでも大丈夫。カテゴリは自動でつきます。</div>'}`);
+  const sync=()=>{ draft.t_text=$('#ft').value; draft.k_text=$('#fk').value; draft.y_text=$('#fy').value; draft.done_on=$('#fd').value||today(); if($('#fc')) draft.category_code=$('#fc').value; $('#fsave').disabled=!draft.t_text.trim(); };
+  ['#ft','#fk','#fy','#fd','#fc'].forEach(s=>{ const el=$(s); if(el) el.addEventListener('input',sync); });
+  $('#sheetRoot').querySelectorAll('[data-kt]').forEach(b=>b.addEventListener('click',()=>{ sync(); const k=b.dataset.kt; const a=draft.k_trigger_codes; draft.k_trigger_codes = a.includes(k)?a.filter(x=>x!==k):[...a,k]; b.classList.toggle('on'); b.setAttribute('aria-pressed', draft.k_trigger_codes.includes(k)); }));
+  $('#sheetRoot').querySelectorAll('[data-mood]').forEach(b=>b.addEventListener('click',()=>{ sync(); const v=Number(b.dataset.mood); draft.y_mood = draft.y_mood===v?null:v; $('#sheetRoot').querySelectorAll('[data-mood]').forEach(x=>{const on=Number(x.dataset.mood)===draft.y_mood; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on);}); }));
+  $('#fsave').addEventListener('click',()=>{ sync(); saveEntry(isEdit); });
+  if(isEdit) $('#del').addEventListener('click',()=>{ $('#delwrap').innerHTML=`<div class="row" style="align-items:center"><span class="small">本当に消す？</span><button class="pill danger" id="delok">消す</button><button class="pill ghost" id="delno">やめる</button></div>`;
+    $('#delok').addEventListener('click',()=>{ S.entries=S.entries.filter(e=>e.id!==draft.id); const w=S.wishes.find(w=>w.converted_entry_id===draft.id); if(w){w.status='open';w.converted_entry_id=null;} persist(); closeSheet(); render(); toast('消しました'); });
+    $('#delno').addEventListener('click',()=>drawForm(true)); });
+}
+function saveEntry(isEdit){
+  const d = draft;
+  const rec = {
+    id: d.id || uid(), t_text: softenNG(d.t_text).slice(0,60), k_trigger_codes: d.k_trigger_codes||[], k_text: softenNG(d.k_text).slice(0,80),
+    y_mood: d.y_mood||null, y_text: softenNG(d.y_text).slice(0,80), y_tags: d.y_tags || (/またやりたい|また行きたい/.test(d.y_text)?['mata_yaritai']:[]),
+    category_code: d.category_code || guessCat(`${d.t_text} ${d.k_text}`), category_source: (isEdit && d.category_code && d.category_source==='user') ? 'user' : (d.category_source||'ai'),
+    kind: d.kind||'spontaneous', wish_id: d.wish_id||null, suggestion_id: d.suggestion_id||null, input_method: d.input_method||'text', transcript: d.transcript||null,
+    done_on: d.done_on||today(), created_at: d.created_at||Date.now(), updated_at: Date.now(), sample: !!d.sample };
+  if(isEdit){ const old=S.entries.find(e=>e.id===rec.id); if(old && old.category_code!==rec.category_code) rec.category_source='user'; S.entries=S.entries.map(e=>e.id===rec.id?rec:e); }
+  else S.entries.push(rec);
+  if(rec.wish_id){ const w=S.wishes.find(w=>w.id===rec.wish_id); if(w){ w.status='done'; w.converted_entry_id=rec.id; w.closed_at=Date.now(); } }
+  if(rec.suggestion_id && !isEdit) S.events.push({sid:rec.suggestion_id,action:'done',on:today()});
+  persist(); closeSheet(); render();
+  if(!isEdit){ const yearN = entriesIn(today().slice(0,4)).length; toast(`残した。今年${yearN}個目のやってみた`); } else toast('なおしました');
+}
+
+/* ---------- talk (AI) ---------- */
+let sampleFn = null, sampleTried = false;
+async function getSample(){ if(sampleTried) return sampleFn; sampleTried=true; try{ sampleFn = window.claude && window.claude.use ? await window.claude.use('sample') : null; }catch(e){ sampleFn=null; } return sampleFn; }
+function openTalk(text=''){
+  sheet(`<div class="sheettop"><h3>話すように書いてOK</h3><button class="x" data-close aria-label="閉じる">×</button></div>
+  <div class="note">何をやって、なんで、どうだった？を思いつくまま。スマホならキーボードのマイクで音声入力すると、そのまま話すだけで残せます。</div>
+  <textarea class="field" id="talk" placeholder="例：今日会社帰りに、いつもと違う道を歩いてみた。天気がよかったからなんとなく。途中でいい店を見つけて楽しかった。">${esc(text)}</textarea>
+  <button class="save" id="tgo" ${text.trim()?'':'disabled'}>整理してもらう</button>
+  <div id="tout"></div>`);
+  const ta=$('#talk'); ta.addEventListener('input',()=>{$('#tgo').disabled=!ta.value.trim();});
+  $('#tgo').addEventListener('click',()=>structure(ta.value));
+}
+function heuristic(text){
+  const parts = text.replace(/\s+/g,'').split(/[。！!？?\n]/).filter(Boolean);
+  const kIdx = parts.findIndex(p=>/(から|ので|なんとなく|せっかく|誘われ|すすめ|気になって|見て)/.test(p));
+  const t = parts[0]||text; const k = kIdx>0?parts[kIdx]:''; const y = parts.length>1 && parts.length-1!==kIdx ? parts[parts.length-1] : '';
+  let mood=null; if(/最高|すごくよかった|めっちゃ/.test(y)) mood=5; else if(/楽しかった|よかった|嬉しかった|美味しかった|おいしかった|意外と/.test(y)) mood=4; else if(/まあまあ|普通/.test(y)) mood=3; else if(/微妙|イマイチ/.test(y)) mood=2; else if(/合わなかった|疲れた|しんどかった/.test(y)) mood=1;
+  const trg = TRIGGERS.filter(([c,l])=>k.includes(l.replace('だから',''))||(c==='sasowareta'&&/誘われ/.test(k))||(c==='susumerareta'&&/すすめ|勧め/.test(k))||(c==='sns'&&/SNS|インスタ|Instagram|X|TikTok/.test(k))).map(x=>x[0]);
+  return {t_text:t.replace(/^(今日|昨日)(、)?/,'').slice(0,40), k_trigger_codes:trg, k_text:k, y_mood:mood, y_text:y, y_tags:/またやりたい/.test(y)?['mata_yaritai']:[], category_code:guessCat(text), is_wish:/やってみたい$|行ってみたい$|みたいな$/.test(parts.at(-1)||''), done_on_hint:/昨日/.test(text)?'yesterday':'today'};
+}
+async function structure(text){
+  const out=$('#tout'); $('#tgo').disabled=true;
+  out.innerHTML=`<div class="thinking"><span class="dot"></span>ちょっと整理中…</div>`;
+  let r=null; const s = await getSample();
+  if(s){
+    const prompt = `あなたは「とりあえずやってみたこと」を短く整理する係です。次の話をJSONだけで返してください。
+ルール：
+- 本人の言葉をできるだけ残す。言っていないことは足さない。
+- t_text は「〜してみた」「〜に行った」の形で30字以内。
+- k・y の情報が話になければ null。推測で埋めない。
+- 「挑戦」「成長」「目標」「成功」「失敗」「努力」「習慣」は使わない。反省や次のアクションは書かない。
+- k_trigger_codes は次から該当するものだけ：${TRIGGERS.map(t=>t[0]+'='+t[1]).join(', ')}
+- y_mood は 5=かなりよかった 4=よかった 3=まあまあ 2=微妙 1=合わなかった、話から読めなければ null
+- y_tags は mata_yaritai / igai_to / ikkai_de_manzoku / awanakatta から該当するもの
+- category_code は ${CATS.map(c=>c[0]+'='+c[1]).join(', ')} から1つ
+- done_on_hint は today / yesterday / 不明なら today
+- まだやっていない「やってみたい」話なら is_wish=true
+形式：{"t_text":"","k_trigger_codes":[],"k_text":null,"y_mood":null,"y_text":null,"y_tags":[],"category_code":"other","done_on_hint":"today","is_wish":false}
+話：${text}`;
+    try{
+      r = typeof s.json==='function' ? await s.json(prompt,{modelTier:'quick'}) : null;
+      if(!r){ const t = await s(prompt,{modelTier:'quick'}); const m = (t.text||'').match(/\{[\s\S]*\}/); r = m?JSON.parse(m[0]):null; }
+    }catch(e){ r=null; }
+  }
+  if(!r || !r.t_text) r = heuristic(text);
+  const d = new Date(); if(r.done_on_hint==='yesterday') d.setDate(d.getDate()-1);
+  draft = {t_text:softenNG(r.t_text||''), k_trigger_codes:(r.k_trigger_codes||[]).filter(c=>TL[c]), k_text:softenNG(r.k_text||''), y_mood:[1,2,3,4,5].includes(r.y_mood)?r.y_mood:null, y_text:softenNG(r.y_text||''), y_tags:r.y_tags||[], category_code:CL[r.category_code]?r.category_code:guessCat(text), done_on:iso(d), kind:'spontaneous', input_method:'voice', transcript:text};
+  if(r.is_wish){
+    out.innerHTML=`<div class="card confirm"><div>これはまだ「やってみたい」かも。</div><div class="row"><button class="pill primary" id="asw">やってみたいに入れとく</button><button class="pill" id="asr">やってみたとして残す</button></div></div>`;
+    $('#asw').addEventListener('click',()=>{ addWish({title:(r.t_text||text).replace(/してみた$/,'してみたい').slice(0,60), trigger_text:draft.k_text}); closeSheet(); render(); toast('やってみたいに入れました'); });
+    $('#asr').addEventListener('click',()=>drawConfirm(out,text));
+    return;
+  }
+  drawConfirm(out,text);
+}
+function drawConfirm(out,text){
+  const d=draft;
+  out.innerHTML=`<div class="card confirm"><div class="label">こんな感じ？ ${sampleFn?'':'<span class="muted">（簡易整理）</span>'}</div>
+    <div class="rowx"><span class="L" style="color:var(--t)">T</span><input class="field" id="ct" value="${esc(d.t_text)}" aria-label="何をやってみた"></div>
+    <div class="rowx"><span class="L" style="color:var(--k)">K</span><input class="field" id="ck" value="${esc(d.k_text || d.k_trigger_codes.map(c=>TL[c]).join('・'))}" placeholder="きっかけ（なくてもOK）" aria-label="きっかけ"></div>
+    <div class="rowx"><span class="L" style="color:var(--y)">Y</span><input class="field" id="cy" value="${esc(d.y_text)}" placeholder="やってみて（なくてもOK）" aria-label="やってみて"></div>
+    <div class="moods">${MOODS.map(([v,e,l])=>`<button class="mood ${d.y_mood===v?'on':''}" data-cm="${v}"><span class="e">${e}</span>${l}</button>`).join('')}</div>
+    <button class="save" id="csave">これで残す</button>
+    <button class="link" id="cagain">もう一回話す</button></div>`;
+  out.querySelectorAll('[data-cm]').forEach(b=>b.addEventListener('click',()=>{ const v=Number(b.dataset.cm); draft.y_mood=draft.y_mood===v?null:v; out.querySelectorAll('[data-cm]').forEach(x=>x.classList.toggle('on',Number(x.dataset.cm)===draft.y_mood)); }));
+  $('#csave').addEventListener('click',()=>{ draft.t_text=$('#ct').value; const kv=$('#ck').value; draft.k_text = kv===draft.k_trigger_codes.map(c=>TL[c]).join('・') ? '' : kv; draft.y_text=$('#cy').value; if(!draft.t_text.trim()) return; saveEntry(false); });
+  $('#cagain').addEventListener('click',()=>openTalk(text));
+  out.scrollIntoView({block:'nearest'});
+}
+
+/* ---------- wishes ---------- */
+function addWish(o){ S.wishes.push(Object.assign({id:uid(),title:'',trigger_codes:[],trigger_text:'',category_code:guessCat(o.title),temperature:'someday',planned_on:null,source:'user',suggestion_id:null,status:'open',converted_entry_id:null,created_at:Date.now(),closed_at:null},o)); persist(); }
+function openWishForm(){
+  let codes=[], temp='someday';
+  sheet(`<div class="sheettop"><h3>やってみたいことは？</h3><button class="x" data-close aria-label="閉じる">×</button></div>
+  <input class="field" id="wt" maxlength="60" placeholder="例：陶芸をやってみたい">
+  <div class="q"><div class="qq" style="font-size:14px">きっかけ（なくてもOK）</div><div class="chips">${TRIGGERS.map(([k,l])=>`<button class="chip" data-wk="${k}">${l}</button>`).join('')}</div><input class="field" id="wk" maxlength="80" placeholder="例：Instagramで見て気になった"></div>
+  <div class="q"><div class="qq" style="font-size:14px">温度感</div><div class="chips">${TEMPS.slice().reverse().map(([k,l])=>`<button class="chip ${k===temp?'on':''}" data-wtemp="${k}">${l}</button>`).join('')}</div></div>
+  <button class="save" id="wsave" disabled>置いておく</button>`);
+  $('#wt').addEventListener('input',()=>{$('#wsave').disabled=!$('#wt').value.trim();});
+  $('#sheetRoot').querySelectorAll('[data-wk]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.wk; codes=codes.includes(k)?codes.filter(x=>x!==k):[...codes,k]; b.classList.toggle('on');}));
+  $('#sheetRoot').querySelectorAll('[data-wtemp]').forEach(b=>b.addEventListener('click',()=>{temp=b.dataset.wtemp; $('#sheetRoot').querySelectorAll('[data-wtemp]').forEach(x=>x.classList.toggle('on',x.dataset.wtemp===temp));}));
+  $('#wsave').addEventListener('click',()=>{ const t=$('#wt').value.trim(); if(!t) return; addWish({title:softenNG(t),trigger_codes:codes,trigger_text:softenNG($('#wk').value),temperature:temp}); closeSheet(); render(); toast('置いておきました'); });
+}
+function wishDone(id){
+  const w=S.wishes.find(x=>x.id===id); if(!w) return;
+  const k = w.trigger_text ? `前に${w.trigger_text.replace(/^前に/,'')}` : '前から気になってた';
+  openForm({t_text:wishToT(w.title), k_text:k, k_trigger_codes:w.trigger_codes?.length?w.trigger_codes:['kininatteta'], kind:'wished', wish_id:w.id, category_code:w.category_code, sample:w.sample});
+}
+
+/* ---------- sample data ---------- */
+function loadSamples(){
+  const t=new Date(); const dd=n=>{const d=new Date(t); d.setDate(d.getDate()-n); return iso(d);};
+  const mk=(n,T,kc,K,m,Y,cat)=>({id:uid(),t_text:T,k_trigger_codes:kc,k_text:K,y_mood:m,y_text:Y,y_tags:/またやりたい/.test(Y)?['mata_yaritai']:[],category_code:cat,category_source:'ai',kind:'spontaneous',wish_id:null,suggestion_id:null,input_method:'text',transcript:null,done_on:dd(n),created_at:Date.now()-n*864e5,updated_at:Date.now(),sample:true});
+  S.entries.push(
+    mk(0,'初めて朝カフェに行った',['jikan'],'少し早く起きたから',4,'思ったより落ち着いた','taberu'),
+    mk(2,'一駅歩いてみた',['nantonaku'],'天気がよくて',5,'またやりたい','undou'),
+    mk(4,'ChatGPTで資料を作ってみた',['hitsuyou'],'締切が近かった',4,'思ったより簡単だった','shigoto'),
+    mk(6,'同僚に誘われてボルダリング',['sasowareta'],'',3,'腕がパンパン','asobu'),
+    mk(9,'行ったことのない駅で降りた',['sekkaku'],'せっかくの休みだったから',5,'いい古本屋があった','iku'),
+    mk(12,'いつもと違うコーヒーを頼んだ',['nantonaku'],'',2,'一回で満足','taberu'));
+  addWish({title:'陶芸をやってみたい',trigger_codes:['sns'],trigger_text:'Instagramで見て気になった',temperature:'someday',sample:true});
+  addWish({title:'韓国料理を作ってみたい',temperature:'soon',sample:true});
+  addWish({title:'上野の展示に行きたい',trigger_codes:['kininatteta'],temperature:'planned',sample:true});
+  persist(); render(); toast('見本を入れました。自分タブから消せます');
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',(ev)=>{
+  const b = ev.target.closest('button'); if(!b) return;
+  const D = b.dataset;
+  if(D.close!==undefined){ closeSheet(); return; }
+  if(D.tab){ tab=D.tab; try{localStorage.setItem('tky-tab',tab);}catch(e){} render(); window.scrollTo(0,0); if(D.goto){ const el=document.getElementById(D.goto); if(el) el.scrollIntoView(); } return; }
+  if(D.open==='form'){ openForm(); return; }
+  if(D.open==='talk'){ openTalk(); return; }
+  if(D.open==='wish'){ openWishForm(); return; }
+  if(D.edit){ openForm({editId:D.edit}); return; }
+  if(D.wdone){ wishDone(D.wdone); return; }
+  if(D.wlet){ const w=S.wishes.find(x=>x.id===D.wlet); if(w){ w.status='let_go'; w.closed_at=Date.now(); persist(); render(); toast('そっと置いておきました'); } return; }
+  if(D.try){ const s=SUGGESTIONS.find(x=>x.id===D.try); S.events.push({sid:s.id,action:'try_now',on:today()}); persist(); tab='home'; render(); window.scrollTo(0,0); toast('いってらっしゃい。やったら教えて'); return; }
+  if(D.doneSugg){ const s=SUGGESTIONS.find(x=>x.id===D.doneSugg); openForm({t_text:s.t, kind:'suggested', suggestion_id:s.id, category_code:s.cat}); return; }
+  if(D.swish){ const s=SUGGESTIONS.find(x=>x.id===D.swish); addWish({title:s.text,source:'suggestion',suggestion_id:s.id,category_code:s.cat}); S.events.push({sid:s.id,action:'saved',on:today()}); persist(); render(); toast('やってみたいに入れました'); return; }
+  if(D.skip){ S.events.push({sid:D.skip,action:'skip',on:today(),where:D.where}); persist(); render(); toast('また今度'); return; }
+  if(D.sample){ loadSamples(); return; }
+  if(D.clearsample){ S.entries=S.entries.filter(e=>!e.sample); S.wishes=S.wishes.filter(w=>!w.sample); persist(); render(); toast('見本を消しました'); return; }
+  if(D.rf){ view.recFilter=D.rf; render(); return; }
+  if(D.rm){ view.refMode=D.rm; render(); return; }
+  if(D.rp){ const step=Number(D.rp);
+    if(view.refMode==='month'){ const [y,m]=view.refMonth.split('-').map(Number); const d=new Date(y,m-1+step,1); view.refMonth=`${d.getFullYear()}-${pad(d.getMonth()+1)}`; }
+    else view.refYear=String(Number(view.refYear)+step); render(); return; }
+  if(b.id==='digest'){ S.settings.monthlyDigest=!S.settings.monthlyDigest; persist(); render(); return; }
+});
+$('#fab').addEventListener('click',()=>openForm());
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
+
+loadLocal(); render(); connectDb();
+})();
+</script>
+
+</body></html>
